@@ -27,26 +27,29 @@ class LoginPage < BasePage
       clear_bought
       clear_sold
       renew_bids
-      buy_players
+      market.buy_players
       active_bids
     rescue Selenium::WebDriver::Error::WebDriverError, Capybara::CapybaraError => e
       ElkLogger.log(:error, { msg: e.inspect })
       dialog = '.ui-dialog-type-alert'
+      save_screenshot
+      save_page
+
 
       if has_css?(dialog)
         dialog_text = find(dialog).text
         ElkLogger.log(:error, { dialog: dialog_text })
-        if dialog_text.match(/Unable to authenticate with the FUT servers/)
+        if dialog_text.match(/BID TOO LOW/)
+          click_on 'Ok'
+        elsif dialog_text.match(/Unable to authenticate with the FUT servers/)
           exit
         elsif dialog_text.match(/NO INTERNET CONNECTION/)
           exit
         end
+      else
+        process
       end
 
-      save_screenshot
-      save_page
-
-      process
     end
   end
 
@@ -65,56 +68,6 @@ class LoginPage < BasePage
     end
   end
 
-  def buy_players
-    ElkLogger.log(:info, { method: 'buy_players' })
-    Player.all.each do |name, player|
-      buy_player name if player.active
-    end
-  end
-
-  def refresh_market
-    ElkLogger.log(:info, { method: 'refresh_market' })
-    click_on 'Transfers'
-    find('.ut-tile-transfer-market').click
-    click_on 'Search'
-    sleep 2
-    ElkLogger.log(:info, { msg: 'Market refreshed' })
-  end
-
-  def buy_player(player_name)
-    ElkLogger.log(:info, { search: player_name })
-    player = Player.find(player_name)
-    click_on 'Transfers'
-    find('.ut-tile-transfer-market').click
-
-    fill_input('.ut-player-search-control input', player.fullname)
-    click_on player.fullname
-
-    all('.search-prices .price-filter input')[1].click
-    all('.search-prices .price-filter input')[1].set player.max_bid
-    click_on 'Search'
-
-    players_list = all('.has-auction-data:not(.highest-bid)')
-    ElkLogger.log(:info, { search_result: player_name, count: players_list.count })
-    players_list.each do |line|
-      line.click
-      sleep 1
-      bid_value = n(find('.bidOptions input').value)
-      timeleft = all('.auctionInfo .subContent')[0].text
-
-      if bid_value <= player.max_bid && (timeleft.match(/\d+ Minutes/) || timeleft.match(/\d+ Seconds/))
-        ElkLogger.log(:info, { action: 'bid', bid_value: bid_value, player: player.name, timeleft: timeleft })
-        click_on 'Make Bid'
-      end
-      sleep 3
-    end
-  end
-
-  def fill_input(input, value)
-    find(input).click
-    find(input).set value
-  end
-
   def clear_bought
     ElkLogger.log(:info, { method: 'clear_bought' })
     click_on 'Transfers'
@@ -129,7 +82,6 @@ class LoginPage < BasePage
   end
 
   def relist_players
-    click_on 'Transfers'
     if has_css?('.has-auction-data.expired')
       ElkLogger.log(:info, { method: 'relist_players' })
       click_on 'Re-list All'
@@ -166,7 +118,7 @@ class LoginPage < BasePage
 
   def renew_bids
     ElkLogger.log(:info, { method: 'renew_bids' })
-    refresh_market
+    market.refresh
     click_on 'Transfers'
     find('.ut-tile-transfer-targets').click
     transaction_kind = 'outbid'
@@ -257,5 +209,9 @@ class LoginPage < BasePage
 
   def loaded?
     !has_css?('.loaderIcon')
+  end
+
+  def market
+    Market.new
   end
 end
