@@ -1,0 +1,14 @@
+version: '2'
+services:
+  autotrader:
+    image: guideinvestimentos/$COMPOSE_PROJECT_NAME:$IMAGE_TAG
+    hostname: autotrader
+    command:
+      - /bin/sh
+      - -c
+      - |
+        whenever --update-crontab
+        crond -f
+    labels:
+      io.rancher.scheduler.affinity:host_label: app_name=$RANCHER_HOST_APP_NAME
+      io.rancher.container.pull_image: always

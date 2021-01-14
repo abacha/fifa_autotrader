@@ -1,0 +1,24 @@
+version: '2'
+services:
+  autotrader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        HTTP_PROXY: ${HTTP_PROXY}
+        HTTPS_PROXY: ${HTTPS_PROXY}
+        INSTALL_PATH: "/${COMPOSE_PROJECT_NAME}"
+    stdin_open: true
+    tty: true
+    environment:
+      DEBUG: 'true'
+    volumes:
+      - "./:/${COMPOSE_PROJECT_NAME}"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        whenever --update-crontab
+        crond -f
+    env_file:
+      - '.env'

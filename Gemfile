@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+gem 'pry'
+gem 'pry-byebug'
+gem 'capybara'
+gem 'json'
+gem 'rspec'
+gem 'selenium-webdriver'
+gem 'whenever'
+gem 'lograge'
+gem 'logstash-logger'
