@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Market < BasePage
+class MarketPage < BasePage
   def refresh
     ElkLogger.log(:info, { method: 'refresh_market' })
     click_on 'Transfers'
@@ -14,6 +14,7 @@ class Market < BasePage
     ElkLogger.log(:info, { method: 'buy_players' })
     Player.all.each do |player|
       buy_player player.name if player.active
+      sleep 10
     end
   end
 
@@ -32,17 +33,17 @@ class Market < BasePage
 
     players_list = all('.has-auction-data:not(.highest-bid)')
     ElkLogger.log(:info, { search_result: player_name, count: players_list.count })
-    players_list.each do |line|
+    players_list[0..5].each do |line|
       line.click
-      sleep 1
+      sleep 2
       bid_value = n(find('.bidOptions input').value)
-      timeleft = all('.auctionInfo .subContent')[0].text
+      timeleft = ChronicDuration.parse(all('.auctionInfo .subContent')[0].text)
 
-      if bid_value <= player.max_bid && (timeleft.match(/\d+ Minutes/) || timeleft.match(/\d+ Seconds/))
+      if bid_value <= player.max_bid && timeleft < 600
         ElkLogger.log(:info, { action: 'bid', bid_value: bid_value, player: player.name, timeleft: timeleft })
         click_on 'Make Bid'
       end
-      sleep 3
+      sleep 6
     end
   end
 
