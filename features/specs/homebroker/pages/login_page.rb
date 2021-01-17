@@ -36,12 +36,25 @@ class LoginPage < BasePage
     end
   end
 
+  def cycle(n = 8)
+    1.upto(n * 60 * 60 / 300) do |i|
+      start_time = Time.now.to_i
+      process
+      elapsed_time = Time.now.to_i - start_time
+      Manager.report
+      ElkLogger.log(
+        :info, { run: i, elapsed_time: ChronicDuration.output(elapsed_time) }
+      )
+      sleep 60 * 3
+    end
+  end
+
   def process
     do_process do
       list = transfer_target.list
 
       outbid = list.detect { |bid| bid[:status] == 'outbid' }
-      min_time = outbid ? ChronicDuration.parse(outbid[:timeleft]) : 1_000
+      min_time = (outbid && outbid[:timeleft]) ? outbid[:timeleft] : 1_000
 
       transfer_target.renew_bids if min_time < 180
 

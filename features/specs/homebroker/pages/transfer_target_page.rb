@@ -66,7 +66,7 @@ class TransferTargetPage < BasePage
       player = Player.find(value_data[:name])
 
       {
-        name: player.name,
+        name: value_data[:name],
         bid: value_data[:current_bid],
         status: value_data[:status],
         timeleft: value_data[:timeleft]

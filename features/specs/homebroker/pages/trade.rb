@@ -1,5 +1,3 @@
-require 'csv'
-
 Trade = Struct.new(:timestamp, :kind, :player_name,
                    :start_price, :sold_for, :buy_now) do
 
@@ -17,14 +15,14 @@ Trade = Struct.new(:timestamp, :kind, :player_name,
     end
   end
 
-  def self.save(value_data)
+  def self.save(bid)
     CSV.open(TRADE_FILE, 'a+') do |csv|
-      csv << value_data.values_at(:timestamp,
-                                  :kind,
-                                  :name,
-                                  :start_price,
-                                  :current_bid,
-                                  :buy_now)
+      csv << bid.to_h.values_at(:timestamp,
+                                :kind,
+                                :name,
+                                :start_price,
+                                :current_bid,
+                                :buy_now)
     end
   end
 end

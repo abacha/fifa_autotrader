@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'csv'
-require 'chronic_duration'
-
 class BasePage
   include Capybara::DSL
 
@@ -62,6 +60,8 @@ class BasePage
         click_on 'Ok'
       elsif error_msg.match(/Unable to authenticate with the FUT servers/)
         exit
+      elsif error_msg.match(/VERIFICATION REQUIRED/)
+        exit
       elsif error_msg.match(/NO INTERNET CONNECTION/)
         exit
       end
@@ -76,9 +76,9 @@ class BasePage
     ElkLogger.log(:info, { kind: transaction_kind, amount: player_list.count })
 
     player_list.each do |line|
-      value_data = Bid.build(line, transaction_kind)
-      player = Player.find(value_data[:name])
-      ElkLogger.log(:info, value_data )
+      bid = Bid.build(line, transaction_kind)
+      player = Player.find(bid.name)
+      ElkLogger.log(:info, bid.to_h)
 
       if transaction_kind == 'B' && player.name
         line.click
@@ -91,8 +91,14 @@ class BasePage
         click_on 'List for Transfer'
         ElkLogger.log(:info, { action: 'listed', player: player.name, sell_value: player.sell_value })
       end
-      Trade.save(value_data) if player
+
+      Trade.save(bid) if player
     end
     click_on button_text if button_text && player_list.any?
+  end
+
+  def fill_input(input, value)
+    find(input).click
+    find(input).set value
   end
 end

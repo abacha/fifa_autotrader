@@ -5,6 +5,9 @@ require 'capybara'
 require 'capybara/cucumber'
 require 'selenium-webdriver'
 require 'json'
+require 'chronic_duration'
+require 'awesome_print'
+
 
 require_relative 'helpers.rb'
 
