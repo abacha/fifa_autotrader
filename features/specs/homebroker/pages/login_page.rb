@@ -41,7 +41,6 @@ class LoginPage < BasePage
       start_time = Time.now.to_i
       process
       elapsed_time = Time.now.to_i - start_time
-      Manager.report
       ElkLogger.log(
         :info, { run: i, elapsed_time: ChronicDuration.output(elapsed_time) }
       )

@@ -1,8 +1,8 @@
 version: '2'
 services:
-  autotrader:
+  fifa_autotrader:
     image: guideinvestimentos/$COMPOSE_PROJECT_NAME:$IMAGE_TAG
-    hostname: autotrader
+    hostname: fifa_autotrader
     command:
       - /bin/sh
       - -c

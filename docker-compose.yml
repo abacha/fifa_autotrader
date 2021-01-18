@@ -1,6 +1,6 @@
 version: '2'
 services:
-  autotrader:
+  fifa_autotrader:
     build:
       context: .
       dockerfile: Dockerfile
