@@ -22,7 +22,7 @@ class ElkLogger
 
   def log(severity, msg)
     # msg.merge!(uuid: uuid)
-    puts msg
+    puts "[#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}] #{msg}"
     # logstash.tagged(LOGSTASH_TAG) do
     #  logstash.send(severity, msg.to_json)
     # end

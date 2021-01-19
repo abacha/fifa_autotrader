@@ -19,9 +19,14 @@ class Manager
 
   def self.report
     calculate
-    Player.all.map do |player|
-      player(player.name).report if player(player.name)
+    total = {stock: 0, profit: 0}
+    @manager.reports.map do |player_name, player_report|
+      report = player_report.report
+      total[:stock] += report[:stock]
+      total[:profit] += report[:profit]
+      p report
     end
+    ap total
   end
 
   def calculate

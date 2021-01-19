@@ -28,6 +28,7 @@ class PlayerReport
       player_name: player_name,
       stock: stock,
       profit: profit,
+      avg_profit: avg_profit,
       avg_buy_price: avg_buy_price,
       avg_sell_price: avg_sell_price,
     }
@@ -35,6 +36,10 @@ class PlayerReport
 
   def profit
     -total_bought + (total_sold * 1-EA_TAX/100)
+  end
+
+  def avg_profit
+    profit / amount_sold
   end
 
   def stock

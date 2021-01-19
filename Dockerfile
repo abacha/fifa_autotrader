@@ -1,11 +1,6 @@
 FROM ruby:alpine
 
 ARG INSTALL_PATH
-ARG HTTP_PROXY
-ARG HTTPS_PROXY
-
-ENV http_proxy=$HTTP_PROXY
-ENV https_proxy=$HTTPS_PROXY
 
 RUN apk update && \
   apk add build-base \
@@ -15,14 +10,18 @@ RUN apk update && \
   libxslt-dev \
   busybox \
   curl unzip libexif \
+  tzdata \
   udev \
   chromium chromium-chromedriver xvfb xorg-server dbus ttf-freefont mesa-dri-swrast \
   wait4ports \
   udev \
   && rm -rf /var/cache/apk/*
 
+RUN ln -snf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
+  echo America/Sao_Paulo > /etc/timezone
+
 # Install build dependencies
- RUN apk add --no-cache --quiet build-base
+RUN apk add --no-cache --quiet build-base
 
 RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH

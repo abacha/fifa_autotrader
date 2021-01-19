@@ -16,9 +16,9 @@ class MarketPage < BasePage
 
   def buy_players
     ElkLogger.log(:info, { method: 'buy_players' })
-    Player.all.each do |player|
-      buy_player player.name if player.active && player.stock < MAX_STOCK
-      sleep 8
+    Player.actives.each do |player|
+      buy_player player.name # && player.stock < MAX_STOCK
+      sleep 10
     end
   end
 
@@ -46,8 +46,8 @@ class MarketPage < BasePage
       if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
         ElkLogger.log(:info, { action: 'bid', bid_value: bid_value, player: player.name, timeleft: timeleft })
         click_on 'Make Bid'
+        sleep 3
       end
-      sleep 4
     end
   end
 end

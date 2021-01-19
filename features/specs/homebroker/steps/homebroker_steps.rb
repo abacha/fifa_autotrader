@@ -5,7 +5,7 @@ Dado('um cliente com login e senha válidos') do
 end
 
 Quando('preencher login e senha') do
-  @page.call(LoginPage).go
+  @page.call(MainPage).go
   wait_for_pageload
 end
 

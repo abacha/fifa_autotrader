@@ -1,24 +1,27 @@
 # frozen_string_literal: true
 
 class LoginPage < BasePage
-  def execute
-    sleep 10
-    login
-    binding.pry
-  end
+  SECURITY_FILE = 'security_code'
 
-  def login
+  def execute
     click_on 'Login'
     sleep 5
-    fill_in 'email', with: 'abacha@gmail.com'
-    fill_in 'password', with: 'psur_ept5tras9JUR'
+    fill_in 'email', with: ENV['ORIGIN_EMAIL']
+    fill_in 'password', with: ENV['ORIGIN_PASSWORD']
     click_on 'Log In'
     click_on 'Send Security Code'
-    code = 1
-    binding.pry
-    fill_in('oneTimeCode', with: code)
+    fill_in('oneTimeCode', with: security_code)
     click_on 'Log In'
-    sleep 6
+    FileUtils.rm(SECURITY_FILE)
+    sleep 5
+  end
+
+  private
+
+  def security_code
+    sleep 1 while !File.exists?(SECURITY_FILE)
+
+    File.read(SECURITY_FILE).chomp
   end
 
   def load_cookies
@@ -34,51 +37,5 @@ class LoginPage < BasePage
         secure: cookie[5] == 'true'
       )
     end
-  end
-
-  def cycle(n = 8)
-    1.upto(n * 60 * 60 / 300) do |i|
-      start_time = Time.now.to_i
-      process
-      elapsed_time = Time.now.to_i - start_time
-      ElkLogger.log(
-        :info, { run: i, elapsed_time: ChronicDuration.output(elapsed_time) }
-      )
-      sleep 60 * 3
-    end
-  end
-
-  def process
-    do_process do
-      list = transfer_target.list
-
-      outbid = list.detect { |bid| bid[:status] == 'outbid' }
-      min_time = (outbid && outbid[:timeleft]) ? outbid[:timeleft] : 1_000
-
-      transfer_target.renew_bids if min_time < 180
-
-      if list.detect { |bid| bid[:status] == 'won' }
-        transfer_target.clear
-      end
-
-      transfer_target.clear_expired
-      transfer_list.clear
-
-      market.buy_players
-    end
-  end
-
-  private
-
-  def market
-    MarketPage.new
-  end
-
-  def transfer_list
-    TransferListPage.new
-  end
-
-  def transfer_target
-    TransferTargetPage.new
   end
 end

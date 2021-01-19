@@ -1,8 +1,7 @@
 ---
-  default: -p headless -p elk_logger
-  debug: -p chrome -p elk_logger
+  default: -p headless
+  debug: -p chrome
 
-  elk_logger: --format ElkLogger::CucumberFormatter
   pretty: --format pretty
   json: --format json --out=log/report.json
 

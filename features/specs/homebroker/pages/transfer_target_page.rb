@@ -54,12 +54,10 @@ class TransferTargetPage < BasePage
     player_list = all('.has-auction-data')
     ElkLogger.log(:info, { action: 'bids', amount: player_list.count })
 
-    ElkLogger.log(:info, { action: 'bids', kind: 'outbid',
-                           amount: all('.has-auction-data.outbid').count })
-    ElkLogger.log(:info, { action: 'bids', kind: 'highest bid',
-                           amount: all('.has-auction-data.highest-bid').count })
-    ElkLogger.log(:info, { action: 'bids', kind: 'won',
-                           amount: all('.has-auction-data.won').count })
+    ElkLogger.log(:info, { action: 'bids',
+                           outbid: all('.has-auction-data.outbid').count,
+                           'highest-bid': all('.has-auction-data.highest-bid').count,
+                           won: all('.has-auction-data.won').count })
 
     player_list.map do |line|
       value_data = Bid.build(line, 'active')

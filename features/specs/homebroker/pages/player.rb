@@ -9,11 +9,11 @@ Player = Struct.new(:name, :fullname, :active, :max_bid, :sell_value) do
     end
   end
 
-  def self.find(player_name)
-    Player.all.detect { |player| player.name == player_name }
+  def self.actives
+    all.select { |player| player.active }
   end
 
-  def stock
-    Manager.calculate[name].stock
+  def self.find(player_name)
+    Player.all.detect { |player| player.name == player_name }
   end
 end

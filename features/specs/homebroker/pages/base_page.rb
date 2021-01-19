@@ -32,7 +32,6 @@ class BasePage
     ElkLogger.log(:debug, page_name: page_name, message: msg)
   end
 
-
   def n(number)
     number.gsub(',', '').to_i
   end
