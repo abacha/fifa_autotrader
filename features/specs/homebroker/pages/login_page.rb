@@ -20,6 +20,7 @@ class LoginPage < BasePage
 
   def security_code
     sleep 1 while !File.exists?(SECURITY_FILE)
+    ElkLogger.log(:info, { msg: 'Security code loaded' })
 
     File.read(SECURITY_FILE).chomp
   end

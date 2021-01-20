@@ -52,9 +52,9 @@ class TransferTargetPage < BasePage
     find('.ut-tile-transfer-targets').click
 
     player_list = all('.has-auction-data')
-    ElkLogger.log(:info, { action: 'bids', amount: player_list.count })
 
     ElkLogger.log(:info, { action: 'bids',
+                           total: player_list.count,
                            outbid: all('.has-auction-data.outbid').count,
                            'highest-bid': all('.has-auction-data.highest-bid').count,
                            won: all('.has-auction-data.won').count })

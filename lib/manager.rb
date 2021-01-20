@@ -26,7 +26,7 @@ class Manager
       total[:profit] += report[:profit]
       p report
     end
-    ap total
+    p total
   end
 
   def calculate

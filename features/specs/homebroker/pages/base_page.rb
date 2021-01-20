@@ -53,7 +53,10 @@ class BasePage
       elsif error_msg.match(/Unable to authenticate with the FUT servers/)
         exit
       elsif error_msg.match(/VERIFICATION REQUIRED/)
-        exit
+        binding.pry
+        sleep 10
+        page.refresh
+        sleep 10
       elsif error_msg.match(/NO INTERNET CONNECTION/)
         exit
       end
@@ -69,10 +72,12 @@ class BasePage
 
     player_list.each do |line|
       bid = Bid.build(line, transaction_kind)
-      player = Player.find(bid.name)
       ElkLogger.log(:info, bid.to_h)
 
-      if transaction_kind == 'B' && player.name
+      player = Player.find(bid.name)
+      next unless player
+
+      if transaction_kind == 'B'
         line.click
         click_on 'List on Transfer Market'
         panels = all('.panelActions.open .panelActionRow')
