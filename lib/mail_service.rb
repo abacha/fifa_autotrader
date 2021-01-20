@@ -52,7 +52,7 @@ class MailService
     end
   end
 
-  def self.create_file
-    File.write('security_code', new.security_code)
+  def self.security_code
+    new.security_code
   end
 end

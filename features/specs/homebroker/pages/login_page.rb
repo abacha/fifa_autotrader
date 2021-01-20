@@ -12,17 +12,19 @@ class LoginPage < BasePage
     click_on 'Send Security Code'
     fill_in('oneTimeCode', with: security_code)
     click_on 'Log In'
-    FileUtils.rm(SECURITY_FILE)
     sleep 5
   end
 
   private
 
   def security_code
-    sleep 1 while !File.exists?(SECURITY_FILE)
+    while MailService.security_code.nil?
+      ElkLogger.log(:info, { msg: 'Waiting for security code' })
+      sleep 10
+    end
     ElkLogger.log(:info, { msg: 'Security code loaded' })
 
-    File.read(SECURITY_FILE).chomp
+    MailService.security_code
   end
 
   def load_cookies

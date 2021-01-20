@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'csv'
 class BasePage
   include Capybara::DSL
 
