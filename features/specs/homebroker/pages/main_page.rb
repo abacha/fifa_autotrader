@@ -38,10 +38,17 @@ class MainPage < BasePage
       transfer_list.clear
 
       market.buy_players
+
+      pause?
     end
   end
 
   private
+
+  def pause?
+    binding.pry if File.exists?('pause')
+    FileUtils.rm_f('pause')
+  end
 
   def market
     MarketPage.new

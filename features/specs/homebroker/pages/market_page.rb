@@ -23,7 +23,6 @@ class MarketPage < BasePage
   end
 
   def buy_player(player_name)
-    ElkLogger.log(:info, { search: player_name })
     player = Player.find(player_name)
     click_on 'Transfers'
     find('.ut-tile-transfer-market').click
@@ -36,7 +35,7 @@ class MarketPage < BasePage
     click_on 'Search'
 
     players_list = all('.has-auction-data:not(.highest-bid)')
-    ElkLogger.log(:info, { search_result: player_name, count: players_list.count })
+    ElkLogger.log(:info, { search: player_name, count: players_list.count })
     players_list[0..MAX_PLAYER_BIDS].each do |line|
       line.click
       sleep 2

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../../../../lib/mail_service'
 class LoginPage < BasePage
   SECURITY_FILE = 'security_code'
 

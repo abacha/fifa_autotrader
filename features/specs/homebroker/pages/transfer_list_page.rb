@@ -2,10 +2,13 @@
 
 class TransferListPage < BasePage
   def clear
-    ElkLogger.log(:info, { method: 'clear_sold' })
     click_on 'Transfers'
     clear_finished('S', '.ut-tile-transfer-list', 'Clear Sold')
     relist_players
+  end
+
+  def update_stock
+    player_list = all('.has-auction-data')
   end
 
   def relist_players

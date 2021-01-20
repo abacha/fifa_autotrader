@@ -25,13 +25,13 @@ class PlayerReport
 
   def report
     {
-      player_name: player_name,
       stock: stock,
       profit: profit,
       avg_profit: avg_profit,
       avg_buy_price: avg_buy_price,
       avg_sell_price: avg_sell_price,
-      avg_safe_rate: avg_safe_rate
+      avg_safe_rate: avg_safe_rate,
+      player_name: player_name
     }
   end
 
@@ -44,7 +44,7 @@ class PlayerReport
   end
 
   def avg_profit
-    profit / amount_sold
+    profit / amount_sold if amount_sold
   end
 
   def stock
