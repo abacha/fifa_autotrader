@@ -41,7 +41,7 @@ class MailService
 
   def security_code
     messages = gmail_service.list_user_messages(
-      USER_ID, q:"from:'ea@e.ea.com' subject:'código de segurança'"
+      USER_ID, q:"from:'ea@e.ea.com' subject:'código de segurança' label:unread"
     ).messages
 
     if messages

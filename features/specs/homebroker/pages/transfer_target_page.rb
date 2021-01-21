@@ -19,7 +19,7 @@ class TransferTargetPage < BasePage
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
-      value_data = Bid.build(line, transaction_kind)
+      value_data = Bid.build(line)
       player = Player.find(value_data[:name])
 
       next unless player
@@ -60,7 +60,7 @@ class TransferTargetPage < BasePage
                            won: all('.has-auction-data.won').count })
 
     player_list.map do |line|
-      value_data = Bid.build(line, 'active')
+      value_data = Bid.build(line)
       player = Player.find(value_data[:name])
 
       {

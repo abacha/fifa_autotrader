@@ -2,22 +2,20 @@
 
 class MainPage < BasePage
   def execute
-    sleep 10
     login.execute
-    sleep 10
-    cycle
-  end
 
-  def cycle(n = 8)
-    runs = n * 60 * 60 / 300
-    1.upto(runs) do |i|
+    i = 1
+    while true
       start_time = Time.now.to_i
+
       process
-      elapsed_time = Time.now.to_i - start_time
-      ElkLogger.log(
-        :info, { run: i, elapsed_time: ChronicDuration.output(elapsed_time), total: runs }
-      )
+
+      elapsed_time = ChronicDuration.output(Time.now.to_i - start_time)
+
+      ElkLogger.log(:info, { run: i, elapsed_time: elapsed_time })
+
       sleep 120
+      i += 1
     end
   end
 
@@ -51,18 +49,18 @@ class MainPage < BasePage
   end
 
   def market
-    MarketPage.new
+    @market ||= MarketPage.new
   end
 
   def transfer_list
-    TransferListPage.new
+    @transfer_list ||= TransferListPage.new
   end
 
   def transfer_target
-    TransferTargetPage.new
+    @transfer_target ||= TransferTargetPage.new
   end
 
   def login
-    LoginPage.new
+    @login ||= LoginPage.new
   end
 end

@@ -5,6 +5,7 @@ class LoginPage < BasePage
   SECURITY_FILE = 'security_code'
 
   def execute
+    sleep 10
     click_on 'Login'
     sleep 5
     fill_in 'email', with: ENV['ORIGIN_EMAIL']
@@ -13,7 +14,7 @@ class LoginPage < BasePage
     click_on 'Send Security Code'
     fill_in('oneTimeCode', with: security_code)
     click_on 'Log In'
-    sleep 5
+    sleep 10
   end
 
   private

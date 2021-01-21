@@ -4,7 +4,7 @@ Bid = Struct.new(:timestamp, :kind, :name,
                  :timeleft, :status, :start_price,
                  :current_bid, :buy_now, keyword_init: true) do
 
-  def self.build(line, transaction_kind)
+  def self.build(line)
     status = if !line[:class]
                'undetected'
              elsif line[:class].include?('outbid')
@@ -20,7 +20,6 @@ Bid = Struct.new(:timestamp, :kind, :name,
     new(
       {
         timestamp: Time.now.strftime('%Y-%m-%d %H:%M:%S'),
-        kind: transaction_kind,
         name: line.find('.name').text,
         timeleft: ChronicDuration.parse(line.find('.auction-state .time').text),
         status: status

@@ -66,31 +66,37 @@ class BasePage
     click_on 'Transfers'
     find(menu).click
 
-    player_list = all('.has-auction-data.won')
-    ElkLogger.log(:info, { kind: transaction_kind, amount: player_list.count })
+    auctions = all('.has-auction-data.won')
+    ElkLogger.log(:info, { kind: transaction_kind, amount: auctions.count })
 
-    player_list.each do |line|
-      bid = Bid.build(line, transaction_kind)
+    auctions.each do |line|
+      bid = Bid.build(line)
+      bid.kind = transaction_kind
       ElkLogger.log(:info, bid.to_h)
 
       player = Player.find(bid.name)
       next unless player
 
-      if transaction_kind == 'B'
-        line.click
-        click_on 'List on Transfer Market'
-        panels = all('.panelActions.open .panelActionRow')
-        panels[1].find('input').click
-        panels[1].find('input').set player.sell_value
-        panels[2].find('input').click
-        panels[2].find('input').set player.sell_value + 100
-        click_on 'List for Transfer'
-        ElkLogger.log(:info, { action: 'listed', player: player.name, sell_value: player.sell_value })
-      end
+      list_on_transfer_market(line, player) if transaction_kind == 'B'
 
       Trade.save(bid) if player
     end
-    click_on button_text if button_text && player_list.any?
+
+    click_on button_text if button_text && auctions.any?
+  end
+
+  private
+  def list_on_transfer_market(line, player)
+    line.click
+    click_on 'List on Transfer Market'
+    panels = all('.panelActions.open .panelActionRow')
+    panels[1].find('input').click
+    panels[1].find('input').set player.sell_value
+    panels[2].find('input').click
+    panels[2].find('input').set player.sell_value + 100
+    click_on 'List for Transfer'
+    ElkLogger.log(:info, { action: 'listed',
+                           player: player.name, sell_value: player.sell_value })
   end
 
   def fill_input(input, value)
