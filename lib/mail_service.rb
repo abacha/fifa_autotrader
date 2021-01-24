@@ -7,8 +7,8 @@ class MailService
   OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
   APPLICATION_NAME = 'fifa_autotrader'.freeze
   CREDENTIALS_PATH = 'client_secrets.json'.freeze
-  TOKEN_PATH = 'token.yaml'.freeze
-  SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_READONLY
+  TOKEN_PATH = 'token.yml'.freeze
+  SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_MODIFY
   USER_ID = 'me'
 
   def authorize
@@ -47,6 +47,7 @@ class MailService
     if messages
       message_id = messages.first.id
       message_detail = gmail_service.get_user_message(USER_ID, message_id)
+      mark_as_read(message_id)
       security_code = message_detail.snippet.
         match(/código de segurança da EA: (\d{6})/)[1]
     end
@@ -54,5 +55,13 @@ class MailService
 
   def self.security_code
     new.security_code
+  end
+
+  private
+
+  def mark_as_read(message_id)
+    mtr = Google::Apis::GmailV1::ModifyThreadRequest.new(
+      remove_label_ids: ['UNREAD'])
+    gmail_service.modify_message(USER_ID, message_id, mtr)
   end
 end
