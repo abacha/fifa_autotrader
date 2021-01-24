@@ -25,6 +25,7 @@ class TransferTargetPage < BasePage
       next unless player
 
       line.click
+      sleep 2
       if value_data[:current_bid] < player.max_bid
         ElkLogger.log(:info, { name: player.name,
                                bid: value_data[:current_bid],

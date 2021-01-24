@@ -34,17 +34,27 @@ class MarketPage < BasePage
     all('.search-prices .price-filter input')[1].set player.max_bid
     click_on 'Search'
 
-    players_list = all('.has-auction-data:not(.highest-bid)')
-    ElkLogger.log(:info, { search: player_name, count: players_list.count })
-    players_list[0..MAX_PLAYER_BIDS].each do |line|
+    auctions = all('.has-auction-data').count
+    ElkLogger.log(:info, { search: player_name, count: auctions })
+    0.upto([auctions, MAX_PLAYER_BIDS].min - 1) do |i|
+      line = all('.has-auction-data')[i]
+
+      binding.pry if line.nil?
+      next if line[:class].include? 'highest-bid'
+
       line.click
       sleep 2
+
       bid_value = n(find('.bidOptions input').value)
       timeleft = ChronicDuration.parse(all('.auctionInfo .subContent')[0].text)
 
       if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
-        ElkLogger.log(:info, { action: 'bid', bid_value: bid_value, player: player.name, timeleft: timeleft })
+        ElkLogger.log(:info, { action: 'bid',
+                               bid_value: bid_value,
+                               player: player.name,
+                               timeleft: timeleft })
         click_on 'Make Bid'
+
         sleep 3
       end
     end

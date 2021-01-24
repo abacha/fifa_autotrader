@@ -1,7 +1,7 @@
 require 'csv'
 require 'awesome_print'
-require_relative '../features/specs/homebroker/pages/trade.rb'
-require_relative '../features/specs/homebroker/pages/player.rb'
+require_relative '../features/business/trade.rb'
+require_relative '../features/business/player.rb'
 require_relative 'player_report.rb'
 
 

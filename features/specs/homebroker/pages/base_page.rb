@@ -62,14 +62,17 @@ class BasePage
     end
   end
 
-  def clear_finished(transaction_kind, menu, button_text = nil)
+  def clear_finished(transaction_kind, menu)
     click_on 'Transfers'
     find(menu).click
 
-    auctions = all('.has-auction-data.won')
-    ElkLogger.log(:info, { kind: transaction_kind, amount: auctions.count })
+    auctions = all('.has-auction-data.won').count
+    ElkLogger.log(:info, { kind: transaction_kind, amount: auctions })
 
-    auctions.each do |line|
+    0.upto(auctions - 1) do |i|
+      line = all('.has-auction-data.won')[i]
+      next unless line
+
       bid = Bid.build(line)
       bid.kind = transaction_kind
       ElkLogger.log(:info, bid.to_h)
@@ -77,15 +80,20 @@ class BasePage
       player = Player.find(bid.name)
       next unless player
 
-      list_on_transfer_market(line, player) if transaction_kind == 'B'
+      if transaction_kind == 'B'
+        list_on_transfer_market(line, player)
+      #elsif transaction_kind == 'S'
+      #  click_on 'Remove'
+      end
 
-      Trade.save(bid) if player
+      Trade.save(bid)
     end
 
-    click_on button_text if button_text && auctions.any?
+    click_on 'Clear Sold' if transaction_kind == 'S' && auctions > 0
   end
 
   private
+
   def list_on_transfer_market(line, player)
     line.click
     click_on 'List on Transfer Market'
