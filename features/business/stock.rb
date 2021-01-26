@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 class Stock
-  STOCK_FILE = 'stock.csv'
+  STOCK_FILE = 'stock.yml'
 
   def self.save(auction_data)
-    CSV.open(STOCK_FILE, 'wb') do |csv|
-      auction_data.to_a.map { |line| csv.puts line }
-    end
+    File.open(STOCK_FILE, 'w') { |file| file.write(auction_data.to_yaml) }
 
     ElkLogger.log(:info, { msg: 'Stock updated' })
   end
 
   def self.all
-    CSV.read(STOCK_FILE).to_h
+    YAML.load(File.read(STOCK_FILE))
   end
 
   def self.by_player(player_name)

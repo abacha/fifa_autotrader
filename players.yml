@@ -62,3 +62,10 @@
   sell_value: 2100
   status: '0'
   id: '1173'
+- !ruby/struct:Player
+  name: Gabriel Paulista
+  fullname: Gabriel Paulista
+  max_bid: 1000
+  sell_value: 2500
+  status: '1'
+  id: 1099

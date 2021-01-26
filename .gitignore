@@ -1,7 +1,8 @@
 .env
 log/**/*
-token.yaml
+token.yml
 *.bkp
+stock.yml
 pause
 capybara-*.png
 capybara-*.html

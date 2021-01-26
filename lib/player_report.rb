@@ -30,7 +30,6 @@ class PlayerReport
       avg_profit: avg_profit,
       avg_buy_price: avg_buy_price,
       avg_sell_price: avg_sell_price,
-      avg_safe_rate: avg_safe_rate,
       player: player
     }
   end
@@ -39,12 +38,8 @@ class PlayerReport
     -total_bought + (total_sold * 1-EA_TAX/100)
   end
 
-  def avg_safe_rate
-    (avg_profit / avg_buy_price.to_f * 100).to_i
-  end
-
   def avg_profit
-    profit / amount_sold if amount_sold
+    profit / amount_sold if amount_sold > 0
   end
 
   def stock

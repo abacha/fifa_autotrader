@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'csv'
-
 Player = Struct.new(:name, :fullname,
                     :max_bid, :sell_value, :status, :id, keyword_init: true) do
   def save
