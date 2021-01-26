@@ -34,6 +34,7 @@ class MainPage < BasePage
 
       transfer_target.clear_expired
       transfer_list.clear
+      transfer_list.update_stock
 
       market.buy_players
 

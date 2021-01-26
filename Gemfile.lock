@@ -99,6 +99,9 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (~> 0.14)
+    haml (5.2.1)
+      temple (>= 0.8.0)
+      tilt
     httpclient (2.8.3)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
@@ -196,8 +199,17 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
+    sinatra-contrib (2.1.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.1.0)
+      sinatra (= 2.1.0)
+      tilt (~> 2.0)
+    sinatra-reloader (1.0)
+      sinatra-contrib
     sys-uname (1.2.2)
       ffi (~> 1.1)
+    temple (0.8.2)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -219,6 +231,7 @@ DEPENDENCIES
   chronic_duration
   cucumber
   google-apis-gmail_v1
+  haml
   json
   lograge
   logstash-logger
@@ -227,6 +240,7 @@ DEPENDENCIES
   rspec
   selenium-webdriver
   sinatra
+  sinatra-reloader
   whenever
 
 BUNDLED WITH

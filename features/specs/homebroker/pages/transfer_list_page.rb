@@ -8,7 +8,9 @@ class TransferListPage < BasePage
   end
 
   def update_stock
-    player_list = all('.has-auction-data')
+    stock = auctions.inject(Hash.new(0)) { |h, e| h[e.name] += 1; h }
+    ElkLogger.log(:info, { stock: stock })
+    Stock.save(stock)
   end
 
   def relist_players
@@ -19,13 +21,12 @@ class TransferListPage < BasePage
     end
   end
 
-  def list
+  def auctions
     click_on 'Transfers'
     find('.ut-tile-transfer-list').click
 
-    player_list = all('.has-auction-data')
-    ElkLogger.log(:info, { kind: 'active selling', amount: player_list.count })
-    # ElkLogger.log(:info, { kind: 'outbid', amount: all('.has-auction-data.outbid').count })
-    # ElkLogger.log(:info, { kind: 'highest bid', amount: all('.has-auction-data.highest-bid').count })
+    auctions_list = all('.has-auction-data')
+    ElkLogger.log(:info, { kind: 'active selling', amount: auctions_list.count })
+    auctions_list.map { |line| Auction.build(line) }
   end
 end

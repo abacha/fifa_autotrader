@@ -19,22 +19,22 @@ class TransferTargetPage < BasePage
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
-      value_data = Bid.build(line)
-      player = Player.find(value_data[:name])
+      auction = Auction.build(line)
+      player = PlayerRepository.find(auction[:name])
 
       next unless player
 
       line.click
       sleep 2
-      if value_data[:current_bid] < player.max_bid
+      if auction[:current_bid] < player.max_bid
         ElkLogger.log(:info, { name: player.name,
-                               bid: value_data[:current_bid],
+                               bid: auction.current_bid,
                                action: 'bid' })
 
         click_on 'Make Bid'
       else
         ElkLogger.log(:info, { name: player.name,
-                               bid: value_data[:current_bid],
+                               bid: auction.current_bid,
                                action: 'unwatch' })
 
         click_on 'Unwatch'
@@ -61,14 +61,14 @@ class TransferTargetPage < BasePage
                            won: all('.has-auction-data.won').count })
 
     player_list.map do |line|
-      value_data = Bid.build(line)
-      player = Player.find(value_data[:name])
+      auction = Auction.build(line)
+      player = PlayerRepository.find(auction[:name])
 
       {
-        name: value_data[:name],
-        bid: value_data[:current_bid],
-        status: value_data[:status],
-        timeleft: value_data[:timeleft]
+        name: auction[:name],
+        bid: auction[:current_bid],
+        status: auction[:status],
+        timeleft: auction[:timeleft]
       }
     end
   end

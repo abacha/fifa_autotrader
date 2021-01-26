@@ -1,0 +1,17 @@
+%table.table.table-hover.table-striped.table-bordered.table-sm
+  %thead
+    %th.col Datetime
+    %th.col Kind
+    %th.col Player
+    %th.col Start Price
+    %th.col Sold For
+    %th.col BIN
+  %tbody
+    - @trades.each do |trade|
+      %tr
+        %td=trade.timestamp
+        %td=trade.kind
+        %td=trade.player_name
+        %td.text-right=number_to_currency trade.start_price
+        %td.text-right=number_to_currency trade.sold_for
+        %td.text-right=number_to_currency trade.buy_now

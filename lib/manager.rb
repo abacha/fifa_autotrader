@@ -1,41 +1,53 @@
 require 'csv'
 require 'awesome_print'
+require 'singleton'
+require 'forwardable'
+
 require_relative '../features/business/trade.rb'
+require_relative '../features/business/player_repository.rb'
 require_relative '../features/business/player.rb'
+require_relative '../features/business/stock.rb'
 require_relative 'player_report.rb'
 
 
 class Manager
+  include Singleton
+  extend Forwardable
+
   attr_reader :reports
 
   def self.calculate
-    @manager ||= Manager.new
-    @manager.calculate
+    instance.calculate
   end
 
   def self.player(player_name)
-    @manager.reports[player_name]
+    instance.reports[player_name]
   end
 
-  def self.report
+  def self.reports
+    calculate
+    instance.reports
+  end
+
+  def self.total
     calculate
     total = {stock: 0, profit: 0}
-    @manager.reports.map do |player_name, player_report|
+    reports.each do |player_name, player_report|
       report = player_report.report
       total[:stock] += report[:stock]
       total[:profit] += report[:profit]
-      p report
     end
-    p total
+
+    total
   end
 
   def calculate
     @reports = {}
 
     Trade.all.each do |trade|
-      player_name = trade.player_name
-      @reports[player_name] ||= PlayerReport.new(player_name)
-      @reports[player_name].add_trade(trade)
+      player = PlayerRepository.find(trade.player_name)
+      @reports[trade.player_name] ||= PlayerReport.new(player)
+      @reports[trade.player_name].add_trade(trade)
     end
   end
 end

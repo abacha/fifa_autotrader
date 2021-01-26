@@ -1,0 +1,64 @@
+---
+- !ruby/struct:Player
+  name: Draxler
+  fullname: Julian Draxler
+  max_bid: 850
+  sell_value: 2100
+  status: '1'
+  id: '791'
+- !ruby/struct:Player
+  name: Herrera
+  fullname: Héctor Herrera
+  max_bid: 1000
+  sell_value: 2000
+  status: '1'
+  id: '1123'
+- !ruby/struct:Player
+  name: Lukaku
+  fullname: Jordan Lukaku
+  max_bid: 700
+  sell_value: 1300
+  status: '0'
+  id: '5096'
+- !ruby/struct:Player
+  name: Tonali
+  fullname: Sandro Tonali
+  max_bid: 700
+  sell_value: 1000
+  status: '0'
+  id: '22884'
+- !ruby/struct:Player
+  name: Richarlison
+  fullname: Richarlison
+  max_bid: 1000
+  sell_value: 2000
+  status: '0'
+  id: '1175'
+- !ruby/struct:Player
+  name: Vertonghen
+  fullname: Jan Vertonghen
+  max_bid: 1000
+  sell_value: 3200
+  status: '0'
+  id: '1047'
+- !ruby/struct:Player
+  name: Pau López
+  fullname: Pau López
+  max_bid: 1800
+  sell_value: 3700
+  status: '1'
+  id: '1075'
+- !ruby/struct:Player
+  name: Djené
+  fullname: Dakonam Djené
+  max_bid: 800
+  sell_value: 2000
+  status: '1'
+  id: '1112'
+- !ruby/struct:Player
+  name: Pavard
+  fullname: Benjamin Pavard
+  max_bid: 1000
+  sell_value: 2100
+  status: '0'
+  id: '1173'

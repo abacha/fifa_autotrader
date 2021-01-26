@@ -52,6 +52,7 @@ class BasePage
       elsif error_msg.match(/Unable to authenticate with the FUT servers/)
         exit
       elsif error_msg.match(/VERIFICATION REQUIRED/)
+        ElkLogger.log(:warn, { msg: 'Bot Verification' })
         binding.pry
         sleep 10
         page.refresh
@@ -73,11 +74,11 @@ class BasePage
       line = all('.has-auction-data.won')[i]
       next unless line
 
-      bid = Bid.build(line)
-      bid.kind = transaction_kind
-      ElkLogger.log(:info, bid.to_h)
+      auction = Auction.build(line)
+      auction.kind = transaction_kind
+      ElkLogger.log(:info, auction.to_h)
 
-      player = Player.find(bid.name)
+      player = PlayerRepository.find(auction.name)
       next unless player
 
       if transaction_kind == 'B'
@@ -86,7 +87,7 @@ class BasePage
       #  click_on 'Remove'
       end
 
-      Trade.save(bid)
+      Trade.save(auction)
     end
 
     click_on 'Clear Sold' if transaction_kind == 'S' && auctions > 0

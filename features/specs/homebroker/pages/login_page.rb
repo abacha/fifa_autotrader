@@ -14,19 +14,24 @@ class LoginPage < BasePage
     click_on 'Send Security Code'
     fill_in('oneTimeCode', with: security_code)
     click_on 'Log In'
+
     sleep 10
+
+    if has_css?('.origin-ux-textbox-status-message')
+      click_on 'Resend my security code'
+    end
   end
 
   private
 
   def security_code
-    while MailService.security_code.nil?
+    while (security_code = MailService.security_code).nil?
       ElkLogger.log(:info, { msg: 'Waiting for security code' })
       sleep 10
     end
     ElkLogger.log(:info, { msg: 'Security code loaded' })
 
-    MailService.security_code
+    security_code
   end
 
   def load_cookies

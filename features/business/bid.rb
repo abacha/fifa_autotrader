@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-Bid = Struct.new(:timestamp, :kind, :name,
+Auction = Struct.new(:timestamp, :kind, :name,
                  :timeleft, :status, :start_price,
                  :current_bid, :buy_now, keyword_init: true) do
 
   def self.build(line)
-    status = if !line[:class]
+    status = if line[:class].nil?
                'undetected'
              elsif line[:class].include?('outbid')
                'outbid'

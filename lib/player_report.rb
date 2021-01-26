@@ -1,9 +1,9 @@
 class PlayerReport
   EA_TAX = 5
-  attr_reader :player_name, :total_sold, :total_bought, :amount_sold, :amount_bought
+  attr_reader :player, :total_sold, :total_bought, :amount_sold, :amount_bought
 
-  def initialize(player_name)
-    @player_name = player_name
+  def initialize(player)
+    @player = player
     @total_sold = 0
     @total_bought = 0
     @amount_sold = 0
@@ -31,7 +31,7 @@ class PlayerReport
       avg_buy_price: avg_buy_price,
       avg_sell_price: avg_sell_price,
       avg_safe_rate: avg_safe_rate,
-      player_name: player_name
+      player: player
     }
   end
 
