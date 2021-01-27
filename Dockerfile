@@ -1,7 +1,5 @@
 FROM ruby:alpine
 
-ARG INSTALL_PATH
-
 RUN apk update && \
   apk add build-base \
   curl ruby musl-dev make linux-headers \
@@ -15,16 +13,14 @@ RUN apk update && \
   chromium chromium-chromedriver xvfb xorg-server dbus ttf-freefont mesa-dri-swrast \
   wait4ports \
   udev \
+  sqlite sqlite-dev \
   && rm -rf /var/cache/apk/*
 
 RUN ln -snf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
   echo America/Sao_Paulo > /etc/timezone
 
-# Install build dependencies
-RUN apk add --no-cache --quiet build-base
-
-RUN mkdir -p $INSTALL_PATH
-WORKDIR $INSTALL_PATH
+RUN mkdir -p app
+WORKDIR app
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler -v 1.16.2
 RUN bundle install

@@ -1,3 +1,5 @@
+%a{href: '/players'}
+  %h2 Stock
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead
     %th.col Player Name
@@ -25,4 +27,10 @@
       %th
       %th
 .col-12
+  %a{href: '/trades'}
+    %h2 Trades
   = haml :_trades
+
+.col-12
+  %h3="Last error: #{@last_error.timestamp}"
+  %img{src: @last_error.img_path}

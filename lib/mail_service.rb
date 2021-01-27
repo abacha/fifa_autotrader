@@ -47,7 +47,7 @@ class MailService
     if messages
       message_id = messages.first.id
       message_detail = gmail_service.get_user_message(USER_ID, message_id)
-      mark_as_read(message_id)
+      delete_message(message_id)
       security_code = message_detail.snippet.
         match(/código de segurança da EA: (\d{6})/)[1]
     end
@@ -59,9 +59,10 @@ class MailService
 
   private
 
-  def mark_as_read(message_id)
+  def delete_message(message_id)
     mtr = Google::Apis::GmailV1::ModifyThreadRequest.new(
       remove_label_ids: ['UNREAD'])
     gmail_service.modify_message(USER_ID, message_id, mtr)
+    gmail_service.trash_user_message(USER_ID, message_id)
   end
 end

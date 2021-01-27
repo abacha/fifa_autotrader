@@ -18,7 +18,7 @@ class MarketPage < BasePage
     ElkLogger.log(:info, { method: 'buy_players' })
     PlayerRepository.actives.each do |player|
       buy_player player if player.stock < MAX_STOCK
-      sleep 10
+      sleep 5
     end
   end
 

@@ -1,3 +1,5 @@
+require 'csv'
+
 Trade = Struct.new(:timestamp, :kind, :player_name,
                    :start_price, :sold_for, :buy_now) do
 

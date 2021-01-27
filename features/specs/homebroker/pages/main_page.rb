@@ -9,12 +9,14 @@ class MainPage < BasePage
       start_time = Time.now.to_i
 
       process
+      market.buy_players if i % 3 == 0
 
       elapsed_time = ChronicDuration.output(Time.now.to_i - start_time)
-
       ElkLogger.log(:info, { run: i, elapsed_time: elapsed_time })
 
-      sleep 120
+      pause?
+
+      sleep 80
       i += 1
     end
   end
@@ -35,10 +37,6 @@ class MainPage < BasePage
       transfer_target.clear_expired
       transfer_list.clear
       transfer_list.update_stock
-
-      market.buy_players
-
-      pause?
     end
   end
 

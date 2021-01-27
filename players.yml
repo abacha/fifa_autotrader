@@ -45,7 +45,7 @@
   name: Pau López
   fullname: Pau López
   max_bid: 1800
-  sell_value: 3700
+  sell_value: 3600
   status: '1'
   id: '1075'
 - !ruby/struct:Player

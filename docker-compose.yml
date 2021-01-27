@@ -1,21 +1,28 @@
-version: '2'
+version: '3.1'
 services:
-  fifa_autotrader:
+  db:
+    image: nouchka/sqlite3
+  web:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        INSTALL_PATH: "/${COMPOSE_PROJECT_NAME}"
+    restart: on-failure:5
+    volumes:
+      - "./:/app"
+    ports:
+      - '8080:8080'
+    command: ruby web/console.rb -o 0.0.0.0 -p 8080
+    env_file:
+      - '.env'
+  robot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure:5
     stdin_open: true
     tty: true
-    environment:
-      DEBUG: 'true'
     volumes:
-      - "./:/${COMPOSE_PROJECT_NAME}"
-    command:
-      - /bin/sh
-      - -c
-      - |
-        bundle exec cucumber
+      - "./:/app"
+    command: cucumber
     env_file:
       - '.env'

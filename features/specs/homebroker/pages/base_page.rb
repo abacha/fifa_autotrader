@@ -39,13 +39,13 @@ class BasePage
       ElkLogger.log(:error, { msg: e.inspect })
       error_msg = e.message
       dialog = '.ui-dialog-type-alert'
-      save_screenshot
-      save_page
 
       if has_css?(dialog)
         error_msg = find(dialog).text
         ElkLogger.log(:error, { dialog: error_msg })
       end
+
+      HooksConfig.record_error(error_msg)
 
       if error_msg.match(/BID TOO LOW/)
         click_on 'Ok'

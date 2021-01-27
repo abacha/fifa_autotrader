@@ -1,5 +1,7 @@
 .env
-log/**/*
+*.log
+*.png
+tmp/pages/*
 token.yml
 *.bkp
 stock.yml

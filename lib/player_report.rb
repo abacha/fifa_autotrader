@@ -35,7 +35,7 @@ class PlayerReport
   end
 
   def profit
-    -total_bought + (total_sold * 1-EA_TAX/100)
+    -total_bought + (total_sold * (1-EA_TAX/100))
   end
 
   def avg_profit

@@ -9,10 +9,3 @@ Before do |_scenario|
     klass.new
   end
 end
-
-After do |scenario|
-  if scenario.failed?
-    screenshot = HooksConfig.take_screenshot(scenario)
-    embed(screenshot, 'image/png;base64')
-  end
-end
