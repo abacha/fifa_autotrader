@@ -3,69 +3,76 @@
   name: Draxler
   fullname: Julian Draxler
   max_bid: 850
-  sell_value: 2100
+  sell_value: 1700
   status: '1'
-  id: '791'
+  futbin_id: '791'
 - !ruby/struct:Player
   name: Herrera
   fullname: Héctor Herrera
   max_bid: 1000
-  sell_value: 2000
-  status: '1'
-  id: '1123'
+  sell_value: 1800
+  status: '0'
+  futbin_id: '1123'
 - !ruby/struct:Player
   name: Lukaku
   fullname: Jordan Lukaku
   max_bid: 700
   sell_value: 1300
   status: '0'
-  id: '5096'
+  futbin_id: '5096'
 - !ruby/struct:Player
   name: Tonali
   fullname: Sandro Tonali
   max_bid: 700
   sell_value: 1000
   status: '0'
-  id: '22884'
+  futbin_id: '22884'
 - !ruby/struct:Player
   name: Richarlison
   fullname: Richarlison
   max_bid: 1000
   sell_value: 2000
   status: '0'
-  id: '1175'
+  futbin_id: '1175'
 - !ruby/struct:Player
   name: Vertonghen
   fullname: Jan Vertonghen
   max_bid: 1000
   sell_value: 3200
   status: '0'
-  id: '1047'
+  futbin_id: '1047'
 - !ruby/struct:Player
   name: Pau López
   fullname: Pau López
-  max_bid: 1800
-  sell_value: 3600
+  max_bid: 1900
+  sell_value: 2700
   status: '1'
-  id: '1075'
+  futbin_id: '1075'
 - !ruby/struct:Player
   name: Djené
   fullname: Dakonam Djené
   max_bid: 800
   sell_value: 2000
   status: '1'
-  id: '1112'
+  futbin_id: '1112'
 - !ruby/struct:Player
   name: Pavard
   fullname: Benjamin Pavard
   max_bid: 1000
   sell_value: 2100
   status: '0'
-  id: '1173'
+  futbin_id: '1173'
 - !ruby/struct:Player
   name: Gabriel Paulista
   fullname: Gabriel Paulista
-  max_bid: 1000
-  sell_value: 2500
+  max_bid: 1200
+  sell_value: 2000
   status: '1'
-  id: 1099
+  futbin_id: 1099
+- !ruby/struct:Player
+  name: Jović
+  fullname: Luka Jović
+  max_bid: 1500
+  sell_value: 2600
+  status: '1'
+  futbin_id: 732

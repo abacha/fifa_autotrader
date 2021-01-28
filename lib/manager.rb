@@ -29,18 +29,6 @@ class Manager
     instance.reports
   end
 
-  def self.total
-    calculate
-    total = {stock: 0, profit: 0}
-    reports.each do |player_name, player_report|
-      report = player_report.report
-      total[:stock] += report[:stock]
-      total[:profit] += report[:profit]
-    end
-
-    total
-  end
-
   def self.match_trades
 		result = []
 		stock = []

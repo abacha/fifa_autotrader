@@ -9,13 +9,13 @@ class TransferListPage < BasePage
 
   def update_stock
     stock = auctions.inject(Hash.new(0)) { |h, e| h[e.name] += 1; h }
-    ElkLogger.log(:info, { stock: stock })
+    RobotLogger.log(:info, { stock: stock })
     Stock.save(stock)
   end
 
   def relist_players
     if has_css?('.has-auction-data.expired')
-      ElkLogger.log(:info, { method: 'relist_players' })
+      RobotLogger.log(:info, { method: 'relist_players' })
       click_on 'Re-list All'
       click_on 'Yes'
     end
@@ -26,7 +26,7 @@ class TransferListPage < BasePage
     find('.ut-tile-transfer-list').click
 
     auctions_list = all('.has-auction-data')
-    ElkLogger.log(:info, { kind: 'active selling', amount: auctions_list.count })
+    RobotLogger.log(:info, { kind: 'active selling', amount: auctions_list.count })
     auctions_list.map { |line| Auction.build(line) }
   end
 end

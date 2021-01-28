@@ -8,20 +8,19 @@ class MainPage < BasePage
     while true
       start_time = Time.now.to_i
 
-      process
-      market.buy_players if i % 3 == 0
+      process(i)
 
       elapsed_time = ChronicDuration.output(Time.now.to_i - start_time)
-      ElkLogger.log(:info, { run: i, elapsed_time: elapsed_time })
+      RobotLogger.log(:info, { run: i, elapsed_time: elapsed_time })
 
       pause?
 
-      sleep 80
+      sleep 40
       i += 1
     end
   end
 
-  def process
+  def process(i)
     do_process do
       list = transfer_target.list
 
@@ -33,6 +32,8 @@ class MainPage < BasePage
       if list.detect { |bid| bid[:status] == 'won' }
         transfer_target.clear
       end
+
+      market.buy_players if i % 3 == 0
 
       transfer_target.clear_expired
       transfer_list.clear

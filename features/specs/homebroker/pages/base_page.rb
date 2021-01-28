@@ -21,7 +21,7 @@ class BasePage
   end
 
   def log(msg)
-    ElkLogger.log(:debug, page_name: page_name, message: msg)
+    RobotLogger.log(:debug, page_name: page_name, message: msg)
   end
 
   def n(number)
@@ -36,13 +36,13 @@ class BasePage
     begin
       block.call
     rescue Selenium::WebDriver::Error::WebDriverError, Capybara::CapybaraError => e
-      ElkLogger.log(:error, { msg: e.inspect })
+      RobotLogger.log(:error, { msg: e.inspect })
       error_msg = e.message
       dialog = '.ui-dialog-type-alert'
 
       if has_css?(dialog)
         error_msg = find(dialog).text
-        ElkLogger.log(:error, { dialog: error_msg })
+        RobotLogger.log(:error, { dialog: error_msg })
       end
 
       HooksConfig.record_error(error_msg)
@@ -52,11 +52,11 @@ class BasePage
       elsif error_msg.match(/Unable to authenticate with the FUT servers/)
         exit
       elsif error_msg.match(/VERIFICATION REQUIRED/)
-        ElkLogger.log(:warn, { msg: 'Bot Verification' })
-        binding.pry
-        sleep 10
-        page.refresh
-        sleep 10
+        while has_css?('.ut-fun-captcha-required')
+          RobotLogger.log(:warn, { msg: 'Bot Verification' })
+          sleep 30
+          page.refresh
+        end
       elsif error_msg.match(/NO INTERNET CONNECTION/)
         exit
       end
@@ -68,7 +68,7 @@ class BasePage
     find(menu).click
 
     auctions = all('.has-auction-data.won').count
-    ElkLogger.log(:info, { kind: transaction_kind, amount: auctions })
+    RobotLogger.log(:info, { kind: transaction_kind, amount: auctions })
 
     0.upto(auctions - 1) do |i|
       line = all('.has-auction-data.won')[i]
@@ -76,7 +76,7 @@ class BasePage
 
       auction = Auction.build(line)
       auction.kind = transaction_kind
-      ElkLogger.log(:info, auction.to_h)
+      RobotLogger.log(:info, auction.to_h)
 
       player = PlayerRepository.find(auction.name)
       next unless player
@@ -104,7 +104,7 @@ class BasePage
     panels[2].find('input').click
     panels[2].find('input').set player.sell_value + 100
     click_on 'List for Transfer'
-    ElkLogger.log(:info, { action: 'listed',
+    RobotLogger.log(:info, { action: 'listed',
                            player: player.name, sell_value: player.sell_value })
   end
 

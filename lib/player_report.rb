@@ -43,7 +43,7 @@ class PlayerReport
   end
 
   def stock
-    amount_bought - amount_sold
+    "#{player.stock} (#{amount_bought - amount_sold})"
   end
 
   def avg_buy_price

@@ -2,20 +2,20 @@
 
 class TransferTargetPage < BasePage
   def clear
-    ElkLogger.log(:info, { method: 'clear_bought' })
+    RobotLogger.log(:info, { method: 'clear_bought' })
     click_on 'Transfers'
     clear_finished('B', '.ut-tile-transfer-targets')
   end
 
   def renew_bids
-    ElkLogger.log(:info, { method: 'renew_bids' })
+    RobotLogger.log(:info, { method: 'renew_bids' })
     market.refresh
     click_on 'Transfers'
     find('.ut-tile-transfer-targets').click
     transaction_kind = 'outbid'
 
     player_list = all('.has-auction-data.outbid')
-    ElkLogger.log(:info, { kind: transaction_kind, amount: player_list.count })
+    RobotLogger.log(:info, { kind: transaction_kind, amount: player_list.count })
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
@@ -27,13 +27,13 @@ class TransferTargetPage < BasePage
       line.click
       sleep 2
       if auction[:current_bid] < player.max_bid
-        ElkLogger.log(:info, { name: player.name,
+        RobotLogger.log(:info, { name: player.name,
                                bid: auction.current_bid,
                                action: 'bid' })
 
         click_on 'Make Bid'
       else
-        ElkLogger.log(:info, { name: player.name,
+        RobotLogger.log(:info, { name: player.name,
                                bid: auction.current_bid,
                                action: 'unwatch' })
 
@@ -54,7 +54,7 @@ class TransferTargetPage < BasePage
 
     player_list = all('.has-auction-data')
 
-    ElkLogger.log(:info, { action: 'bids',
+    RobotLogger.log(:info, { action: 'bids',
                            total: player_list.count,
                            outbid: all('.has-auction-data.outbid').count,
                            'highest-bid': all('.has-auction-data.highest-bid').count,

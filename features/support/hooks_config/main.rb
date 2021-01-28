@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 %w[
-  ./screenshot
+  ./screenshot_setup
 ].each { |dependency| require_relative dependency }
 
 # Class to configure Hooks
