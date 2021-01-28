@@ -1,6 +1,7 @@
 .env
 *.log
 *.png
+tmp/logs/*
 tmp/pages/*
 token.yml
 *.bkp
