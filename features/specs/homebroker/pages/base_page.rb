@@ -47,20 +47,34 @@ class BasePage
 
       HooksConfig.record_error(error_msg)
 
-      if error_msg.match(/BID TOO LOW/)
+      bot_verification
+
+      if error_msg.match(/You cannot unwatch an item you are bidding on/)
+        click_on 'Ok'
+      elsif error_msg.match(/BID TOO LOW/)
         click_on 'Ok'
       elsif error_msg.match(/Unable to authenticate with the FUT servers/)
-        exit
+        exit 1
       elsif error_msg.match(/VERIFICATION REQUIRED/)
-        while has_css?('.ut-fun-captcha-required')
-          RobotLogger.log(:warn, { msg: 'Bot Verification' })
-          sleep 30
-          page.refresh
-        end
+        page.refresh
       elsif error_msg.match(/NO INTERNET CONNECTION/)
-        exit
+        exit 1
+      elsif has_css?('.loaderIcon')
+        exit 1
       end
     end
+  end
+
+  def bot_verification
+    return unless has_css?('div', text: 'VERIFICATION REQUIRED')
+
+    while has_css?('div', text: 'VERIFICATION REQUIRED')
+      RobotLogger.log(:warn, { msg: 'Bot Verification' })
+      page.refresh
+      sleep 30
+    end
+
+    RobotLogger.log(:info, { msg: 'Verification Success!' })
   end
 
   def clear_finished(transaction_kind, menu)

@@ -22,21 +22,21 @@ class MainPage < BasePage
 
   def process(i)
     do_process do
-      list = transfer_target.list
+      if i % 5 == 0
+        market.buy_players
+        transfer_list.clear
+      end
 
-      outbid = list.detect { |bid| bid[:status] == 'outbid' }
+      transfer_target.clear_expired
+
+      bids = transfer_target.list_bids
+      outbid = bids.detect { |bid| bid[:status] == 'outbid' }
       min_time = (outbid && outbid[:timeleft]) ? outbid[:timeleft] : 1_000
-
       transfer_target.renew_bids if min_time < 180
-
-      if list.detect { |bid| bid[:status] == 'won' }
+      if bids.detect { |bid| bid[:status] == 'won' }
         transfer_target.clear
       end
 
-      market.buy_players if i % 3 == 0
-
-      transfer_target.clear_expired
-      transfer_list.clear
       transfer_list.update_stock
     end
   end

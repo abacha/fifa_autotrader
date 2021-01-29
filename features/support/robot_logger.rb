@@ -13,8 +13,17 @@ class RobotLogger
   end
 
   def logger
-    @logger ||= Logger.new(LOG_FILE, 'daily')
-  end
+    @logger ||=
+      begin
+        log = Logger.new(LOG_FILE, 'daily')
+        log.formatter = proc do |severity, datetime, progname, msg|
+          date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
+          #if severity == "INFO" or severity == "WARN"
+          "[#{date_format}] #{severity.ljust(5)}: #{msg}\n"
+        end
+        log
+      end
+    end
 
   def log(severity, msg)
     puts "[#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}] #{msg}"

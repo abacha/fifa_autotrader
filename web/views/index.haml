@@ -2,11 +2,18 @@
   = haml :_log
 .row
   .col
-    = haml :_stock
-  .col
+    %h4 Player report
+    = haml :_report
+.row
+  .col-md-6
+    %h4 Players
+    = haml :_players
+  .col-md-6
+    %h4 Last trades
     = haml :_trades
 
-.col-12
-  %h3="Last error: #{@last_error.timestamp}"
-  %p=@last_error.error_msg
-  %img{src: @last_error.img_path}
+.row
+  .col
+    %h3="Last error: #{@last_error.timestamp}"
+    %p=@last_error.error_msg
+    %img{src: @last_error.img_path, width: '100%'}

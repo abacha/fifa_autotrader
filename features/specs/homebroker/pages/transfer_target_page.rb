@@ -48,13 +48,13 @@ class TransferTargetPage < BasePage
     end
   end
 
-  def list
+  def list_bids
     click_on 'Transfers'
     find('.ut-tile-transfer-targets').click
 
     player_list = all('.has-auction-data')
 
-    RobotLogger.log(:info, { action: 'bids',
+    RobotLogger.log(:info, { action: 'list_bids',
                            total: player_list.count,
                            outbid: all('.has-auction-data.outbid').count,
                            'highest-bid': all('.has-auction-data.highest-bid').count,
@@ -62,7 +62,6 @@ class TransferTargetPage < BasePage
 
     player_list.map do |line|
       auction = Auction.build(line)
-      player = PlayerRepository.find(auction[:name])
 
       {
         name: auction[:name],

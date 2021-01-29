@@ -9,8 +9,8 @@
   %tbody
     - @trades.each do |trade|
       %tr
-        %td=trade.timestamp
-        %td=trade.kind
+        %td.text-center=trade.timestamp[-8...]
+        %td.text-center=trade.kind
         %td=trade.player_name
         %td.text-right=number_to_currency trade.start_price
         %td.text-right=number_to_currency trade.sold_for
