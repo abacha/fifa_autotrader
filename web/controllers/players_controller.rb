@@ -9,3 +9,10 @@ post '/players' do
   PlayerRepository.save(player)
   redirect '/players'
 end
+
+get '/players/status' do
+  player = PlayerRepository.find(params['name'])
+  player.status = params['status']
+  PlayerRepository.save(player)
+  redirect '/players'
+end

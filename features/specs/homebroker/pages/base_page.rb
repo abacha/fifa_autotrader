@@ -49,7 +49,8 @@ class BasePage
       elsif error_msg.match(/NO INTERNET CONNECTION/)
         exit 1
       elsif has_css?('.loaderIcon')
-        exit 1
+        sleep 30
+        exit 1if  has_css?('.loaderIcon')
       end
     end
   end

@@ -6,7 +6,7 @@
   sell_value: 2700
   status: '1'
   futbin_id: 979
-  resource_id: 
+  resource_id: 199042
 - !ruby/struct:Player
   name: Djené
   fullname: Dakonam Djené
@@ -28,7 +28,7 @@
   fullname: Gabriel Paulista
   max_bid: 1200
   sell_value: 1800
-  status: '1'
+  status: '0'
   futbin_id: 1099
   resource_id: 201305
 - !ruby/struct:Player
@@ -36,7 +36,7 @@
   fullname: Héctor Herrera
   max_bid: 850
   sell_value: 1500
-  status: '1'
+  status: '0'
   futbin_id: '1123'
   resource_id: 156519
 - !ruby/struct:Player
@@ -58,17 +58,17 @@
 - !ruby/struct:Player
   name: Manolas
   fullname: Kostas Manolas
-  max_bid: 1800
+  max_bid: 2000
   sell_value: 4100
   status: '1'
-  futbin_id: 1057
-  resource_id: 192774
+  futbin_id: '1057'
+  resource_id: '192774'
 - !ruby/struct:Player
   name: Pau López
   fullname: Pau López
   max_bid: 1900
   sell_value: 2500
-  status: '1'
+  status: '0'
   futbin_id: '1075'
   resource_id: 221087
 - !ruby/struct:Player

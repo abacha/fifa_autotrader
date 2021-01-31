@@ -10,7 +10,7 @@
   %tbody
     - @trades.each do |trade|
       %tr.d-flex
-        %td.col-md-2.text-center=trade.timestamp[-8...]
+        %td.col-md-2.text-center=trade.timestamp.strftime('%H:%M:%S')
         %td.col-md-1.text-center=trade.kind
         %td.col-md-3=trade.player_name
         %td.col-md-2.text-right=number_to_currency trade.start_price

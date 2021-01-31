@@ -1,8 +1,3 @@
-require_relative 'views/helpers'
-
-require_relative 'players_controller'
-
-
 get '/' do
   @reports = Manager.reports
   @stock = Stock.all

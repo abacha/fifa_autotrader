@@ -49,7 +49,7 @@ class TransferListPage < BasePage
 
       RobotLogger.log(:info, auction.to_h)
       click_on 'Remove'
-      Trade.save(auction)
+      Trade.create!(auction)
     end
   end
 end

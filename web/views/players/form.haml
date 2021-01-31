@@ -1,5 +1,6 @@
+- @player ||= Player.new
 %form.form{method: :post}
-  - @player ||= Player.new
+  %input{type: :hidden, name: 'player[status]', value: @player.status}
   .form-row
     .form-group.col-md-3
       %label Name

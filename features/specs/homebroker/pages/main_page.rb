@@ -11,11 +11,11 @@ class MainPage < BasePage
       process(i)
 
       elapsed_time = ChronicDuration.output(Time.now.to_i - start_time)
-      RobotLogger.log(:info, { run: i, elapsed_time: elapsed_time })
 
       pause?
 
       sleep 20
+      RobotLogger.log(:info, { run: i, elapsed_time: elapsed_time })
       i += 1
     end
   end

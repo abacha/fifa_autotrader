@@ -107,7 +107,7 @@ class TransferTargetPage < BasePage
       player = PlayerRepository.find(auction.name)
       next unless player
       list_on_market(line, player)
-      Trade.save(auction)
+      Trade.create!(auction)
     end
   end
 
