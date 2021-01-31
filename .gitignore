@@ -1,12 +1,15 @@
 .env
 *.log
 *.png
+
 tmp/logs/*
-*.sqlite3
 tmp/pages/*
+
+*.sqlite3
 token.yml
-*.bkp
 stock.yml
+
 pause
+
 capybara-*.png
 capybara-*.html
