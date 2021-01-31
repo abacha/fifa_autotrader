@@ -1,13 +1,16 @@
 require_relative 'views/helpers'
 
+require_relative 'players_controller'
+
+
 get '/' do
   @reports = Manager.reports
   @stock = Stock.all
   @trades = Trade.all.last(10).reverse
-  @log = Rack::Utils.escape_html RobotLogger.tail(30)
+  @log = Rack::Utils.escape_html RobotLogger.tail(10)
   @last_error = last_error
   @players = PlayerRepository.all
-  haml :index
+  haml :dashboard
 end
 
 get '/trades' do
@@ -18,9 +21,4 @@ end
 get '/log' do
   @log = Rack::Utils.escape_html RobotLogger.tail(300)
   haml :_log
-end
-
-get '/players' do
-  @players = PlayerRepository.all
-  haml :players
 end

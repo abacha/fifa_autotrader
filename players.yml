@@ -1,60 +1,12 @@
 ---
 - !ruby/struct:Player
-  name: Draxler
-  fullname: Julian Draxler
-  max_bid: 850
-  sell_value: 1700
-  status: '1'
-  futbin_id: '791'
-  resource_id: 202166
-- !ruby/struct:Player
-  name: Herrera
-  fullname: Héctor Herrera
-  max_bid: 850
-  sell_value: 1500
-  status: '1'
-  futbin_id: '1123'
-  resource_id: 156519
-- !ruby/struct:Player
-  name: Lukaku
-  fullname: Jordan Lukaku
-  max_bid: 700
-  sell_value: 1300
-  status: '0'
-  futbin_id: '5096'
-  resource_id: 207537
-- !ruby/struct:Player
-  name: Tonali
-  fullname: Sandro Tonali
-  max_bid: 700
-  sell_value: 1000
-  status: '0'
-  futbin_id: '22884'
-  resource_id: 67349960
-- !ruby/struct:Player
-  name: Richarlison
-  fullname: Richarlison
+  name: Aránguiz
+  fullname: Charles Aránguiz
   max_bid: 1000
-  sell_value: 2000
-  status: '0'
-  futbin_id: '1175'
-  resource_id: 231943
-- !ruby/struct:Player
-  name: Vertonghen
-  fullname: Jan Vertonghen
-  max_bid: 1000
-  sell_value: 3200
-  status: '0'
-  futbin_id: '1047'
-  resource_id: 172871
-- !ruby/struct:Player
-  name: Pau López
-  fullname: Pau López
-  max_bid: 1900
   sell_value: 2700
   status: '1'
-  futbin_id: '1075'
-  resource_id: 221087
+  futbin_id: 979
+  resource_id: 
 - !ruby/struct:Player
   name: Djené
   fullname: Dakonam Djené
@@ -64,21 +16,29 @@
   futbin_id: '1112'
   resource_id: 217940
 - !ruby/struct:Player
-  name: Pavard
-  fullname: Benjamin Pavard
-  max_bid: 1000
-  sell_value: 2100
-  status: '0'
-  futbin_id: '1173'
-  resource_id: 226851
+  name: Draxler
+  fullname: Julian Draxler
+  max_bid: '850'
+  sell_value: '1700'
+  status: 
+  futbin_id: 
+  resource_id: 
 - !ruby/struct:Player
   name: Gabriel Paulista
   fullname: Gabriel Paulista
   max_bid: 1200
-  sell_value: 2000
+  sell_value: 1800
   status: '1'
   futbin_id: 1099
   resource_id: 201305
+- !ruby/struct:Player
+  name: Herrera
+  fullname: Héctor Herrera
+  max_bid: 850
+  sell_value: 1500
+  status: '1'
+  futbin_id: '1123'
+  resource_id: 156519
 - !ruby/struct:Player
   name: Jović
   fullname: Luka Jović
@@ -88,10 +48,58 @@
   futbin_id: 732
   resource_id: 232432
 - !ruby/struct:Player
+  name: Lukaku
+  fullname: Jordan Lukaku
+  max_bid: 700
+  sell_value: 1300
+  status: '0'
+  futbin_id: '5096'
+  resource_id: 207537
+- !ruby/struct:Player
   name: Manolas
   fullname: Kostas Manolas
-  max_bid: 1500
-  sell_value: 4000
+  max_bid: 1800
+  sell_value: 4100
   status: '1'
   futbin_id: 1057
-  resource_id: 
+  resource_id: 192774
+- !ruby/struct:Player
+  name: Pau López
+  fullname: Pau López
+  max_bid: 1900
+  sell_value: 2500
+  status: '1'
+  futbin_id: '1075'
+  resource_id: 221087
+- !ruby/struct:Player
+  name: Pavard
+  fullname: Benjamin Pavard
+  max_bid: 1000
+  sell_value: 2100
+  status: '0'
+  futbin_id: '1173'
+  resource_id: 226851
+- !ruby/struct:Player
+  name: Richarlison
+  fullname: Richarlison
+  max_bid: 1000
+  sell_value: 2000
+  status: '0'
+  futbin_id: '1175'
+  resource_id: 231943
+- !ruby/struct:Player
+  name: Tonali
+  fullname: Sandro Tonali
+  max_bid: 700
+  sell_value: 1000
+  status: '0'
+  futbin_id: '22884'
+  resource_id: 67349960
+- !ruby/struct:Player
+  name: Vertonghen
+  fullname: Jan Vertonghen
+  max_bid: 1000
+  sell_value: 2500
+  status: '1'
+  futbin_id: '1047'
+  resource_id: 172871

@@ -1,0 +1,22 @@
+%form.form{method: :post}
+  - @player ||= Player.new
+  .form-row
+    .form-group.col-md-3
+      %label Name
+      %input#name.form-control{name: 'player[name]', type: :text, value: @player.name}
+    .form-group.col-md-3
+      %label Fullname
+      %input#fullname.form-control{name: 'player[fullname]', type: :text, value: @player.fullname}
+    .form-group.col-md-1
+      %label Futbin Id
+      %input#fullname.form-control{name: 'player[futbin_id]', type: :text, value: @player.futbin_id}
+    .form-group.col-md-1
+      %label Resource Id
+      %input#fullname.form-control{name: 'player[resource_id]', type: :text, value: @player.resource_id}
+    .form-group.col-md-1
+      %label Max Bid
+      %input#max_bid.form-control{name: 'player[max_bid]', type: :text, value: @player.max_bid}
+    .form-group.col-md-1
+      %label Sell Value
+      %input#sell_value.form-control{name: 'player[sell_value]', type: :text, value: @player.sell_value}
+  %button.btn.btn-primary.mb-2{type: :submit} Save

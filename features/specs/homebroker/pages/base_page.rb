@@ -3,33 +3,18 @@
 class BasePage
   include Capybara::DSL
 
-  def page_name
-    self.class.name
-  end
-
   def go
     raise NotImplementedError unless respond_to?(:execute)
 
-    log('Iniciando')
     begin
       send(:execute)
-      log('Finalizando')
     rescue StandardError => e
-      log('Erro')
       raise e
     end
   end
 
-  def log(msg)
-    RobotLogger.log(:debug, page_name: page_name, message: msg)
-  end
-
   def n(number)
     number.gsub(',', '').to_i
-  end
-
-  def loaded?
-    !has_css?('.loaderIcon')
   end
 
   def do_process(&block)
@@ -49,8 +34,12 @@ class BasePage
 
       bot_verification
 
-      if error_msg.match(/You cannot unwatch an item you are bidding on/)
+      if error_msg.match(/Your Transfer Targets list is full/)
+        transfer_target.clear_expired
+      elsif error_msg.match(/You cannot unwatch an item you are bidding on/)
         click_on 'Ok'
+      elsif error_msg.match(/You are already the highest bidder/)
+        click_on 'CANCEL'
       elsif error_msg.match(/BID TOO LOW/)
         click_on 'Ok'
       elsif error_msg.match(/Unable to authenticate with the FUT servers/)
@@ -77,50 +66,7 @@ class BasePage
     RobotLogger.log(:info, { msg: 'Verification Success!' })
   end
 
-  def clear_finished(transaction_kind, menu)
-    click_on 'Transfers'
-    find(menu).click
-
-    auctions = all('.has-auction-data.won').count
-    RobotLogger.log(:info, { kind: transaction_kind, amount: auctions })
-
-    0.upto(auctions - 1) do |i|
-      line = all('.has-auction-data.won')[i]
-      next unless line
-
-      auction = Auction.build(line)
-      auction.kind = transaction_kind
-      RobotLogger.log(:info, auction.to_h)
-
-      player = PlayerRepository.find(auction.name)
-      next unless player
-
-      if transaction_kind == 'B'
-        list_on_transfer_market(line, player)
-      #elsif transaction_kind == 'S'
-      #  click_on 'Remove'
-      end
-
-      Trade.save(auction)
-    end
-
-    click_on 'Clear Sold' if transaction_kind == 'S' && auctions > 0
-  end
-
   private
-
-  def list_on_transfer_market(line, player)
-    line.click
-    click_on 'List on Transfer Market'
-    panels = all('.panelActions.open .panelActionRow')
-    panels[1].find('input').click
-    panels[1].find('input').set player.sell_value
-    panels[2].find('input').click
-    panels[2].find('input').set player.sell_value + 100
-    click_on 'List for Transfer'
-    RobotLogger.log(:info, { action: 'listed',
-                           player: player.name, sell_value: player.sell_value })
-  end
 
   def fill_input(input, value)
     find(input).click

@@ -1,21 +1,26 @@
 # frozen_string_literal: true
 
 class TransferTargetPage < BasePage
-  def clear
-    RobotLogger.log(:info, { method: 'clear_bought' })
+  PAGE_MENU_LINK = '.ut-tile-transfer-targets'
+
+  def clear_expired
     click_on 'Transfers'
-    clear_finished('B', '.ut-tile-transfer-targets')
+    find(PAGE_MENU_LINK).click
+
+    if has_button?('Clear Expired')
+      click_on 'Clear Expired'
+      RobotLogger.log(:info, { action: 'clear_expired' })
+    end
   end
 
   def renew_bids
-    RobotLogger.log(:info, { method: 'renew_bids' })
     market.refresh
     click_on 'Transfers'
-    find('.ut-tile-transfer-targets').click
+    find(PAGE_MENU_LINK).click
     transaction_kind = 'outbid'
 
     player_list = all('.has-auction-data.outbid')
-    RobotLogger.log(:info, { kind: transaction_kind, amount: player_list.count })
+    RobotLogger.log(:info, { action: 'renew_bids', amount: player_list.count })
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
@@ -32,12 +37,11 @@ class TransferTargetPage < BasePage
                                action: 'bid' })
 
         click_on 'Make Bid'
-      else
-        RobotLogger.log(:info, { name: player.name,
-                               bid: auction.current_bid,
-                               action: 'unwatch' })
-
-        click_on 'Unwatch'
+      #else
+      #  RobotLogger.log(:info, { name: player.name,
+      #                         bid: auction.current_bid,
+      #                         action: 'unwatch' })
+      #  click_on 'Unwatch'
       end
 
       if has_css?('.Notification.negative')
@@ -72,8 +76,39 @@ class TransferTargetPage < BasePage
     end
   end
 
-  def clear_expired
-    click_on 'Clear Expired' if has_button?('Clear Expired')
+  def list_on_market(line, player)
+    line.click
+    click_on 'List on Transfer Market'
+    panels = all('.panelActions.open .panelActionRow')
+    panels[1].find('input').click
+    panels[1].find('input').set player.sell_value
+    panels[2].find('input').click
+    panels[2].find('input').set player.sell_value + 100
+    click_on 'List for Transfer'
+    RobotLogger.log(:info, { action: 'list_on_market',
+                           player: player.name, sell_value: player.sell_value })
+  end
+
+  def clear_bought
+    click_on 'Transfers'
+    find('.ut-tile-transfer-targets').click
+
+    auctions = all('.has-auction-data.won').count
+    RobotLogger.log(:info, { action: 'clear_bought', amount: auctions })
+
+    0.upto(auctions - 1) do |i|
+      line = all('.has-auction-data.won')[i]
+      next unless line
+
+      auction = Auction.build(line)
+      auction.kind = 'B'
+      RobotLogger.log(:info, auction.to_h)
+
+      player = PlayerRepository.find(auction.name)
+      next unless player
+      list_on_market(line, player)
+      Trade.save(auction)
+    end
   end
 
   private

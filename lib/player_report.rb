@@ -17,7 +17,7 @@ class PlayerReport
       @last_bought = trade.timestamp
     else
       @total_sold += trade.sold_for
-      @amount_sold += 2
+      @amount_sold += 1
       @last_sold = trade.timestamp
     end
 

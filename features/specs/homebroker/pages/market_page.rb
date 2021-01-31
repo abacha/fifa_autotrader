@@ -6,16 +6,15 @@ class MarketPage < BasePage
   MAX_PLAYER_BIDS = 5
 
   def refresh
-    RobotLogger.log(:info, { method: 'refresh_market' })
+    RobotLogger.log(:info, { action: 'refresh' })
     click_on 'Transfers'
     find('.ut-tile-transfer-market').click
     click_on 'Search'
     sleep 2
-    RobotLogger.log(:info, { msg: 'Market refreshed' })
   end
 
   def buy_players
-    RobotLogger.log(:info, { method: 'buy_players' })
+    RobotLogger.log(:info, { action: 'buy_players' })
     PlayerRepository.actives.each do |player|
       buy_player player if player.stock < MAX_STOCK
       sleep 5
@@ -48,8 +47,8 @@ class MarketPage < BasePage
 
       if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
         RobotLogger.log(:info, { action: 'bid',
-                               bid_value: bid_value,
                                player: player.name,
+                               bid_value: bid_value,
                                timeleft: timeleft })
         click_on 'Make Bid'
 

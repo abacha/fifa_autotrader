@@ -15,29 +15,31 @@ class MainPage < BasePage
 
       pause?
 
-      sleep 40
+      sleep 20
       i += 1
     end
   end
 
   def process(i)
     do_process do
+      if i % 3 == 0
+        transfer_list.update_stock
+        transfer_target.clear_expired
+      end
+
       if i % 5 == 0
         market.buy_players
         transfer_list.clear
       end
 
-      transfer_target.clear_expired
-
       bids = transfer_target.list_bids
       outbid = bids.detect { |bid| bid[:status] == 'outbid' }
       min_time = (outbid && outbid[:timeleft]) ? outbid[:timeleft] : 1_000
       transfer_target.renew_bids if min_time < 180
-      if bids.detect { |bid| bid[:status] == 'won' }
-        transfer_target.clear
-      end
 
-      transfer_list.update_stock
+      if bids.detect { |bid| bid[:status] == 'won' }
+        transfer_target.clear_bought
+      end
     end
   end
 

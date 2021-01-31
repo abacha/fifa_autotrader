@@ -11,9 +11,9 @@ class PlayerRepository
     YAML.load(File.read(PLAYERS_FILE)).sort_by { |player| player.name }
   end
 
-  def self.update(player_updated)
+  def self.save(player)
     players = all.inject(Hash.new) { |h, e| h[e.name] = e; h }
-    players[player_updated.name] = player_updated
+    players[player.name] = player
     File.open(PLAYERS_FILE, 'w') { |file| file.write(players.values.to_yaml) }
   end
 
@@ -28,6 +28,6 @@ class PlayerRepository
   def self.populate_resource_id(player)
     data = Futbin.get_player_info(player.futbin_id)
     player.resource_id = data['resource']
-    update(player)
+    save(player)
   end
 end
