@@ -4,7 +4,7 @@ get '/' do
   @trades = Trade.all.last(10).reverse
   @log = Rack::Utils.escape_html RobotLogger.tail(10)
   @last_error = last_error
-  @players = PlayerRepository.all
+  @players = Player.all
   haml :dashboard
 end
 

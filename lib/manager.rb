@@ -3,9 +3,6 @@ require 'awesome_print'
 require 'singleton'
 require 'forwardable'
 
-require_relative '../features/business/trade.rb'
-require_relative '../features/business/player_repository.rb'
-require_relative '../features/business/player.rb'
 require_relative '../features/business/stock.rb'
 require_relative 'player_report.rb'
 
@@ -56,9 +53,10 @@ class Manager
 
   def calculate
     @reports = {}
+    players = Player.all.group_by(&:name)
 
     Trade.all.each do |trade|
-      player = PlayerRepository.find(trade.player_name)
+      player = players[trade.player_name][0]
       @reports[trade.player_name] ||= PlayerReport.new(player)
       @reports[trade.player_name].add_trade(trade)
     end

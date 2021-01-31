@@ -1,18 +1,17 @@
 get '/players' do
-  @players = PlayerRepository.all
-  @player = PlayerRepository.find(params['name'])
+  @players = Player.all
+  @player = Player.find_by(name: params['name'])
   haml :'players/index'
 end
 
 post '/players' do
-  player = Player.new(params['player'])
-  PlayerRepository.save(player)
+  Player.create!(params['player'])
   redirect '/players'
 end
 
 get '/players/status' do
-  player = PlayerRepository.find(params['name'])
-  player.status = params['status']
-  PlayerRepository.save(player)
+  player = Player.find_by(name: params['name'])
+  player.status = params['status'].to_i
+  player.save!
   redirect '/players'
 end

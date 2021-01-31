@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_31_151125) do
+ActiveRecord::Schema.define(version: 2021_01_31_161414) do
+
+  create_table "players", force: :cascade do |t|
+    t.string "name"
+    t.string "fullname"
+    t.integer "max_bid"
+    t.integer "sell_value"
+    t.integer "status"
+    t.string "futbin_id"
+    t.string "resource_id"
+  end
 
   create_table "trades", force: :cascade do |t|
     t.datetime "timestamp"

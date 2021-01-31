@@ -25,7 +25,8 @@ class TransferTargetPage < BasePage
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
       auction = Auction.build(line)
-      player = PlayerRepository.find(auction[:name])
+      player = Player.find_by(name: auction.name)
+
 
       next unless player
 
@@ -104,7 +105,7 @@ class TransferTargetPage < BasePage
       auction.kind = 'B'
       RobotLogger.log(:info, auction.to_h)
 
-      player = PlayerRepository.find(auction.name)
+      player = Player.find_by(name: auction.name)
       next unless player
       list_on_market(line, player)
       Trade.create!(auction.values)

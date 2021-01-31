@@ -15,7 +15,7 @@
         %td.col.col-md-2.text-right=money player.max_bid
         %td.col.col-md-2.text-right=money player.sell_value
         %td.col.col-md-1.text-center
-          - if player.status == '1'
+          - if player.status == 1
             %a.btn.btn-outline-secondary.btn-sm{href: "/players/status?name=#{player.name}&status=0"}
               %i.bi.bi-check-circle-fill
           - else

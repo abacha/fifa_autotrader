@@ -15,7 +15,7 @@ class MarketPage < BasePage
 
   def buy_players
     RobotLogger.log(:info, { action: 'buy_players' })
-    PlayerRepository.actives.each do |player|
+    Player.actives.each do |player|
       buy_player player if player.stock < MAX_STOCK
       sleep 5
     end

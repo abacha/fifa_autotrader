@@ -43,7 +43,7 @@ class TransferListPage < BasePage
 
       auction = Auction.build(line)
       auction.kind = 'S'
-      player = PlayerRepository.find(auction.name)
+      player = Player.find_by(name: auction.name)
 
       next unless player
 

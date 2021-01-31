@@ -1,5 +1,5 @@
 ---
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Aránguiz
   fullname: Charles Aránguiz
   max_bid: 1000
@@ -7,7 +7,7 @@
   status: '1'
   futbin_id: 979
   resource_id: 199042
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Djené
   fullname: Dakonam Djené
   max_bid: 800
@@ -15,15 +15,15 @@
   status: '0'
   futbin_id: '1112'
   resource_id: 217940
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Draxler
   fullname: Julian Draxler
   max_bid: '850'
   sell_value: '1700'
-  status: 
-  futbin_id: 
-  resource_id: 
-- !ruby/struct:Player
+  status: 0
+  futbin_id: 791
+  resource_id:
+- !ruby/struct:Play
   name: Gabriel Paulista
   fullname: Gabriel Paulista
   max_bid: 1200
@@ -31,7 +31,7 @@
   status: '0'
   futbin_id: 1099
   resource_id: 201305
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Herrera
   fullname: Héctor Herrera
   max_bid: 850
@@ -39,7 +39,7 @@
   status: '0'
   futbin_id: '1123'
   resource_id: 156519
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Jović
   fullname: Luka Jović
   max_bid: 1500
@@ -47,7 +47,7 @@
   status: '0'
   futbin_id: 732
   resource_id: 232432
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Lukaku
   fullname: Jordan Lukaku
   max_bid: 700
@@ -55,7 +55,7 @@
   status: '0'
   futbin_id: '5096'
   resource_id: 207537
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Manolas
   fullname: Kostas Manolas
   max_bid: 2000
@@ -63,7 +63,7 @@
   status: '1'
   futbin_id: '1057'
   resource_id: '192774'
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Pau López
   fullname: Pau López
   max_bid: 1900
@@ -71,7 +71,7 @@
   status: '0'
   futbin_id: '1075'
   resource_id: 221087
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Pavard
   fullname: Benjamin Pavard
   max_bid: 1000
@@ -79,7 +79,7 @@
   status: '0'
   futbin_id: '1173'
   resource_id: 226851
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Richarlison
   fullname: Richarlison
   max_bid: 1000
@@ -87,7 +87,7 @@
   status: '0'
   futbin_id: '1175'
   resource_id: 231943
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Tonali
   fullname: Sandro Tonali
   max_bid: 700
@@ -95,7 +95,7 @@
   status: '0'
   futbin_id: '22884'
   resource_id: 67349960
-- !ruby/struct:Player
+- !ruby/struct:Play
   name: Vertonghen
   fullname: Jan Vertonghen
   max_bid: 1000
