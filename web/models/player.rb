@@ -12,7 +12,7 @@ class Player < ActiveRecord::Base
 
   def populate_resource_id
     data = Futbin.get_player_info(futbin_id)
-    update_attributes(resource_id: data['resource'])
+    update(resource_id: data['resource'])
   end
 
   def stock

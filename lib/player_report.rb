@@ -1,5 +1,4 @@
 class PlayerReport
-  EA_TAX = 5
   attr_reader :player, :total_sold, :total_bought, :amount_sold, :amount_bought
 
   def initialize(player)
@@ -35,7 +34,7 @@ class PlayerReport
   end
 
   def profit
-    -total_bought + (total_sold * (1-EA_TAX/100))
+    -total_bought + (total_sold * (1-ENV['EA_TAX'].to_f))
   end
 
   def avg_profit

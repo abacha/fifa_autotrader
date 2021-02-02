@@ -1,5 +1,8 @@
-- @player ||= Player.new
+- if @player.errors.any?
+  = @player.errors.messages
+
 %form.form{method: :post}
+  %input{type: :hidden, name: 'player[id]', value: @player.id}
   %input{type: :hidden, name: 'player[status]', value: @player.status}
   .form-row
     .form-group.col-md-3

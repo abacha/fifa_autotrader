@@ -1,22 +1,16 @@
 %meta(http-equiv='refresh' content='30')
 .row
-  .col
-    = haml :_log
+  = haml :_log
 .row
-  .col
-    %h4 Player report
-    = haml :_report
+  %h4 Player report
+  = haml :_report
 .row
-  .col-md-6
-    %a{href: '/players'}
-      %h4 Players
-      = haml 'players/index'
   .col-md-6
     %h4 Last trades
     = haml :_trades
-
-.card.col-md-4
-  %img.card-img-top{src: @last_error.img_path, width: '100%'}
-  .card-body
-    %h5.card-title="Last error: #{@last_error.timestamp}"
-    %p.card-text=@last_error.error_msg
+  .col-md-6
+    .card
+      .card-body
+        %h5.card-title="Last error: #{@last_error.timestamp}"
+        %p.card-text=@last_error.error_msg
+      %img.card-img-bottom{src: @last_error.img_path, width: '100%'}

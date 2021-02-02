@@ -1,7 +1,7 @@
 get '/' do
   @reports = Manager.reports
   @stock = Stock.all
-  @trades = Trade.all.last(10).reverse
+  @trades = Trade.order(timestamp: :desc).first(10)
   @log = Rack::Utils.escape_html RobotLogger.tail(10)
   @last_error = last_error
   @players = Player.all
@@ -9,7 +9,7 @@ get '/' do
 end
 
 get '/trades' do
-  @trades = Trade.all.reverse
+  @trades = Trade.order(timestamp: :desc)
   haml :_trades
 end
 

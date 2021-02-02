@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 class TransferListPage < BasePage
-  def clear
-    clear_sold
-    relist_players
-  end
+  PAGE_MENU_LINK = '.ut-tile-transfer-list'
 
   def update_stock
-    stock = auctions.inject(Hash.new(0)) { |h, e| h[e.name] += 1; h }
+    stock = auctions.inject(Hash.new(0)) { |h, e| h[e.player_name] += 1; h }
     Stock.save(stock)
     RobotLogger.log(:info, { action: 'update_stock', stock: stock })
   end
 
   def relist_players
+    click_on 'Transfers'
+    find(PAGE_MENU_LINK).click
+
     if has_css?('.has-auction-data.expired')
       RobotLogger.log(:info, { action: 'relist_players' })
       click_on 'Re-list All'
@@ -22,7 +22,7 @@ class TransferListPage < BasePage
 
   def auctions
     click_on 'Transfers'
-    find('.ut-tile-transfer-list').click
+    find(PAGE_MENU_LINK).click
 
     auctions_list = all('.has-auction-data')
     RobotLogger.log(:info, { action: 'auctions', amount: auctions_list.count })
@@ -42,14 +42,13 @@ class TransferListPage < BasePage
       next unless line
 
       auction = Auction.build(line)
-      auction.kind = 'S'
-      player = Player.find_by(name: auction.name)
+      player = Player.find_by(name: auction.player_name)
 
       next unless player
 
-      RobotLogger.log(:info, auction.to_h)
       click_on 'Remove'
-      Trade.create!(auction.values)
+      trade = Trade.create!(auction.to_trade('S'))
+      RobotLogger.log(:info, trade.attributes)
     end
   end
 end

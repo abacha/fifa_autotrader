@@ -2,11 +2,11 @@
 
 class MarketPage < BasePage
   MAX_STOCK = 3
-  MAX_TIME_LEFT = 600
+  MAX_TIME_LEFT = 900
   MAX_PLAYER_BIDS = 5
 
   def refresh
-    RobotLogger.log(:info, { action: 'refresh' })
+    RobotLogger.log(:info, { action: 'market_refresh' })
     click_on 'Transfers'
     find('.ut-tile-transfer-market').click
     click_on 'Search'

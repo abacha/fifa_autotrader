@@ -9,7 +9,7 @@ class TransferTargetPage < BasePage
 
     if has_button?('Clear Expired')
       click_on 'Clear Expired'
-      RobotLogger.log(:info, { action: 'clear_expired' })
+      RobotLogger.log(:info, { action: 'clear_expired', msg: 'Expired bids cleared' })
     end
   end
 
@@ -17,36 +17,29 @@ class TransferTargetPage < BasePage
     market.refresh
     click_on 'Transfers'
     find(PAGE_MENU_LINK).click
-    transaction_kind = 'outbid'
 
     player_list = all('.has-auction-data.outbid')
     RobotLogger.log(:info, { action: 'renew_bids', amount: player_list.count })
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
-      auction = Auction.build(line)
-      player = Player.find_by(name: auction.name)
+      line.click
 
+      auction = Auction.build(line)
+      player = Player.find_by(name: auction.player_name)
 
       next unless player
 
-      line.click
-      sleep 2
       if auction[:current_bid] < player.max_bid
-        RobotLogger.log(:info, { name: player.name,
-                               bid: auction.current_bid,
-                               action: 'bid' })
-
         click_on 'Make Bid'
-      #else
-      #  RobotLogger.log(:info, { name: player.name,
-      #                         bid: auction.current_bid,
-      #                         action: 'unwatch' })
-      #  click_on 'Unwatch'
+        RobotLogger.log(:info, { action: 'renew_bid', name: player.name, bid: auction.current_bid })
+      else
+        click_on 'Unwatch'
+        RobotLogger.log(:info, { action: 'unwatch_bid', name: player.name, bid: auction.current_bid })
       end
 
       if has_css?('.Notification.negative')
-        raise Capybara::CapybaraError.new(find('.Notification.negative').text)
+        RobotLogger.log(:warn, { msg: find('.Notification.negative').text })
       end
 
       sleep 6
@@ -57,24 +50,15 @@ class TransferTargetPage < BasePage
     click_on 'Transfers'
     find('.ut-tile-transfer-targets').click
 
-    player_list = all('.has-auction-data')
+    bids = all('.has-auction-data')
 
     RobotLogger.log(:info, { action: 'list_bids',
-                           total: player_list.count,
+                           total: bids.count,
                            outbid: all('.has-auction-data.outbid').count,
                            'highest-bid': all('.has-auction-data.highest-bid').count,
                            won: all('.has-auction-data.won').count })
 
-    player_list.map do |line|
-      auction = Auction.build(line)
-
-      {
-        name: auction[:name],
-        bid: auction[:current_bid],
-        status: auction[:status],
-        timeleft: auction[:timeleft]
-      }
-    end
+    bids.map { |line| Auction.build(line) }
   end
 
   def list_on_market(line, player)
@@ -102,13 +86,14 @@ class TransferTargetPage < BasePage
       next unless line
 
       auction = Auction.build(line)
-      auction.kind = 'B'
       RobotLogger.log(:info, auction.to_h)
 
-      player = Player.find_by(name: auction.name)
+      player = Player.find_by(name: auction.player_name)
       next unless player
+
       list_on_market(line, player)
-      Trade.create!(auction.values)
+      trade = Trade.create!(auction.to_trade('B'))
+      RobotLogger.log(:info, trade.attributes)
     end
   end
 
