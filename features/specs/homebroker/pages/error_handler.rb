@@ -24,6 +24,8 @@ class ErrorHandler < BasePage
       exit 1
     elsif error_msg.match(/SIGNED INTO ANOTHER DEVICE/)
       exit 0
+    elsif error_msg.match(/Sorry, an error has occurred/)
+      exit 1
     elsif has_css?('.loaderIcon')
       sleep 30
       exit 1 if has_css?('.loaderIcon')
