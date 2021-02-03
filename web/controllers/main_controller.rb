@@ -1,5 +1,5 @@
 get '/' do
-  @reports = Manager.reports
+  @reports = PlayerReport.all
   @stock = Stock.all
   @trades = Trade.order(timestamp: :desc).first(10)
   @log = Rack::Utils.escape_html RobotLogger.tail(10)

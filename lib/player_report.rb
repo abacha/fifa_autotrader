@@ -1,55 +1,71 @@
 class PlayerReport
-  attr_reader :player, :total_sold, :total_bought, :amount_sold, :amount_bought
+  attr_reader :player, :trades
 
-  def initialize(player)
-    @player = player
-    @total_sold = 0
-    @total_bought = 0
-    @amount_sold = 0
-    @amount_bought = 0
+  def self.all
+    Player.all.map { |player| new(player).report }
   end
 
-  def add_trade(trade)
-    if trade.kind == 'B'
-      @total_bought += trade.sold_for
-      @amount_bought += 1
-      @last_bought = trade.timestamp
-    else
-      @total_sold += trade.sold_for
-      @amount_sold += 1
-      @last_sold = trade.timestamp
-    end
-
+  def initialize(player, trades = nil)
+    @player = player
+    @trades = trades || Trade.where(player_name: player.name)
   end
 
   def report
-    {
+    OpenStruct.new({
+      total: matched_trades.count,
       stock: stock,
       profit: profit,
       avg_profit: avg_profit,
+      avg_duration: avg_duration,
       avg_buy_price: avg_buy_price,
       avg_sell_price: avg_sell_price,
       player: player
-    }
+    })
+  end
+
+  def matched_trades
+    trade_ids = trades.pluck(:id)
+    @matched_trades ||=
+      MatchedTrade.where(buy_trade_id: trade_ids).or(MatchedTrade.where(sell_trade_id: trade_ids))
+  end
+
+  def total(kind)
+    trades.where(kind: kind).sum(:sold_for)
+  end
+
+  def amount(kind)
+    trades.where(kind: kind).count
   end
 
   def profit
-    -total_bought + (total_sold * (1-ENV['EA_TAX'].to_f))
+    matched_trades.sum(:profit)
   end
 
   def avg_profit
-    profit / amount_sold if amount_sold > 0
+    profit / amount('S')
+  rescue
+    0
+  end
+
+  def avg_duration
+    matched_trades.sum(:duration) / amount('S')
+  rescue
+    0
   end
 
   def stock
-    "#{player.stock} (#{amount_bought - amount_sold})"
+    "File: #{player.stock} (Trades: #{amount('B') - amount('S')})"
   end
 
   def avg_buy_price
-    total_bought / amount_bought if amount_bought > 0
+    total('B') / amount('B')
+  rescue
+    0
   end
 
   def avg_sell_price
-    total_sold / amount_sold if amount_sold > 0
+    total('S') / amount('S')
+  rescue
+    0
   end
 end

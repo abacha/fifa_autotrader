@@ -21,14 +21,10 @@ Capybara.configure do |config|
       )
     end
     @driver = :selenium_chrome_headless
-  when 'firefox'
-    @driver = :selenium
-  when 'firefox_headless'
-    @drive = :selenium_headless
   end
 
   config.default_driver = @driver
-  config.app_host = 'https://www.ea.com/fifa/ultimate-team/web-app'#ENV.fetch('BASE_URL')
-  config.default_max_wait_time = 10#ENV.fetch('MAX_WAIT_TIME', 3).to_i
+  config.app_host = ENV.fetch('BASE_URL')
+  config.default_max_wait_time = ENV.fetch('MAX_WAIT_TIME', 10).to_i
 end
 # rubocop:enable Metrics/BlockLength

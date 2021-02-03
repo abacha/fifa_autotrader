@@ -31,4 +31,20 @@ class ErrorHandler < BasePage
       exit 1 if has_css?('.loaderIcon')
     end
   end
+
+  def self.bot_verification
+    instance.bot_verification
+  end
+
+  def bot_verification
+    return unless has_css?('div', text: 'VERIFICATION REQUIRED')
+
+    while has_css?('div', text: 'VERIFICATION REQUIRED')
+      RobotLogger.log(:warn, { msg: 'Bot Verification' })
+      page.refresh
+      sleep 30
+    end
+
+    RobotLogger.log(:info, { msg: 'Verification Success!' })
+  end
 end

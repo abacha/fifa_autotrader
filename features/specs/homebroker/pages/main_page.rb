@@ -23,16 +23,19 @@ class MainPage < BasePage
   def process(i)
     do_process do
       if i % 3 == 0
-        transfer_list.update_stock
         transfer_target.clear_expired
+      end
+
+      if i % 2 == 0
+        transfer_list.clear_sold
+        transfer_list.update_stock
+        transfer_list.relist_players
       end
 
       if i % 5 == 0
         market.buy_players
-        transfer_list.clear_sold
       end
 
-      transfer_list.relist_players
 
       bids = transfer_target.list_bids
       outbid = bids.detect { |bid| bid.status == 'outbid' }
@@ -51,7 +54,7 @@ class MainPage < BasePage
     rescue Selenium::WebDriver::Error::WebDriverError, Capybara::CapybaraError => e
       RobotLogger.log(:error, { msg: e.inspect })
       error_msg = e.message
-      dialog = '.ui-dialog-type-alert'
+      dialog = '.Dialog'
 
       if has_css?(dialog)
         error_msg = find(dialog).text
@@ -60,7 +63,7 @@ class MainPage < BasePage
 
       HooksConfig.record_error(error_msg)
 
-      bot_verification
+      ErrorHandler.bot_verification
 
       ErrorHandler.handle(error_msg)
     end
@@ -69,7 +72,9 @@ class MainPage < BasePage
   private
 
   def pause?
-    binding.pry if File.exists?('pause')
-    FileUtils.rm_f('pause')
+    if File.exists?('pause')
+      FileUtils.rm_f('pause')
+      binding.pry
+    end
   end
 end

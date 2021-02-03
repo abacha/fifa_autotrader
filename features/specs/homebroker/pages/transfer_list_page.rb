@@ -33,22 +33,27 @@ class TransferListPage < BasePage
     click_on 'Transfers'
     find('.ut-tile-transfer-list').click
 
-    auctions = all('.has-auction-data.won').count
-    RobotLogger.log(:info, { action: 'clear_sold', amount: auctions })
+    auctions = all('.has-auction-data.won')
 
-    0.upto(auctions - 1) do |i|
-      line = all('.has-auction-data.won')[i]
+    return unless auctions.any?
 
-      next unless line
-
-      auction = Auction.build(line)
-      player = Player.find_by(name: auction.player_name)
-
+    trades = auctions.map do |auction|
+      auction = Auction.build(auction).to_trade('S')
+      player = Player.find_by(name: auction[:player_name])
       next unless player
-
-      click_on 'Remove'
-      trade = Trade.create!(auction.to_trade('S'))
+      trade = Trade.new(auction)
       RobotLogger.log(:info, trade.attributes)
+      trade
     end
+
+    ActiveRecord::Base.transaction do
+      trades.map do |trade|
+        trade.save!
+        RobotLogger.log(:info, trade.attributes)
+        click_on 'Clear Sold'
+      end
+    end
+
+    RobotLogger.log(:info, { action: 'clear_sold', amount: trades.count })
   end
 end

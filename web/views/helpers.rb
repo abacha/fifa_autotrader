@@ -8,4 +8,8 @@ helpers do
   def money(value)
     number_to_currency(value, precision: 0)
   end
+
+  def time(value)
+    ChronicDuration.output(value)
+  end
 end

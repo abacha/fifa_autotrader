@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './lib/mail_service'
-
 class LoginPage < BasePage
   SECURITY_FILE = 'security_code'
 

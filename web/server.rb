@@ -1,15 +1,11 @@
-require 'sinatra'
 require './config/start.rb'
 
+require 'sinatra'
 require 'haml'
 require 'action_view'
 
-require_relative '../lib/manager'
-require_relative '../features/support/robot_logger'
 include ActionView::Helpers::NumberHelper
 require_relative 'views/helpers'
-
-set :database, {adapter: 'sqlite3', database: 'db/db.sqlite3'}
 
 Dir['./web/controllers/*'].each { |klass| require klass }
 

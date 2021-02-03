@@ -1,11 +1,5 @@
-require 'csv'
-require 'awesome_print'
 require 'singleton'
 require 'forwardable'
-
-require_relative '../features/business/stock.rb'
-require_relative 'player_report.rb'
-
 
 class Manager
   include Singleton
@@ -25,7 +19,6 @@ class Manager
     calculate
     instance.reports
   end
-
 
   def calculate
     @reports = {}

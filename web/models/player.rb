@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require './lib/cache'
-require './lib/futbin'
-
 class Player < ActiveRecord::Base
   validates_presence_of :name, :fullname, :futbin_id, :sell_value, :max_bid, :status
 
@@ -21,7 +18,7 @@ class Player < ActiveRecord::Base
 
   def futbin_market_data
     Cache.fetch("futbin_market_data_#{name}") do
-      populate_resource_id unless resource_id
+      populate_resource_id if resource_id.blank?
       Futbin.get_player_avg_sell(resource_id)
     end
   end

@@ -19,18 +19,6 @@ class BasePage
     number.gsub(',', '').to_i
   end
 
-  def bot_verification
-    return unless has_css?('div', text: 'VERIFICATION REQUIRED')
-
-    while has_css?('div', text: 'VERIFICATION REQUIRED')
-      RobotLogger.log(:warn, { msg: 'Bot Verification' })
-      page.refresh
-      sleep 30
-    end
-
-    RobotLogger.log(:info, { msg: 'Verification Success!' })
-  end
-
   private
   def market
     @market ||= MarketPage.new

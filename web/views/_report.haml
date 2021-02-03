@@ -1,33 +1,52 @@
-%table.table.table-hover.table-striped.table-bordered.table-sm
-  %thead
-    %tr.d-flex
-      %th.text-center.col-md-3 Player Name
-      %th.text-center.col-md-2 Profit
-      %th.text-center.col-md-2 Stock
-      %th.text-center.col-md-1 Avg Buy
-      %th.text-center.col-md-1 Avg Sell
-      %th.text-center.col-md-1 Avg Profit
-      %th.text-center.col-md-2{colspan: 2} Futbin Sell Rate (24h)
-  %tbody
-    - @reports.values.each do |line|
-      - futbin_market_data = line.player.futbin_market_data
-      %tr.d-flex
-        %td.col-md-3
-          %a{target: '_blank', href:"https://www.futbin.com/21/sales/#{line.player.futbin_id}"}=line.player.name
-        %td.col-md-2.text-right=money line.profit
-        %td.col-md-2.text-center=line.stock
-        %td.col-md-1.text-right=money line.avg_buy_price
-        %td.col-md-1.text-right=money line.avg_sell_price
-        %td.col-md-1.text-right=money line.avg_profit
-        %td.col-md-1.text-right=money futbin_market_data['avg_sell_price']
-        %td.col-md-1.text-center="#{((futbin_market_data['sell_rate'] || 0) * 100).to_i}%"
-  %tfoot
-    %tr.d-flex
-      %th.col-md-3 TOTAL
-      %th.col-md-2.text-right=money total(@reports.values, :profit)
-      %th.col-md-2
-      %th.col-md-1
-      %th.col-md-1
-      %th.col-md-1
-      %th.col-md-1
-      %th.col-md-1
+.col-sm-12
+  %table.table.table-hover.table-striped.table-bordered.table-sm.dataTable#report
+    %thead
+      %tr
+        %th.text-center Player Name
+        %th.text-center Profit
+        %th.text-center Total
+        %th.text-center Stock
+        %th.text-center Avg Buy
+        %th.text-center Avg Sell
+        %th.text-center Avg Profit
+        %th.text-center Avg Duration
+        %th.text-center Futbin
+        %th.text-center Futbin
+    %tbody
+      - @reports.each do |line|
+        - futbin_market_data = line.player.futbin_market_data
+        %tr
+          %td
+            %a{target: '_blank', href:"https://www.futbin.com/21/sales/#{line.player.futbin_id}"}=line.player.name
+          %td.text-right=money line.profit
+          %td.text-center=line.total
+          %td.text-center=line.stock
+          %td.text-right=money line.avg_buy_price
+          %td.text-right=money line.avg_sell_price
+          %td.text-right=money line.avg_profit
+          %td.text-right=time line.avg_duration
+          %td.text-right=money futbin_market_data['avg_sell_price']
+          %td.text-center="#{((futbin_market_data['sell_rate'] || 0) * 100).to_i}%"
+    %tfoot
+      %tr
+        %th TOTAL
+        %th.text-right=money total(@reports, :profit)
+        %th
+        %th
+        %th
+        %th
+        %th
+        %th
+        %th
+        %th
+  :javascript
+    $.extend( true, $.fn.dataTable.defaults, {
+      "searching": false,
+    });
+
+    $(document).ready( function () {
+      $('#report').DataTable({
+        "paging": false,
+        "info": false
+      });
+    })
