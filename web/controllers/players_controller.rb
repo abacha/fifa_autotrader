@@ -20,7 +20,6 @@ end
 
 get '/players/status' do
   player = Player.find_by(name: params['name'])
-  player.status = params['status'].to_i
-  player.save!
+  player.update!(status: params['status'].to_i)
   redirect '/players'
 end

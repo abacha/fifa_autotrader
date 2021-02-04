@@ -12,17 +12,36 @@
       %tr.d-flex
         %td.col.col-md-3=player.name
         %td.col.col-md-3=player.fullname
-        %td.col.col-md-2.text-right=money player.max_bid
-        %td.col.col-md-2.text-right=money player.sell_value
+        %td.col.col-md-2.d-flex
+          %a.btn.btn-outline-primary.btn-xs.update-player{'data-player': '{"id": '+"#{player.id}"+', "max_bid":'+"#{player.max_bid-50}"+'}'}
+            %i.bi.bi-dash-circle-fill
+          %span.text-center{style: 'width: 75%'}
+            = money player.max_bid
+          %a.btn.btn-outline-primary.btn-xs.update-player{'data-player': '{"id": '+"#{player.id}"+', "max_bid":'+"#{player.max_bid+50}"+'}'}
+            %i.bi.bi-plus-circle
+        %td.col.col-md-2.d-flex
+          %a.btn.btn-outline-primary.btn-xs.update-player{'data-player': '{"id": '+"#{player.id}"+', "sell_value":'+"#{player.sell_value-50}"+'}'}
+            %i.bi.bi-dash-circle-fill
+          %span.text-center{style: 'width: 75%'}
+            = money player.sell_value
+          %a.btn.btn-outline-primary.btn-xs.update-player{'data-player': '{"id": '+"#{player.id}"+', "sell_value":'+"#{player.sell_value+50}"+'}'}
+            %i.bi.bi-plus-circle
+
         %td.col.col-md-1.text-center
           - if player.status == 1
-            %a.btn.btn-outline-secondary.btn-sm{href: "/players/status?name=#{player.name}&status=0"}
+            %a.btn.btn-outline-secondary.btn-sm.update-player{'data-player': '{"id": '+"#{player.id}"+', "status":"0"}'}
               %i.bi.bi-check-circle-fill
           - else
-            %a.btn.btn-outline-secondary.btn-sm{href: "/players/status?name=#{player.name}&status=1"}
+            %a.btn.btn-outline-secondary.btn-sm.update-player{'data-player': '{"id": '+"#{player.id}"+', "status":"1"}'}
               %i.bi.bi-dash-circle
         %td.col.col-md-1.text-center
           %a.btn.btn-outline-secondary.btn-sm{href: "/players?name=#{player.name}"}
             %i.bi.bi-pencil-square
 
 = haml :'players/form'
+
+:javascript
+  $('.update-player').click(function() {
+    $.post('/players', $(this).data());
+    location.reload();
+  });

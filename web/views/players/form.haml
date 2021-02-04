@@ -17,10 +17,14 @@
     .form-group.col-md-1
       %label Resource Id
       %input#fullname.form-control{name: 'player[resource_id]', type: :text, value: @player.resource_id}
-    .form-group.col-md-1
+    .form-group.col-md-2
       %label Max Bid
-      %input#max_bid.form-control{name: 'player[max_bid]', type: :text, value: @player.max_bid}
-    .form-group.col-md-1
+      %input#max_bid.form-control{name: 'player[max_bid]', type: :number, value: @player.max_bid, step: 50}
+    .form-group.col-md-2
       %label Sell Value
-      %input#sell_value.form-control{name: 'player[sell_value]', type: :text, value: @player.sell_value}
+      %input#sell_value.form-control{name: 'player[sell_value]', type: :number, value: @player.sell_value, step: 50}
   %button.btn.btn-primary.mb-2{type: :submit} Save
+
+:javascript
+  $("input[type='number']").inputSpinner()
+
