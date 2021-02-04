@@ -11,7 +11,7 @@ get '/' do
 end
 
 get '/trades' do
-  @trades = Trade.order(timestamp: :desc)
+  @trades = Trade.order(timestamp: :desc).last(300)
   haml :_trades
 end
 

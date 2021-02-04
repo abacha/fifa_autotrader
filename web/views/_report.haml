@@ -24,7 +24,7 @@
           %td.text-right=money line.avg_buy_price
           %td.text-right=money line.avg_sell_price
           %td.text-right=money line.avg_profit
-          %td.text-right=time line.avg_duration
+          %td.text-right{'data-order': line.avg_duration}=time line.avg_duration
           %td.text-right=money futbin_market_data['avg_sell_price']
           %td.text-center="#{((futbin_market_data['sell_rate'] || 0) * 100).to_i}%"
     %tfoot
