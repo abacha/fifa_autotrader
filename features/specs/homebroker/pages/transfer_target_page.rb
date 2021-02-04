@@ -98,10 +98,11 @@ class TransferTargetPage < BasePage
       player = Player.find_by(name: auction.player_name)
       next unless player
 
+      RobotLogger.log(:info, msg: 'Player Bought!',
+                      player: auction.player_name,
+                      sell_value: auction.current_bid)
       list_on_market(line, player)
       trade = Trade.create!(auction.to_trade('B'))
-      RobotLogger.log(:info, msg: 'Player Bought!',
-                      player: trade.player_name, sell_value: trade.sold_for)
     end
   end
 
