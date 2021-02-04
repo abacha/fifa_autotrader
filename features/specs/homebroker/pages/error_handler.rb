@@ -21,6 +21,7 @@ class ErrorHandler < BasePage
     elsif error_msg.match(/VERIFICATION REQUIRED/)
       page.refresh
     elsif has_css?('.ut-logged-on-console')
+      RobotLogger.log(:warn, { msg: 'Logged on another device' })
       sleep 300
       page.refresh
     elsif error_msg.match(/NO INTERNET CONNECTION/)

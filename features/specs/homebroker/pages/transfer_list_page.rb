@@ -47,12 +47,14 @@ class TransferListPage < BasePage
     ActiveRecord::Base.transaction do
       trades.map do |trade|
         trade.save!
-        RobotLogger.log(:info, trade.attributes)
+        RobotLogger.log(:info, msg: 'Player Sold!',
+                        player: trade.player_name, sell_value: trade.sold_for)
         click_on 'Clear Sold'
       end
     end
 
     RobotLogger.log(:info, { action: 'clear_sold', amount: trades.count })
     TradeMatcher.match_trades
+    RobotLogger.log(:info, { action: 'match_trades', msg: 'Trades matched' })
   end
 end

@@ -9,8 +9,6 @@ class TradeMatcher
 
 
   def self.match_trades
-    RobotLogger.log(:info, { action: 'match_trades', msg: 'Trades matched' })
-
     buy_trades.each do |buy_trade|
       sell_trade = sell_trades.where(player_name: buy_trade.player_name).first
 
