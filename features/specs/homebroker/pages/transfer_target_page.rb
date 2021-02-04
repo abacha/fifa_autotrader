@@ -55,6 +55,7 @@ class TransferTargetPage < BasePage
     RobotLogger.log(:info, { action: 'list_bids',
                            total: bids.count,
                            outbid: all('.has-auction-data.outbid').count,
+                           expired: all('.has-auction-data.expired').count,
                            'highest-bid': all('.has-auction-data.highest-bid').count,
                            won: all('.has-auction-data.won').count })
 
@@ -63,6 +64,7 @@ class TransferTargetPage < BasePage
 
   def list_on_market(line, player)
     line.click
+    sleep 2
     click_on 'List on Transfer Market'
     panels = all('.panelActions.open .panelActionRow')
     panels[1].find('input').click

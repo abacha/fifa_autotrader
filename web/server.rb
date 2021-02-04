@@ -1,6 +1,7 @@
 require './config/start.rb'
 
 require 'sinatra'
+require 'sinatra/reloader'
 require 'haml'
 require 'action_view'
 

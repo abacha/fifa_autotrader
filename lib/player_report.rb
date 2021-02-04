@@ -54,7 +54,7 @@ class PlayerReport
   end
 
   def stock
-    "File: #{player.stock} (Trades: #{amount('B') - amount('S')})"
+    amount('B') - amount('S')
   end
 
   def avg_buy_price

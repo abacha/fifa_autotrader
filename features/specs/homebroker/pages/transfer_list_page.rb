@@ -41,10 +41,8 @@ class TransferListPage < BasePage
       auction = Auction.build(auction).to_trade('S')
       player = Player.find_by(name: auction[:player_name])
       next unless player
-      trade = Trade.new(auction)
-      RobotLogger.log(:info, trade.attributes)
-      trade
-    end
+      Trade.new(auction)
+    end.compact
 
     ActiveRecord::Base.transaction do
       trades.map do |trade|
@@ -55,5 +53,6 @@ class TransferListPage < BasePage
     end
 
     RobotLogger.log(:info, { action: 'clear_sold', amount: trades.count })
+    TradeMatcher.match_trades
   end
 end

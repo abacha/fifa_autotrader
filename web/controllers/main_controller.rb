@@ -1,3 +1,5 @@
+require 'sinatra/json'
+
 get '/' do
   @reports = PlayerReport.all
   @stock = Stock.all
