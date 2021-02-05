@@ -3,7 +3,7 @@
 class MarketPage < BasePage
   PAGE_MENU_LINK = '.ut-tile-transfer-market'
   MAX_STOCK = 3
-  MAX_TIME_LEFT = 700
+  MAX_TIME_LEFT = 600
   MAX_PLAYER_BIDS = 5
 
   def refresh

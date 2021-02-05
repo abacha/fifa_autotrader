@@ -26,7 +26,8 @@ class PlayerReport
   def matched_trades
     trade_ids = trades.pluck(:id)
     @matched_trades ||=
-      MatchedTrade.where(buy_trade_id: trade_ids).or(MatchedTrade.where(sell_trade_id: trade_ids))
+      MatchedTrade.where(buy_trade_id: trade_ids).
+        or(MatchedTrade.where(sell_trade_id: trade_ids))
   end
 
   def total(kind)
@@ -38,7 +39,8 @@ class PlayerReport
   end
 
   def profit
-    matched_trades.sum(:profit)
+    matched_trades.sum(:profit) +
+      trades.where(kind: 'B', matched: 0).sum(:sold_for)
   end
 
   def avg_profit

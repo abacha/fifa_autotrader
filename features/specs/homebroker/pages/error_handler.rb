@@ -50,11 +50,11 @@ class ErrorHandler < BasePage
     return unless has_css?('div', text: 'VERIFICATION REQUIRED')
 
     while has_css?('div', text: 'VERIFICATION REQUIRED')
-      RobotLogger.log(:warn, { msg: 'Bot Verification' })
+      RobotLogger.log(:warn, 'Bot Verification')
       page.refresh
       sleep 30
     end
 
-    RobotLogger.log(:info, { msg: 'Verification Success!' })
+    RobotLogger.msg('Verification Success!')
   end
 end

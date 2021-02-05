@@ -38,6 +38,7 @@ class BasePage
 
   def fill_input(input, value)
     find(input).click
+    sleep 0.5
     find(input).set value
   end
 end
