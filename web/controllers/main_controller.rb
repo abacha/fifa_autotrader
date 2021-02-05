@@ -10,11 +10,6 @@ get '/' do
   haml :dashboard
 end
 
-get '/trades' do
-  @trades = Trade.order(timestamp: :desc).first(300)
-  haml :_trades
-end
-
 get '/log' do
   @log = Rack::Utils.escape_html RobotLogger.tail(300)
   haml :_log

@@ -12,4 +12,8 @@ helpers do
   def time(value)
     ChronicDuration.output(value, format: :short)
   end
+
+  def datetime(value)
+    value.strftime('%Y-%m-%d %H:%M:%S')
+  end
 end

@@ -1,0 +1,18 @@
+%table.table.table-hover.table-striped.table-bordered.table-sm
+  %thead
+    %tr.d-flex
+      %th.col.col-md-3.text-center Player
+      %th.col.col-md-3.text-center{colspan: 2} Buy
+      %th.col.col-md-3.text-center{colspan: 2} Sell
+      %th.col.col-md-1.text-center Profit
+      %th.col.col-md-2.text-center Duration
+  %tbody
+    - @matched_trades.each do |matched_trade|
+      %tr.d-flex
+        %td.col-md-3=matched_trade.player_name
+        %td.col-md-2.text-center=datetime matched_trade.buy_trade.timestamp
+        %td.col-md-1.text-center=money matched_trade.buy_trade.sold_for
+        %td.col-md-2.text-center=datetime matched_trade.sell_trade.timestamp
+        %td.col-md-1.text-center=money matched_trade.sell_trade.sold_for
+        %td.col-md-1.text-center=money matched_trade.profit
+        %td.col-md-2.text-center=time matched_trade.duration
