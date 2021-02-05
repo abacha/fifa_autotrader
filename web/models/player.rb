@@ -13,7 +13,7 @@ class Player < ActiveRecord::Base
   end
 
   def stock
-    Stock.by_player(name)
+    Trade.where(player_name: name, kind: 'B', matched: 0).count
   end
 
   def futbin_market_data

@@ -12,6 +12,10 @@ class RobotLogger
     instance.log(severity, msg)
   end
 
+  def self.msg(msg)
+    instance.log(:info, msg)
+  end
+
   def logger
     @logger ||=
       begin

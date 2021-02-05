@@ -9,7 +9,7 @@ class TransferTargetPage < BasePage
 
     if has_button?('Clear Expired')
       click_on 'Clear Expired'
-      RobotLogger.log(:info, { action: 'clear_expired', msg: 'Expired bids cleared' })
+      RobotLogger.msg('Expired bids cleared')
     end
   end
 
@@ -58,12 +58,15 @@ class TransferTargetPage < BasePage
 
     bids = all('.has-auction-data')
 
-    RobotLogger.log(:info, { action: 'list_bids',
-                           total: bids.count,
-                           outbid: all('.has-auction-data.outbid').count,
-                           expired: all('.has-auction-data.expired').count,
-                           'highest-bid': all('.has-auction-data.highest-bid').count,
-                           won: all('.has-auction-data.won').count })
+    msg = [
+      "won=#{all('.has-auction-data.won').count}",
+      "highest-bidder=#{all('.has-auction-data.highest-bid').count}",
+      "outbid=#{all('.has-auction-data.outbid').count}",
+      "expired=#{all('.has-auction-data.expired').count}",
+      "total=#{bids.count}"
+    ].join(' ')
+
+    RobotLogger.msg("Active bids: #{msg}")
 
     bids.map { |line| Auction.build(line) }
   end
@@ -78,8 +81,7 @@ class TransferTargetPage < BasePage
     panels[2].find('input').click
     panels[2].find('input').set player.sell_value + 100
     click_on 'List for Transfer'
-    RobotLogger.log(:info, { msg: 'Player listed to market',
-                           player: player.name, sell_value: player.sell_value })
+    RobotLogger.msg("Player listed to market: #{player.name} ($#{player.sell_value})")
   end
 
   def clear_bought
@@ -98,9 +100,9 @@ class TransferTargetPage < BasePage
       player = Player.find_by(name: auction.player_name)
       next unless player
 
-      RobotLogger.log(:info, msg: 'Player Bought!',
-                      player: auction.player_name,
-                      sell_value: auction.current_bid)
+      RobotLogger.msg(
+        "Player bought: #{auction.player_name} ($#{auction.current_bid})")
+
       list_on_market(line, player)
       trade = Trade.create!(auction.to_trade('B'))
     end

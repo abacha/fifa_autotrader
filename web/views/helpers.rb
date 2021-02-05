@@ -10,6 +10,6 @@ helpers do
   end
 
   def time(value)
-    ChronicDuration.output(value)
+    ChronicDuration.output(value, format: :short)
   end
 end

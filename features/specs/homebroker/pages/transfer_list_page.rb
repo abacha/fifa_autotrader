@@ -47,8 +47,8 @@ class TransferListPage < BasePage
     ActiveRecord::Base.transaction do
       trades.map do |trade|
         trade.save!
-        RobotLogger.log(:info, msg: 'Player Sold!',
-                        player: trade.player_name, sell_value: trade.sold_for)
+        RobotLogger.msg(
+          "Player sold: #{trade.player_name} ($#{trade.sold_for})")
         click_on 'Clear Sold'
       end
     end

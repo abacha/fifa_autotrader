@@ -1,18 +1,16 @@
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead
     %tr.d-flex
-      %th.col.col-md-2 Datetime
-      %th.col.col-md-1 Kind
-      %th.col.col-md-3 Player
-      %th.col.col-md-2 Start
-      %th.col.col-md-2 Final
-      %th.col.col-md-2 BIN
+      %th.col.col-md-2.text-center Datetime
+      %th.col.col-md-1.text-center Kind
+      %th.col.col-md-3.text-center Player
+      %th.col.col-md-3.text-center Start
+      %th.col.col-md-3.text-center Final
   %tbody
     - @trades.each do |trade|
       %tr.d-flex
         %td.col-md-2.text-center=trade.timestamp.strftime('%H:%M:%S')
         %td.col-md-1.text-center=trade.kind
         %td.col-md-3=trade.player_name
-        %td.col-md-2.text-right=number_to_currency trade.start_price
-        %td.col-md-2.text-right=number_to_currency trade.sold_for
-        %td.col-md-2.text-right=number_to_currency trade.buy_now
+        %td.col-md-3.text-right=money trade.start_price
+        %td.col-md-3.text-right=money trade.sold_for

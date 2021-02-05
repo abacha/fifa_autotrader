@@ -25,10 +25,10 @@ class LoginPage < BasePage
 
   def security_code
     while (security_code = MailService.security_code).nil?
-      RobotLogger.log(:info, { msg: 'Waiting for security code' })
+      RobotLogger.msg('Waiting for security code')
       sleep 10
     end
-    RobotLogger.log(:info, { msg: 'Security code loaded' })
+    RobotLogger.msg('Security code loaded')
 
     security_code
   end

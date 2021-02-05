@@ -9,21 +9,42 @@
     overflow-y: auto;
   }
 
+  .navbar-mobile {
+    margin-top: 15px;
+    font-size: 1.75rem !important;
+  }
+
+  .navbar-mobile li {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
   .sidebar .nav-link { font-weight: 500; color: #333; }
 
-.sidebar-sticky
-  %ul.nav.flex-column
-    %li.nav-item.text-center
-      %a.nav-link{href: '/'}
-        %i.bi.bi-house
-        %span Dashboard
-    %li.nav-item.text-center
-      %a.nav-link{href: '/players'}
-        %i.bi.bi-people
-        %br
-        %span Players
-    %li.nav-item.text-center
-      %a.nav-link{href: '/trades'}
-        %i.bi.bi-book
-        %br
-        %span Trades
+%nav.col-lg-2.col-xl-1.bg-light.sidebar.d-none.d-lg-block
+  .sidebar-sticky
+    %ul.nav.flex-column#navbar-items
+      %li.nav-item.text-center
+        %a.nav-link{href: '/'}
+          %i.bi.bi-house
+          %br
+          %span Dashboard
+      %li.nav-item.text-center
+        %a.nav-link{href: '/players'}
+          %i.bi.bi-people
+          %br
+          %span Players
+      %li.nav-item.text-center
+        %a.nav-link{href: '/trades'}
+          %i.bi.bi-book
+          %br
+          %span Trades
+
+%nav.navbar.navbar-expand-sm.bg-dark.justify-content-center.fixed-bottom.navbar-mobile.d-lg-none
+  %ul.nav
+
+:javascript
+  $(document).ready(function() {
+    $('.navbar-mobile ul').html($('#navbar-items').html());
+    $('.navbar-mobile ul a').addClass('text-light');
+  });

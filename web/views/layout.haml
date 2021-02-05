@@ -32,7 +32,6 @@
         FIFA Autotrader
     .container-fluid
       .row
-        %nav.col-lg-2.col-xl-1.bg-light.sidebar.d-none.d-lg-block
-          = haml :sidebar
-        %main.col-lg-10.col-xl-11.pt-3.px-4{role: :main}
+        = haml :sidebar
+        %main.col-lg-10.col-xl-11.px-4.py-3{role: :main}
           = yield

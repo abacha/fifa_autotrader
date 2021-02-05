@@ -2,7 +2,7 @@
 
 class MarketPage < BasePage
   MAX_STOCK = 3
-  MAX_TIME_LEFT = 900
+  MAX_TIME_LEFT = 700
   MAX_PLAYER_BIDS = 5
 
   def refresh
@@ -33,7 +33,7 @@ class MarketPage < BasePage
     click_on 'Search'
 
     auctions = all('.has-auction-data').count
-    RobotLogger.log(:info, { search: player.name, count: auctions })
+    RobotLogger.msg("Market search: #{player.name} (hits: #{auctions})")
     0.upto([auctions, MAX_PLAYER_BIDS].min - 1) do |i|
       line = all('.has-auction-data')[i]
 
@@ -46,10 +46,8 @@ class MarketPage < BasePage
       timeleft = ChronicDuration.parse(all('.auctionInfo .subContent')[0].text)
 
       if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
-        RobotLogger.log(:info, { action: 'bid',
-                               player: player.name,
-                               bid_value: bid_value,
-                               timeleft: timeleft })
+        msg = "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})"
+        RobotLogger.msg(msg)
         click_on 'Make Bid'
 
         sleep 3
