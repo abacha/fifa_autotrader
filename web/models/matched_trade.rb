@@ -12,7 +12,9 @@ class MatchedTrade < ActiveRecord::Base
   after_save :mark_matched_trades
 
   def trade_players
-    buy_trade.player_name == sell_trade.player_name
+    if buy_trade.player_name != sell_trade.player_name
+      errors.add(:sell_trade_id, 'trade players are different')
+    end
   end
 
   def calculate_profit

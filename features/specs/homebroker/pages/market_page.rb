@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class MarketPage < BasePage
+  PAGE_MENU_LINK = '.ut-tile-transfer-market'
   MAX_STOCK = 3
   MAX_TIME_LEFT = 700
   MAX_PLAYER_BIDS = 5
@@ -21,16 +22,30 @@ class MarketPage < BasePage
     end
   end
 
-  def buy_player(player)
+  def snipe(player)
+    search(player)
+    auctions = all('.has-auction-data').count
+  end
+
+  def search(player)
     click_on 'Transfers'
-    find('.ut-tile-transfer-market').click
+    find(PAGE_MENU_LINK).click
 
     fill_input('.ut-player-search-control input', player.fullname)
     click_on player.fullname
 
+    if player.rarity
+      find('span', text: 'RARITY').click
+      find('li', text: player.rarity).click
+    end
+
     all('.search-prices .price-filter input')[1].click
     all('.search-prices .price-filter input')[1].set player.max_bid
     click_on 'Search'
+  end
+
+  def buy_player(player)
+    search(player)
 
     auctions = all('.has-auction-data').count
     RobotLogger.msg("Market search: #{player.name} (hits: #{auctions})")
@@ -46,10 +61,9 @@ class MarketPage < BasePage
       timeleft = ChronicDuration.parse(all('.auctionInfo .subContent')[0].text)
 
       if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
-        msg = "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})"
-        RobotLogger.msg(msg)
+        RobotLogger.msg(
+          "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})")
         click_on 'Make Bid'
-
         sleep 3
       end
     end

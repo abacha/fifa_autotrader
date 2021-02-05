@@ -8,15 +8,29 @@ class Futbin
   PLATFORM = 'pc'
 
   def self.get_player_info(futbin_id)
-    data = RestClient.get(
+    url =
       "#{URL_BASE}/getPlayerInfo?type=full&id=#{futbin_id}&platform=#{PLATFORM}"
-    )
-    JSON.parse(data)
+    fetch_json(url)
   end
 
   def self.get_player_avg_sell(resource_id)
-    data = RestClient.get(
-      "#{URL_BASE}/getPlayerAvgSell?days=1&resourceId=#{resource_id}&platform=#{PLATFORM}")
+    url =
+      "#{URL_BASE}/getPlayerAvgSell?days=1&resourceId=#{resource_id}&platform=#{PLATFORM}"
+    fetch_json(url)
+  end
+
+  def self.market_data
+    graph_type = 'live_graph' || 'daily_graph' || 'today'
+    index = 'Gold'
+
+    url = "#{URL_BASE}/marketGraph?type=#{graph_type}&console=#{PLATFORM.upcase}&indexversion=#{index}"
+    fetch_json(url)
+  end
+
+  private
+
+  def fetch_json(url)
+    data = RestClient.get(url)
     JSON.parse(data)
   end
 end

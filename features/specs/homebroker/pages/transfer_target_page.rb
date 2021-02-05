@@ -58,15 +58,15 @@ class TransferTargetPage < BasePage
 
     bids = all('.has-auction-data')
 
-    msg = [
-      "won=#{all('.has-auction-data.won').count}",
-      "highest-bidder=#{all('.has-auction-data.highest-bid').count}",
-      "outbid=#{all('.has-auction-data.outbid').count}",
-      "expired=#{all('.has-auction-data.expired').count}",
-      "total=#{bids.count}"
-    ].join(' ')
+    msg = {
+      'won': all('.has-auction-data.won').count,
+      'highest-bidder': all('.has-auction-data.highest-bid').count,
+      'outbid': all('.has-auction-data.outbid').count,
+      'expired': all('.has-auction-data.expired').count,
+      'total': bids.count
+    }
 
-    RobotLogger.msg("Active bids: #{msg}")
+    RobotLogger.msg(action: 'active_bids', bids: msg)
 
     bids.map { |line| Auction.build(line) }
   end

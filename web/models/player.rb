@@ -1,10 +1,22 @@
 # frozen_string_literal: true
 
 class Player < ActiveRecord::Base
-  validates_presence_of :name, :fullname, :futbin_id, :sell_value, :max_bid, :status
+  RARITY_FILE = 'rarities.yml'
+  validates :name, :fullname, :futbin_id, :sell_value, :max_bid, presence: true
+  validate :check_rarity
 
   def self.actives
     where(status: 1)
+  end
+
+  def self.rarities
+    YAML.load(File.read(RARITY_FILE))
+  end
+
+  def check_rarity
+    if rarity && !Player.rarities.include?(rarity)
+      errors.add(:rarity, :invalid)
+    end
   end
 
   def populate_resource_id
