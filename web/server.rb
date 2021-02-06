@@ -4,10 +4,13 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'haml'
 require 'action_view'
+require 'will_paginate'
+require 'will_paginate/active_record'
+require 'will_paginate/view_helpers/sinatra'
 
 include ActionView::Helpers::NumberHelper
-require_relative 'views/helpers'
 
+Dir['./web/views/helpers/*'].each { |klass| require klass }
 Dir['./web/controllers/*'].each { |klass| require klass }
 
 def last_error

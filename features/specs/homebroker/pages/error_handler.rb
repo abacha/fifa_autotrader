@@ -36,6 +36,8 @@ class ErrorHandler < BasePage
       sleep 30
       RobotLogger.log(:error, 'Eternal loading')
       exit 1 if has_css?('.loaderIcon')
+    elsif find('body').text == ''
+      page.refresh
     else
       HooksConfig.record_error(error_msg)
       RobotLogger.log(:error, error_msg)

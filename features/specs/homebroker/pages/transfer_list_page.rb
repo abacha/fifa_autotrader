@@ -53,8 +53,7 @@ class TransferListPage < BasePage
       end
     end
 
-    RobotLogger.log(:info, { action: 'clear_sold', amount: trades.count })
     TradeMatcher.match_trades
-    RobotLogger.log(:info, { action: 'match_trades', msg: 'Trades matched' })
+    RobotLogger.msg("Sold players cleared! (#{trades.count})")
   end
 end
