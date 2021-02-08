@@ -50,7 +50,12 @@ class PlayerReport
   end
 
   def avg_duration
-    matched_trades.sum(:duration) / amount('S')
+    buy_trades = trades.where(kind: 'B', matched: 0).map do |trade|
+      Time.now - trade.timestamp
+    end
+
+    ((matched_trades.sum(:duration) + buy_trades.sum) /
+      (amount('S') + buy_trades.size)).to_i
   rescue
     0
   end

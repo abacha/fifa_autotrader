@@ -3,7 +3,7 @@
 class MarketPage < BasePage
   PAGE_MENU_LINK = '.ut-tile-transfer-market'
   MAX_STOCK = 3
-  MAX_TIME_LEFT = 600
+  MAX_TIME_LEFT = 400
   MAX_PLAYER_BIDS = 5
 
   def refresh
@@ -58,8 +58,9 @@ class MarketPage < BasePage
       sleep 2
 
       bid_value = n(find('.bidOptions input').value)
-      timeleft = ChronicDuration.parse(all('.auctionInfo .subContent')[0].text)
-
+      text = all('.auctionInfo .subContent')[0].text
+      timeleft = ChronicDuration.parse(text)
+      RobotLogger.msg(timeleft: timeleft, text: text)
       if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
         RobotLogger.msg(
           "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})")

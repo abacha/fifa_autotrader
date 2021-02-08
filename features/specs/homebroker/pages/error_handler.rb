@@ -24,7 +24,7 @@ class ErrorHandler < BasePage
       page.refresh
     elsif has_css?('.ut-logged-on-console')
       RobotLogger.log(:warn, 'Logged on another device')
-      sleep 600
+      sleep 300
       page.refresh
     elsif error_msg.match(/NO INTERNET CONNECTION/)
       RobotLogger.log(:error, 'No internet connection')
