@@ -61,7 +61,10 @@ class MarketPage < BasePage
       text = all('.auctionInfo .subContent')[0].text
       timeleft = ChronicDuration.parse(text)
       RobotLogger.msg(timeleft: timeleft, text: text)
-      if bid_value <= player.max_bid && timeleft < MAX_TIME_LEFT
+
+      break if timeleft > MAX_TIME_LEFT
+
+      if bid_value <= player.max_bid
         RobotLogger.msg(
           "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})")
         click_on 'Make Bid'
