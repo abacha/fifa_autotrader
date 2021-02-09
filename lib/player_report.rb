@@ -5,9 +5,9 @@ class PlayerReport
     Player.all.map { |player| new(player).report }
   end
 
-  def initialize(player, trades = nil)
+  def initialize(player, filter = {})
     @player = player
-    @trades = trades || Trade.where(player_name: player.name)
+    @trades = Trade.where(filter.merge(player_name: player.name))
   end
 
   def report

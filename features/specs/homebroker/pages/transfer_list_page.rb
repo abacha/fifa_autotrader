@@ -54,6 +54,6 @@ class TransferListPage < BasePage
     end
 
     TradeMatcher.match_trades
-    RobotLogger.msg("Cleared #{trades.count} players")
+    RobotLogger.msg("Cleared #{trades.count} sold players")
   end
 end
