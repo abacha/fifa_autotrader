@@ -1,0 +1,74 @@
+.col-md-12
+  #profit
+.col-md-6
+  #stock
+.col-md-12
+  #players
+:javascript
+  Highcharts.chart('profit', {
+    chart: { zoomType: 'xy' },
+    title: { text: 'Daily Profit' },
+    xAxis: [{ categories: #{@dates}, crosshair: true }],
+    yAxis: [
+      { title: { text: '' } },
+      { visible: false },
+      { visible: false }
+    ],
+    tooltip: { shared: true },
+    legend: {
+      layout: 'vertical', align: 'left', x: 60, y: 60, verticalAlign: 'top',
+      floating: true
+    },
+    series: [
+      {
+        name: 'Daily Profit',
+        type: 'column',
+        yAxis: 0,
+        data: #{@daily_profit.values},
+        tooltip: { valuePrefix: '$' }
+      },
+      {
+        name: 'Trades',
+        type: 'spline',
+        yAxis: 1,
+        data: #{@trades.values}
+      },
+      {
+        name: 'Avg. Profit',
+        type: 'spline',
+        data: #{@avg_profit.values},
+        dashStyle: 'shortdot',
+        yAxis: 2,
+        tooltip: { valuePrefix: '$' }
+      }
+    ]
+  });
+
+  Highcharts.chart('stock', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: { text: 'Players for sale' },
+    subtitle: { text: 'Total: #{@stock.values.sum}' },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.y}'
+            }
+        }
+    },
+    series: [{
+        name: 'Available',
+        colorByPoint: true,
+        data: #{@stock.to_a}
+    }]
+  });
