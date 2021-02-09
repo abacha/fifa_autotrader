@@ -36,6 +36,9 @@ class ErrorHandler < BasePage
       sleep 30
       RobotLogger.log(:error, 'Eternal loading')
       exit 1 if has_css?('.loaderIcon')
+    elsif has_button?('Login')
+      RobotLogger.log(:error, 'Restarting')
+      exit 1
     elsif find('body').text == ''
       page.refresh
     else
