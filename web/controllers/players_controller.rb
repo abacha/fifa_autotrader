@@ -1,5 +1,5 @@
 before do
-  @players = Player.all.order(:name)
+  @players = Player.all.order(status: :desc, name: :asc)
   params['player'] ||= []
 end
 

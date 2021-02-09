@@ -19,7 +19,7 @@ class TransferTargetPage < BasePage
     find(PAGE_MENU_LINK).click
 
     player_list = all('.has-auction-data.outbid')
-    RobotLogger.log(:info, { action: 'renew_bids', amount: player_list.count })
+    RobotLogger.msg("Renewing bids: #{player_list.count} active auctions")
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
@@ -66,7 +66,7 @@ class TransferTargetPage < BasePage
       'total': bids.count
     }
 
-    RobotLogger.msg(action: 'active_bids', bids: msg)
+    RobotLogger.msg("Active bids: #{msg}")
 
     bids.map { |line| Auction.build(line) }
   end
@@ -104,13 +104,7 @@ class TransferTargetPage < BasePage
         "Player bought: #{auction.player_name} ($#{auction.current_bid})")
 
       list_on_market(line, player)
-      trade = Trade.create!(auction.to_trade('B'))
+      Trade.create!(auction.to_trade('B'))
     end
-  end
-
-  private
-
-  def market
-    MarketPage.new
   end
 end

@@ -3,11 +3,11 @@
 class MarketPage < BasePage
   PAGE_MENU_LINK = '.ut-tile-transfer-market'
   MAX_STOCK = 3
-  MAX_TIME_LEFT = 400
+  MAX_TIME_LEFT = 60*7
   MAX_PLAYER_BIDS = 5
 
   def refresh
-    RobotLogger.log(:info, { action: 'market_refresh' })
+    RobotLogger.msg('Refreshing market')
     click_on 'Transfers'
     find('.ut-tile-transfer-market').click
     click_on 'Search'
@@ -18,7 +18,7 @@ class MarketPage < BasePage
     RobotLogger.log(:info, { action: 'buy_players' })
     Player.actives.each do |player|
       buy_player player if player.stock < MAX_STOCK
-      sleep 5
+      sleep 4
     end
   end
 
@@ -60,9 +60,11 @@ class MarketPage < BasePage
       bid_value = n(find('.bidOptions input').value)
       text = all('.auctionInfo .subContent')[0].text
       timeleft = ChronicDuration.parse(text)
-      RobotLogger.msg(timeleft: timeleft, text: text)
 
-      break if timeleft > MAX_TIME_LEFT
+      if timeleft > MAX_TIME_LEFT
+        RobotLogger.msg("Skipping player (#{text})")
+        break
+      end
 
       if bid_value <= player.max_bid
         RobotLogger.msg(

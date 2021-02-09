@@ -6,7 +6,7 @@ class TransferListPage < BasePage
   def update_stock
     stock = auctions.inject(Hash.new(0)) { |h, e| h[e.player_name] += 1; h }
     Stock.save(stock)
-    RobotLogger.log(:info, { action: 'update_stock', stock: stock })
+    RobotLogger.msg("Stock updated: #{stock}")
   end
 
   def relist_players
@@ -14,7 +14,7 @@ class TransferListPage < BasePage
     find(PAGE_MENU_LINK).click
 
     if has_css?('.has-auction-data.expired')
-      RobotLogger.log(:info, { action: 'relist_players' })
+      RobotLogger.msg('Relisting expired auctions')
       click_on 'Re-list All'
       click_on 'Yes'
     end
@@ -54,6 +54,6 @@ class TransferListPage < BasePage
     end
 
     TradeMatcher.match_trades
-    RobotLogger.msg("Sold players cleared! (#{trades.count})")
+    RobotLogger.msg("Cleared #{trades.count} players")
   end
 end
