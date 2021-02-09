@@ -32,6 +32,7 @@ class MatchedTrade < ActiveRecord::Base
 
   def set_timestamp
     self.timestamp = sell_trade.timestamp
+    self.date = DateTime.strptime(timestamp.to_s, '%s')
   end
 
   def mark_matched_trades
