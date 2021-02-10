@@ -32,10 +32,14 @@ class MainPage < BasePage
       end
 
 
-      bids = transfer_target.list_bids
-      outbid = bids.detect { |bid| bid.status == 'outbid' }
-      min_time = (outbid && outbid.timeleft) ? outbid.timeleft : 1_000
-      transfer_target.renew_bids if min_time < MarketPage::MAX_TIME_LEFT
+      loop do
+        transfer_target.renew_bids
+
+        bids = transfer_target.list_bids
+        outbid = bids.detect { |bid| bid.status == 'outbid' }
+        min_time = (outbid && outbid.timeleft) ? outbid.timeleft : 1_000
+        break if min_time > 120
+      end
 
       if bids.detect { |bid| bid.status == 'won' }
         transfer_target.clear_bought
