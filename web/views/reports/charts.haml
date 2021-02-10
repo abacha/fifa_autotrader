@@ -1,0 +1,38 @@
+.col-md-12
+  = haml :'/reports/_daily_profit'
+.col-md-12
+  #players
+
+:javascript
+  Highcharts.chart('players', {
+    credits: { enabled: false },
+    chart: { type: 'column' },
+    title: { text: 'Stacked column chart' },
+    xAxis: { categories: #{@keys} },
+    yAxis: {
+        min: 0,
+        title: { text: 'Total fruit consumption' },
+        stackLabels: {
+          enabled: true,
+          style: { fontWeight: 'bold' }
+        }
+    },
+    legend: {
+      align: 'right',
+      x: -30,
+      verticalAlign: 'top',
+      y: 25,
+      floating: true,
+    },
+    tooltip: {
+      headerFormat: '<b>{point.x}</b><br/>',
+      pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    plotOptions: {
+      column: {
+        stacking: 'normal',
+        dataLabels: { enabled: true }
+      }
+    },
+    series: ''
+  });

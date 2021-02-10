@@ -45,7 +45,13 @@ class TransferTargetPage < BasePage
                                max_bid: player.max_bid  })
 
       if has_css?('.Notification.negative')
-        RobotLogger.log(:warn, { msg: find('.Notification.negative').text })
+        msg = find('.Notification.negative').text
+        RobotLogger.log(:warn, { msg: msg })
+
+        if msg.match(/Bid status changed, auction data will be updated/)
+          market.refresh
+          break
+        end
       end
 
       sleep 6

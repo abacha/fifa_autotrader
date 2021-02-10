@@ -23,7 +23,7 @@ class RobotLogger
         log.formatter = proc do |severity, datetime, progname, msg|
           date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
           #if severity == "INFO" or severity == "WARN"
-          "[#{date_format}] #{severity.rjust(5)}: #{msg}\n"
+          "[#{date_format}] #{severity[0]}: #{msg}\n"
         end
         log
       end

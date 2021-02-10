@@ -1,9 +1,9 @@
 %meta(http-equiv='refresh' content='30')
 .row
-  = haml :_log
-.row
-  %h4 Player report
-  = haml :_report
+  .col-md-8
+    = haml :_log
+  .col-md-4
+    = haml :'reports/_stock'
 .row
   .col-md-6
     %h4 Last trades

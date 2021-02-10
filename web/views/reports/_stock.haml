@@ -1,0 +1,20 @@
+#stock
+
+:javascript
+  Highcharts.chart('stock', {
+    credits: { enabled: false },
+    chart: { plotShadow: false, type: 'pie' },
+    title: { text: 'Players for sale' },
+    subtitle: { text: 'Total: #{@stock.values.sum}' },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+          cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+                format: '<b>{point.name}</b>: {point.y}'
+            }
+        }
+    },
+    series: [{ name: 'Available', colorByPoint: true, data: #{@stock.to_a} }]
+  });

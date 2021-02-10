@@ -1,0 +1,42 @@
+#profit
+
+:javascript
+  Highcharts.chart('profit', {
+    credits: { enabled: false },
+    chart: { zoomType: 'x' },
+    title: { text: 'Daily Profit' },
+    xAxis: [{ type: 'datetime', categories: #{@dates}, crosshair: true }],
+    yAxis: [
+      { title: { text: '' } },
+      { visible: false },
+      { visible: false }
+    ],
+    tooltip: { shared: true },
+    legend: {
+      layout: 'vertical', align: 'left', x: 60, y: 60, verticalAlign: 'top',
+      floating: true
+    },
+    series: [
+      {
+        name: 'Daily Profit',
+        type: 'column',
+        yAxis: 0,
+        data: #{@daily_profit},
+        tooltip: { valuePrefix: '$' }
+      },
+      {
+        name: 'Trades',
+        type: 'spline',
+        yAxis: 1,
+        data: #{@trades}
+      },
+      {
+        name: 'Avg. Profit',
+        type: 'spline',
+        data: #{@avg_profit},
+        dashStyle: 'shortdot',
+        yAxis: 2,
+        tooltip: { valuePrefix: '$' }
+      }
+    ]
+  });

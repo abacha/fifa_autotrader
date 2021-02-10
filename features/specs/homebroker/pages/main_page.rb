@@ -24,7 +24,6 @@ class MainPage < BasePage
 
       if i % 2 == 0
         transfer_list.clear_sold
-        transfer_list.update_stock
         transfer_list.relist_players
       end
 
@@ -41,6 +40,8 @@ class MainPage < BasePage
       if bids.detect { |bid| bid.status == 'won' }
         transfer_target.clear_bought
       end
+
+      transfer_list.update_stock
     end
   end
 
