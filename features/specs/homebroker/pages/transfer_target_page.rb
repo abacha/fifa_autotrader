@@ -19,7 +19,7 @@ class TransferTargetPage < BasePage
     find(PAGE_MENU_LINK).click
 
     player_list = all('.has-auction-data.outbid')
-    RobotLogger.msg("Renewing bids: #{player_list.count} active auctions")
+    RobotLogger.msg("Renewing bids: #{player_list.count} outbid auctions")
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')

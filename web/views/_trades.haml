@@ -1,16 +1,16 @@
 %table.table.table-hover.table-striped.table-bordered.table-sm
-  %thead
-    %tr.d-flex
-      %th.col.col-md-2.text-center Datetime
-      %th.col.col-md-1.text-center Kind
-      %th.col.col-md-3.text-center Player
-      %th.col.col-md-3.text-center Start
-      %th.col.col-md-3.text-center Final
   %tbody
     - @trades.each do |trade|
       %tr.d-flex
-        %td.col-md-2.text-center=trade.timestamp.strftime('%H:%M:%S')
-        %td.col-md-1.text-center=trade.kind
-        %td.col-md-3=trade.player_name
-        %td.col-md-3.text-right=money trade.start_price
-        %td.col-md-3.text-right=money trade.sold_for
+        %td.col-md-2.text-center
+          - if trade.kind == 'S'
+            %i.text-success.bi.bi-cash
+          - else
+            %i.text-info.bi.bi-person-plus-fill
+        %td.col-md-3.text-center=trade.timestamp.strftime('%H:%M:%S')
+        %td.col-md-4=trade.player_name
+        %td.col-md-3.text-right
+          - if trade.kind == 'S'
+            %span.text-success=money trade.sold_for
+          - else
+            %span.text-danger=money trade.sold_for

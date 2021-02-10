@@ -31,18 +31,15 @@ class MainPage < BasePage
         market.buy_players
       end
 
-
       loop do
         transfer_target.renew_bids
-
         bids = transfer_target.list_bids
+        if bids.detect { |bid| bid.status == 'won' }
+          transfer_target.clear_bought
+        end
         outbid = bids.detect { |bid| bid.status == 'outbid' }
         min_time = (outbid && outbid.timeleft) ? outbid.timeleft : 1_000
         break if min_time > 120
-      end
-
-      if bids.detect { |bid| bid.status == 'won' }
-        transfer_target.clear_bought
       end
 
       transfer_list.update_stock
@@ -52,7 +49,9 @@ class MainPage < BasePage
   def do_process(&block)
     begin
       block.call
-    rescue Selenium::WebDriver::Error::WebDriverError, Capybara::CapybaraError => e
+    rescue Selenium::WebDriver::Error::WebDriverError,
+      Capybara::CapybaraError => e
+
       error_msg = e.message
       dialog = '.Dialog'
 
