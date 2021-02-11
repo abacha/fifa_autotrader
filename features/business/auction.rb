@@ -5,7 +5,7 @@ Auction = Struct.new(:timestamp, :player_name,
                  :current_bid, :buy_now, keyword_init: true) do
 
   def self.build(line)
-    status = if line[:class].nil?
+    status = if !line[:class]
                'undetected'
              elsif line[:class].include?('outbid')
                'outbid'

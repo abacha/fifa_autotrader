@@ -19,13 +19,14 @@ class MainPage < BasePage
 
   def process(i)
     do_process do
-      if i % 3 == 0
+      bids = transfer_target.list_bids
+
+      if bids.detect { |bid| bid.status == 'expired' }
         transfer_target.clear_expired
       end
 
-      if i % 2 == 0
-        transfer_list.clear_sold
-        transfer_list.relist_players
+      if bids.detect { |bid| bid.status == 'won' }
+        transfer_target.clear_bought
       end
 
       time_diff = (Time.now - @last_market).to_i
@@ -40,14 +41,13 @@ class MainPage < BasePage
       loop do
         transfer_target.renew_bids
         bids = transfer_target.list_bids
-        if bids.detect { |bid| bid.status == 'won' }
-          transfer_target.clear_bought
-        end
         outbid = bids.detect { |bid| bid.status == 'outbid' }
         min_time = (outbid && outbid.timeleft) ? outbid.timeleft : 1_000
         break if min_time > 120
       end
 
+      transfer_list.clear_sold
+      transfer_list.relist_players
       transfer_list.update_stock
     end
   end
