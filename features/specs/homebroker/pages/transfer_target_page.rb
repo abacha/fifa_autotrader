@@ -46,7 +46,8 @@ class TransferTargetPage < BasePage
         RobotLogger.log(:warn, { msg: msg })
 
         if msg.match(/Bid status changed, auction data will be updated/)
-          binding.pry
+          market.refresh
+          break
         end
       end
 

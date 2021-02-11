@@ -7,6 +7,7 @@
     title: { text: 'Players for sale' },
     subtitle: { text: 'Total: #{@stock.values.sum}' },
     plotOptions: {
+      series: { animation: false },
       pie: {
         allowPointSelect: true,
           cursor: 'pointer',
