@@ -6,6 +6,7 @@ require 'pry'
 require './config/database'
 require './features/support/robot_logger'
 
+require './web/models/setting'
 
 Dir['./lib/*'].each { |klass| require klass }
 Dir['./web/models/*'].each { |klass| require klass }

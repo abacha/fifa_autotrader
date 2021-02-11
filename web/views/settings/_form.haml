@@ -1,0 +1,13 @@
+- if @setting.errors.any?
+  = @setting.errors.messages
+
+%form.form{method: :post}
+  %input{type: :hidden, name: 'setting[id]', value: @setting.id}
+  .form-row
+    .form-group.col-md-3
+      %label Key
+      %input.form-control{name: 'setting[key]', type: :text, value: @setting.key}
+    .form-group.col-md-8
+      %label Value
+      %input.form-control{name: 'setting[value]', type: :text, value: @setting.value}
+  %button.btn.btn-primary.mb-2{type: :submit} Save

@@ -1,6 +1,6 @@
 before do
   @players = Player.all.order(status: :desc, name: :asc)
-  params['player'] ||= []
+  params['player'] ||= {}
 end
 
 get '/players' do

@@ -7,8 +7,8 @@ class LoginPage < BasePage
     sleep 10
     click_on 'Login'
     sleep 5
-    fill_in 'email', with: ENV['ORIGIN_EMAIL']
-    fill_in 'password', with: ENV['ORIGIN_PASSWORD']
+    fill_in 'email', with: Setting.get('ORIGIN_EMAIL')
+    fill_in 'password', with: Setting.get('ORIGIN_PASSWORD')
     click_on 'Log In'
     click_on 'Send Security Code'
     fill_in('oneTimeCode', with: security_code)

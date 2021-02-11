@@ -1,0 +1,16 @@
+%table.table.table-hover.table-striped.table-bordered.table-sm
+  %thead
+    %tr.d-flex
+      %th.col-md-3.text-center Key
+      %th.col-md-8.text-center Value
+      %th.col-md-1.text-center
+  %tbody
+    - @settings.each do |setting|
+      %tr.d-flex
+        %td.col-md-3=setting.key
+        %td.col-md-8=setting.value
+        %td.col-md-1.text-center
+          %a.btn.btn-outline-secondary.btn-sm{href: "/settings?id=#{setting.id}"}
+            %i.bi.bi-pencil-square
+
+= haml :'settings/_form'

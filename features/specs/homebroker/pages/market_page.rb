@@ -3,9 +3,9 @@
 class MarketPage < BasePage
   PAGE_MENU_LINK = '.ut-tile-transfer-market'
 
-  MAX_STOCK = ENV['MAX_STOCK'].to_i
-  MAX_TIME_LEFT = ENV['MAX_TIME_LEFT'].to_i
-  MAX_PLAYER_BIDS = ENV['MAX_PLAYER_BIDS'].to_i
+  MAX_STOCK = Setting.get('MAX_STOCK').to_i
+  MAX_TIME_LEFT = Setting.get('MAX_TIME_LEFT').to_i
+  MAX_PLAYER_BIDS = Setting.get('MAX_PLAYER_BIDS').to_i
 
   def refresh
     RobotLogger.msg('Refreshing market')

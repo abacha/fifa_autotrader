@@ -1,4 +1,6 @@
 class MatchedTrade < ActiveRecord::Base
+  EA_TAX = Setting.get('EA_TAX').to_f
+
   belongs_to :buy_trade, class_name: 'Trade', foreign_key: 'buy_trade_id'
   belongs_to :sell_trade, class_name: 'Trade', foreign_key: 'sell_trade_id'
 
@@ -19,7 +21,7 @@ class MatchedTrade < ActiveRecord::Base
 
   def calculate_profit
     self.profit =
-      -buy_trade.sold_for + (sell_trade.sold_for * (1-ENV['EA_TAX'].to_f))
+      -buy_trade.sold_for + (sell_trade.sold_for * (1-EA_TAX))
   end
 
   def calculate_duration
