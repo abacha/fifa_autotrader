@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class TransferTargetPage < BasePage
-  PAGE_MENU_LINK = '.ut-tile-transfer-targets'
+  def page_menu_link
+    '.ut-tile-transfer-targets'
+  end
 
   def clear_expired
-    click_on 'Transfers'
-    find(PAGE_MENU_LINK).click
+    enter_page
 
     if has_button?('Clear Expired')
       click_on 'Clear Expired'
@@ -15,16 +16,12 @@ class TransferTargetPage < BasePage
 
   def renew_bids
     market.refresh
-    click_on 'Transfers'
-    find(PAGE_MENU_LINK).click
-
-    player_list = all('.has-auction-data.outbid')
-    RobotLogger.msg("Renewing bids: #{player_list.count} outbid auctions")
+    enter_page
+    RobotLogger.msg('Renewing bids')
 
     while has_css?('.has-auction-data.outbid')
       line = first('.has-auction-data.outbid')
       line.click
-
       auction = Auction.build(line)
       player = Player.find_by(name: auction.player_name)
 
@@ -49,8 +46,7 @@ class TransferTargetPage < BasePage
         RobotLogger.log(:warn, { msg: msg })
 
         if msg.match(/Bid status changed, auction data will be updated/)
-          market.refresh
-          break
+          binding.pry
         end
       end
 
@@ -77,22 +73,8 @@ class TransferTargetPage < BasePage
     bids.map { |line| Auction.build(line) }
   end
 
-  def list_on_market(line, player)
-    line.click
-    sleep 2
-    click_on 'List on Transfer Market'
-    panels = all('.panelActions.open .panelActionRow')
-    panels[1].find('input').click
-    panels[1].find('input').set player.sell_value
-    panels[2].find('input').click
-    panels[2].find('input').set player.sell_value + 100
-    click_on 'List for Transfer'
-    RobotLogger.msg("Player listed to market: #{player.name} ($#{player.sell_value})")
-  end
-
   def clear_bought
-    click_on 'Transfers'
-    find('.ut-tile-transfer-targets').click
+    enter_page
 
     auctions = all('.has-auction-data.won').count
     RobotLogger.log(:info, { action: 'clear_bought', amount: auctions })
@@ -112,5 +94,20 @@ class TransferTargetPage < BasePage
       list_on_market(line, player)
       Trade.create!(auction.to_trade('B'))
     end
+  end
+
+  private
+
+  def list_on_market(line, player)
+    line.click
+    sleep 2
+    click_on 'List on Transfer Market'
+    panels = all('.panelActions.open .panelActionRow')
+    panels[1].find('input').click
+    panels[1].find('input').set player.sell_value
+    panels[2].find('input').click
+    panels[2].find('input').set player.sell_value + 100
+    click_on 'List for Transfer'
+    RobotLogger.msg("Player listed to market: #{player.name} ($#{player.sell_value})")
   end
 end

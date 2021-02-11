@@ -11,11 +11,11 @@ Auction = Struct.new(:timestamp, :player_name,
                'outbid'
              elsif line[:class].include?('won')
                'won'
-             else
-               'highest bid'
+             elsif line[:class].include?('highest-bid')
+               'highest-bid'
+             elsif line[:class].include?('expired')
+               'expired'
              end
-
-    value_data = {}
 
     new(
       {

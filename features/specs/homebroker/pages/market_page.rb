@@ -16,7 +16,6 @@ class MarketPage < BasePage
   end
 
   def buy_players
-    RobotLogger.msg('Going to market')
     Player.actives.each do |player|
       buy_player player if player.stock < MAX_STOCK
       sleep 4

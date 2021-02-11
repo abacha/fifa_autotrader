@@ -15,6 +15,12 @@ class BasePage
     end
   end
 
+  def enter_page
+    raise NotImplementedError unless respond_to?(:page_menu_link)
+    click_on 'Transfers'
+    find(page_menu_link).click
+  end
+
   def n(number)
     number.gsub(',', '').to_i
   end

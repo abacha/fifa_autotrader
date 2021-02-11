@@ -4,6 +4,7 @@ class MainPage < BasePage
   def execute
     login.execute
 
+    @last_market = Time.now
     i = 1
     while true
       start_time = Time.now.to_i
@@ -27,8 +28,13 @@ class MainPage < BasePage
         transfer_list.relist_players
       end
 
-      if i % 5 == 0
+      time_diff = (Time.now - @last_market).to_i
+      if time_diff >= (MarketPage::MAX_TIME_LEFT - 90)
+        time_output = ChronicDuration.output(time_diff, format: :short)
+        RobotLogger.msg(
+          "Last market time was #{time_output} ago, going to market!")
         market.buy_players
+        @last_market = Time.now
       end
 
       loop do
