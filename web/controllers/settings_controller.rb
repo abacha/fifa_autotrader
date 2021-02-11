@@ -4,13 +4,7 @@ before do
 end
 
 get '/settings' do
-  @setting =
-    if params['id']
-      Setting.find(params['id'])
-    else
-      Setting.new
-    end
-
+  @setting = Setting.find_or_initialize_by(id: params['id'])
   haml :'settings/index'
 end
 

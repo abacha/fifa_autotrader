@@ -4,7 +4,7 @@ before do
 end
 
 get '/players' do
-  @player = Player.find_by(name: params['name']) || Player.new(status: 1)
+  @player = Player.find_or_initialize_by(id: params['id'])
   haml :'players/index'
 end
 
