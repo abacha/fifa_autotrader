@@ -10,6 +10,8 @@ services:
     ports:
       - '8080:8080'
     command: ruby web/server.rb -o 0.0.0.0 -p 8080
+    env_file:
+      - '.env'
   robot:
     build:
       context: .
@@ -20,3 +22,5 @@ services:
     volumes:
       - "./:/app"
     command: cucumber
+    env_file:
+      - '.env'
