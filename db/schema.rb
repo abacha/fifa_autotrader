@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_31_195645) do
+ActiveRecord::Schema.define(version: 2021_02_12_144316) do
 
   create_table "matched_trades", force: :cascade do |t|
     t.string "buy_trade_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_01_31_195645) do
     t.integer "duration"
     t.integer "timestamp"
     t.string "player_name"
+    t.date "date"
   end
 
   create_table "players", force: :cascade do |t|
@@ -26,9 +27,15 @@ ActiveRecord::Schema.define(version: 2021_01_31_195645) do
     t.string "fullname"
     t.integer "max_bid"
     t.integer "sell_value"
-    t.integer "status"
+    t.integer "status", default: 0
     t.string "futbin_id"
     t.string "resource_id"
+    t.string "rarity"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "key"
+    t.text "value"
   end
 
   create_table "trades", force: :cascade do |t|
@@ -39,6 +46,7 @@ ActiveRecord::Schema.define(version: 2021_01_31_195645) do
     t.integer "sold_for"
     t.integer "buy_now"
     t.integer "matched", default: 0
+    t.date "date"
   end
 
 end

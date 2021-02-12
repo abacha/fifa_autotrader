@@ -1,0 +1,7 @@
+production:
+  adapter: sqlite3
+  database: <%= ENV['DATABASE_FILE'] %>
+
+development:
+  adapter: sqlite3
+  database: <%= ENV['DATABASE_FILE'] %>
