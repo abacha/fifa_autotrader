@@ -6,8 +6,8 @@ require 'fileutils'
 class MailService
   OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
   APPLICATION_NAME = 'fifa_autotrader'.freeze
-  CREDENTIALS_PATH = 'client_secrets.json'.freeze
-  TOKEN_PATH = 'token.yml'.freeze
+  CREDENTIALS_PATH = './config/client_secrets.json'.freeze
+  TOKEN_PATH = './tmp/token.yml'.freeze
   SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_MODIFY
   USER_ID = 'me'
 

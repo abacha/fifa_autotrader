@@ -2,8 +2,7 @@
 *.log
 *.png
 
-tmp/logs/*
-tmp/pages/*
+tmp/**/*
 
 *.sqlite3
 token.yml

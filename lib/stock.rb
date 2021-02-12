@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Stock
-  STOCK_FILE = 'stock.yml'
+  STOCK_FILE = './tmp/stock.yml'
 
   def self.save(auction_data)
     File.open(STOCK_FILE, 'w') { |file| file.write(auction_data.to_yaml) }

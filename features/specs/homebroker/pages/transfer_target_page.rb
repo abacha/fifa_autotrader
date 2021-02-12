@@ -103,11 +103,11 @@ class TransferTargetPage < BasePage
     line.click
     sleep 2
     click_on 'List on Transfer Market'
-    panels = all('.panelActions.open .panelActionRow')
-    panels[1].find('input').click
-    panels[1].find('input').set player.sell_value
-    panels[2].find('input').click
-    panels[2].find('input').set player.sell_value + 100
+    panel_path = '.panelActions.open .panelActionRow'
+    all(panel_path)[1].find('input').click
+    all(panel_path)[1].find('input').set player.sell_value
+    all(panel_path)[2].find('input').click
+    all(panel_path)[2].find('input').set player.sell_value + 100
     click_on 'List for Transfer'
     RobotLogger.msg("Player listed to market: #{player.name} ($#{player.sell_value})")
   end
