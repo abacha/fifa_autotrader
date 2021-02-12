@@ -20,7 +20,7 @@ def last_error
     hash = image.match(/screenshots\/(.*?)\./)[1]
     img_path = image.gsub('web/public', '')
     timestamp = image.match(/\d{8}_\d{6}/)[0]
-    error_msg = File.read("tmp/errors/#{hash}.log")
+    error_msg = File.read("#{ENV['TMP_FOLDER']}/errors/#{hash}.log")
 
     OpenStruct.new(
       img_path: img_path,

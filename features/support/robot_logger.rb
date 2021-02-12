@@ -6,7 +6,7 @@ require 'singleton'
 class RobotLogger
   include Singleton
 
-  LOG_FILE = 'tmp/logs/robot.log'
+  LOG_FILE = "#{ENV['TMP_FOLDER']}/logs/robot.log"
 
   def self.log(severity, msg)
     instance.log(severity, msg)

@@ -7,9 +7,9 @@ module ScreenshotSetup
   def record_error(message)
     id = rand(1000)
     datetime = Time.now.strftime('%Y%m%d_%H%M%S_%L')
-    File.write("#{Dir.pwd}/tmp/errors/#{datetime}_#{id}.log", message)
-    save_screenshot("#{Dir.pwd}/tmp/screenshots/#{datetime}_#{id}.png")
-    save_page("#{Dir.pwd}/tmp/pages/#{datetime}_#{id}.html")
+    File.write("#{ENV['TMP_FOLDER']}/errors/#{datetime}_#{id}.log", message)
+    save_screenshot("#{ENV['TMP_FOLDER']}/screenshots/#{datetime}_#{id}.png")
+    save_page("#{ENV['TMP_FOLDER']}/pages/#{datetime}_#{id}.html")
   end
   # rubocop:enable Lint/Debugger
 
@@ -20,7 +20,7 @@ module ScreenshotSetup
       hash = image.match(/\/(\d{3}_.*?)\./)[1]
       img_path = image.gsub('public', '')
       timestamp = image.match(/\d{8}_\d{6}/)[0]
-      error_msg = File.read("tmp/errors/#{hash}.log")
+      error_msg = File.read("#{ENV['TMP_FOLDER']}/errors/#{hash}.log")
 
       OpenStruct.new(
         img_path: img_path,
