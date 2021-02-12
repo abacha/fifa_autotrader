@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Player < ActiveRecord::Base
-  RARITY_FILE = 'rarities.yml'
+  RARITY_FILE = ENV['RARITY_FILE']
+
   validates :name, :fullname, :futbin_id, :sell_value, :max_bid, presence: true
   validate :check_rarity
 
