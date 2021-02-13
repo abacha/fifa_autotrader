@@ -12,3 +12,5 @@ pause
 
 capybara-*.png
 capybara-*.html
+
+shared_data
