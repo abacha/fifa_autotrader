@@ -1,0 +1,17 @@
+.col-sm-12
+  %table.table.table-hover.table-striped.table-bordered.table-sm
+    %thead
+      %tr
+        %th.text-center Player Name
+        %th.text-center Start Price
+        %th.text-center Current Bid
+        %th.text-center Buy Now
+        %th.text-center Timeleft
+    %tbody
+      - @stock.each do |line|
+        %tr
+          %td.text=line.player_name
+          %td.text-right=money line.start_price
+          %td.text-right=money line.current_bid
+          %td.text-right=money line.buy_now
+          %td.text-center=time line.timeleft

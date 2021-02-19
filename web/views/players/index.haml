@@ -11,6 +11,8 @@
     - @players.each do |player|
       - futbin_market_data = player.futbin_market_data
       %tr.d-flex
+        %input#max_bid_ratio{type: :hidden, value: max_bid_ratio(player)}
+        %input#sell_value_ratio{type: :hidden, value: sell_price_ratio(player)}
         %td.col.col-md-2{'data-toggle': 'tooltip', title: "#{player.fullname}"}
           %a{target: '_blank', href:"#{Futbin::URL_BASE}/21/sales/#{player.futbin_id}"}=player.name
         %td.col.col-md-1.text-center=player.stock
@@ -38,7 +40,7 @@
           %a.btn.btn-outline-secondary.btn-sm{href: "/players?id=#{player.id}"}
             %i.bi.bi-pencil-square
         %td.col.col-md-1.text-right=money futbin_market_data['avg_sell_price']
-        %td.col.col-md-1.text-center="#{((futbin_market_data['sell_rate'] || 0) * 100).to_i}%"
+        %td.col.col-md-1.text-center="#{futbin_market_data['sell_rate']}%"
 
 = haml :'players/_form'
 
@@ -46,4 +48,23 @@
   $('.update-player').click(function() {
     $.post('/players', $(this).data());
     location.reload();
+  });
+
+  $(document).ready(function() {
+    $("tbody tr").each(function() {
+      sell_value_ratio = $(this).find('#sell_value_ratio').val()
+      max_bid_ratio = $(this).find('#max_bid_ratio').val()
+
+      if (sell_value_ratio > 110) {
+        $(this).find("td:nth-child(6)").addClass('text-danger')
+      } else if (sell_value_ratio < 85) {
+        $(this).find("td:nth-child(6)").addClass('text-warning')
+      }
+
+      if (max_bid_ratio > 75) {
+        $(this).find("td:nth-child(5)").addClass('text-danger')
+      } else if (max_bid_ratio < 50) {
+        $(this).find("td:nth-child(5)").addClass('text-warning')
+      }
+    });
   });

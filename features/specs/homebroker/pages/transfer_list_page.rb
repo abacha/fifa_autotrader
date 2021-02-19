@@ -4,9 +4,8 @@ class TransferListPage < BasePage
   PAGE_MENU_LINK = '.ut-tile-transfer-list'
 
   def update_stock
-    stock = auctions.inject(Hash.new(0)) { |h, e| h[e.player_name] += 1; h }
-    Stock.save(stock)
-    RobotLogger.msg("Stock updated: #{stock}")
+    Stock.save(auctions)
+    RobotLogger.msg("Stock updated: #{Stock.count}")
   end
 
   def relist_players

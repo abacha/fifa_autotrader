@@ -16,7 +16,11 @@ class Futbin
   def self.get_player_avg_sell(resource_id)
     url =
       "#{URL_BASE}/getPlayerAvgSell?days=1&resourceId=#{resource_id}&platform=#{PLATFORM}"
-    fetch_json(url)
+    data = fetch_json(url)
+    {
+      'avg_sell_price' => data['avg_sell_price'].to_i,
+      'sell_rate' => (data['sell_rate'] * 100).to_i
+    }
   end
 
   def self.market_data
