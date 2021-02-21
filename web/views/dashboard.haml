@@ -1,7 +1,7 @@
-%meta(http-equiv='refresh' content='30')
 .row
   .col-md-8
-    = haml :_log
+    .p-2.mb-2.bg-light.col
+      %pre#log.pre-scrollable
   .col-md-4
     = haml :'reports/_stock'
 .row
@@ -14,3 +14,21 @@
         %h5.card-title="Last error: #{@last_error.timestamp}"
         %p.card-text=@last_error.error_msg
       %img.card-img-bottom{src: @last_error.img_path, width: '100%'}
+
+:javascript
+
+  function update_logs() {
+    $.ajax({
+      url: '/log',
+      success: function(data) {
+        $("#log").html(data);
+      },
+      complete: function() {
+        setTimeout(update_logs, 5000);
+      }
+    });
+  }
+
+  $(document).ready(function() {
+    update_logs();
+  });

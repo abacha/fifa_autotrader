@@ -3,13 +3,12 @@ require 'sinatra/json'
 get '/' do
   @stock = Stock.count
   @trades = Trade.order(timestamp: :desc).first(10)
-  @log = Rack::Utils.escape_html RobotLogger.tail(15)
   @last_error = last_error
   @players = Player.all
   haml :dashboard
 end
 
 get '/log' do
-  @log = Rack::Utils.escape_html RobotLogger.tail(300)
-  haml :_log
+  @log = Rack::Utils.escape_html RobotLogger.tail(params[:lines] || 15)
+  json @log
 end
