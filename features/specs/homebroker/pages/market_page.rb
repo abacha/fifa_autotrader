@@ -17,6 +17,7 @@ class MarketPage < BasePage
 
   def buy_players
     Player.actives.each do |player|
+      player.futbin_market_data
       buy_player player if player.stock < MAX_STOCK
       sleep 4
     end

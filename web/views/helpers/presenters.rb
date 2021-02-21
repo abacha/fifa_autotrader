@@ -10,7 +10,7 @@ helpers do
   end
 
   def time(value)
-    ChronicDuration.output(value, format: :short)
+    ChronicDuration.output(value, format: :short) if value
   end
 
   def datetime(value)

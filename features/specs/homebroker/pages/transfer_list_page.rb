@@ -12,7 +12,7 @@ class TransferListPage < BasePage
     click_on 'Transfers'
     find(PAGE_MENU_LINK).click
 
-    if has_css?('.has-auction-data.expired')
+    if has_button?('Re-list All')
       RobotLogger.msg('Relisting expired auctions')
       click_on 'Re-list All'
       click_on 'Yes'
