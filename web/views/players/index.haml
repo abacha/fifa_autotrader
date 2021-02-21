@@ -1,36 +1,36 @@
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead
     %tr.d-flex
-      %th.col.col-md-2.text-center Name
-      %th.col.col-md-1.text-center Stock
-      %th.col.col-md-2.text-center Max Bid
-      %th.col.col-md-2.text-center Sell Value
-      %th.col.col-md-2.text-center Status
-      %th.col.col-md-2.text-center{colspan: 2} Futbin
+      %th.col-sm-3.text-center Name
+      %th.col-sm-1.text-center Stock
+      %th.col-sm-2.text-center Max Bid
+      %th.col-sm-2.text-center Sell Value
+      %th.col-sm-2.text-center Status
+      %th.col-sm-2.text-center{colspan: 2} Futbin
   %tbody
     - @players.each do |player|
       - futbin_market_data = player.futbin_market_data
       %tr.d-flex
         %input#max_bid_ratio{type: :hidden, value: max_bid_ratio(player)}
         %input#sell_value_ratio{type: :hidden, value: sell_price_ratio(player)}
-        %td.col.col-md-2{'data-toggle': 'tooltip', title: "#{player.fullname}"}
+        %td.col-sm-3{'data-toggle': 'tooltip', title: "#{player.fullname}"}
           %a{target: '_blank', href:"#{Futbin::URL_BASE}/21/sales/#{player.futbin_id}"}=player.name
-        %td.col.col-md-1.text-center=player.stock
-        %td.col.col-md-2.d-flex
+        %td.col-sm-1.text-center=player.stock
+        %td.col-sm-2.d-flex
           %a.btn.btn-light.btn-xs.update-player.text-dark{'data-player': '{"id": '+"#{player.id}"+', "max_bid":'+"#{player.max_bid-100}"+'}'}
             %i.bi.bi-dash-circle
           %span.text-center{style: 'width: 75%'}
             = money player.max_bid
           %a.btn.btn-light.btn-xs.update-player.text-dark{'data-player': '{"id": '+"#{player.id}"+', "max_bid":'+"#{player.max_bid+100}"+'}'}
             %i.bi.bi-plus-circle
-        %td.col.col-md-2.d-flex
+        %td.col-sm-2.d-flex
           %a.btn.btn-light.btn-xs.update-player.text-dark{'data-player': '{"id": '+"#{player.id}"+', "sell_value":'+"#{player.sell_value-100}"+'}'}
             %i.bi.bi-dash-circle
           %span.text-center{style: 'width: 75%'}
             = money player.sell_value
           %a.btn.btn-light.btn-xs.update-player.text-dark{'data-player': '{"id": '+"#{player.id}"+', "sell_value":'+"#{player.sell_value+100}"+'}'}
             %i.bi.bi-plus-circle
-        %td.col.col-md-2.text-center
+        %td.col-sm-2.text-center
           - if player.status == 1
             %a.btn.btn-outline-secondary.btn-sm.update-player{'data-player': '{"id": '+"#{player.id}"+', "status":"0"}'}
               %i.bi.bi-check-circle-fill
@@ -39,8 +39,8 @@
               %i.bi.bi-dash-circle
           %a.btn.btn-outline-secondary.btn-sm{href: "/players?id=#{player.id}"}
             %i.bi.bi-pencil-square
-        %td.col.col-md-1.text-right=money futbin_market_data['avg_sell_price']
-        %td.col.col-md-1.text-center="#{futbin_market_data['sell_rate']}%"
+        %td.col-sm-1.text-right=money futbin_market_data['avg_sell_price']
+        %td.col-sm-1.text-center="#{futbin_market_data['sell_rate']}%"
 
 = haml :'players/_form'
 

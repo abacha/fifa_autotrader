@@ -3,9 +3,10 @@
   %head
     %title FIFA autotrader
     %link(rel='shortcut icon' href='/images/FA_logo.png')
-    %link(href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet')
+    %link(href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet')
     %link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css' rel='stylesheet')
     %link(href='https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css' rel='stylesheet')
+    %meta(name="viewport" content="width=device-width, initial-scale=1")
 
     %script{type: 'text/javascript', src: 'https://code.jquery.com/jquery-3.5.1.min.js'}
     %script{type: 'text/javascript',  src: 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js'}
@@ -25,12 +26,8 @@
         margin: 4px !important;
       }
   %body
-    %nav.navbar.navbar-dark.sticky-top.bg-dark.p-0
-      %a.navbar-brand.col-md-2.mr-0{href: '#'}
-        %img.d-inline-block.align-top{src: '/images/FA_logo.png', width: 30, height: 30}
-        FIFA Autotrader
     .container-fluid
-      .row
-        = haml :sidebar
-        %main.col-lg-10.col-xl-11.px-4.py-3{role: :main}
+      .row.wrapper.min-vh-100.flex-column.flex-sm-row
+        = haml :navbar
+        %main.col-sm-8.col-md-9.col-lg-9.bg-faded.py-3.flex-column
           = yield

@@ -1,0 +1,41 @@
+%aside.col-sm-4.col-md-3.col-lg-2.p-0.bg-dark.flex-shrink-1
+  %nav.navbar.navbar-expand-sm.navbar-dark.bg-dark.align-items-start.flex-sm-column.flex-row
+    %a.navbar-brand{:href => '#'}
+      %img{src: '/images/FA_logo.png', width: 30, height: 30}
+      FIFA Autotrader
+    %a.navbar-toggler{'data-target' => '.sidebar', 'data-toggle' => 'collapse', href: '#'}
+      %span.navbar-toggler-icon
+    .collapse.navbar-collapse.sidebar
+      %ul.flex-column.navbar-nav.w-100.justify-content-between
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/'}
+            %i.bi.bi-house
+            %span Dashboard
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/players'}
+            %i.bi.bi-people
+            %span Players
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/stock'}
+            %i.bi.bi-bucket
+            %span Stock
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/trades'}
+            %i.bi.bi-list
+            %span Trades
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/matched_trades'}
+            %i.bi.bi-book
+            %span Matched Trades
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/reports/charts'}
+            %i.bi.bi-bar-chart
+            %span Reports
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/reports/players'}
+            %i.bi.bi-table
+            %span Player Report
+        %li.nav-item
+          %a.nav-link.pl-0{href: '/settings'}
+            %i.bi.bi-gear
+            %span Settings

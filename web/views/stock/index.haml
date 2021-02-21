@@ -3,15 +3,15 @@
     %thead
       %tr
         %th.text-center Player Name
-        %th.text-center Start Price
-        %th.text-center Current Bid
-        %th.text-center Buy Now
+        %th.text-center Start
+        %th.d-none.d-md-block.text-center Current Bid
+        %th.text-center BIN
         %th.text-center Timeleft
     %tbody
       - @stock.each do |line|
         %tr
           %td.text=line.player_name
           %td.text-right=money line.start_price
-          %td.text-right=money line.current_bid
+          %td.d-none.d-md-block.text-right=money line.current_bid
           %td.text-right=money line.buy_now
           %td.text-center=time line.timeleft
