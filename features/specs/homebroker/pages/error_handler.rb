@@ -26,6 +26,9 @@ class ErrorHandler < BasePage
       RobotLogger.log(:warn, 'Logged on another device')
       sleep 300
       page.refresh
+    elsif error_msg.match(/CONNECTION LOST/)
+      RobotLogger.log(:error, 'Connection Lost')
+      exit 1
     elsif error_msg.match(/NO INTERNET CONNECTION/)
       RobotLogger.log(:error, 'No internet connection')
       exit 1
