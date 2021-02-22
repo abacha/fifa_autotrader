@@ -4,7 +4,7 @@ class MainPage < BasePage
   def execute
     login.execute
 
-    @last_market = Time.now
+    @last_market = 0
     i = 1
     while true
       start_time = Time.now.to_i
