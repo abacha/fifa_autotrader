@@ -61,7 +61,7 @@ class PlayerReport
   end
 
   def stock
-    Stock.by_player(player_name)
+    Stock.by_player(player.name)
   end
 
   def avg_buy_price
