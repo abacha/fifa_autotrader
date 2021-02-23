@@ -25,6 +25,6 @@ Capybara.configure do |config|
 
   config.default_driver = @driver
   config.app_host = 'https://www.ea.com/fifa/ultimate-team/web-app'
-  config.default_max_wait_time = ENV.fetch('MAX_WAIT_TIME', 10).to_i
+  config.default_max_wait_time = ENV.fetch('MAX_WAIT_TIME', 30).to_i
 end
 # rubocop:enable Metrics/BlockLength
