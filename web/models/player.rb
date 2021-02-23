@@ -30,9 +30,13 @@ class Player < ActiveRecord::Base
   end
 
   def futbin_market_data
-    Cache.fetch("futbin_market_data_#{name}") do
+    Cache.fetch(cache_key) do
       populate_resource_id if resource_id.blank?
       Futbin.get_player_avg_sell(resource_id)
     end
+  end
+
+  def cache_key
+    "futbin_market_data_#{name}"
   end
 end

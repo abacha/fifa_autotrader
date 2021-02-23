@@ -5,7 +5,7 @@ class Cache
   attr_accessor :store
 
   def self.store
-    instance.store ||= ActiveSupport::Cache::MemoryStore.new(expires_in: 3600)
+    instance.store ||= ActiveSupport::Cache::MemoryStore.new(expires_in: 7200)
   end
 
   def self.read(key)
@@ -18,5 +18,9 @@ class Cache
 
   def self.fetch(key, &block)
     store.fetch(key) { yield }
+  end
+
+  def self.delete(key)
+    store.delete key
   end
 end

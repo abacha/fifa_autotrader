@@ -1,10 +1,11 @@
 .row
-  .col-md-8
+  .col-md-12
     .p-2.mb-2.bg-light.col
       %pre#log.pre-scrollable
-  #stock.col-md-4
 .row
-  #trades.col-md-4
+  #trades.col-md-6
+  #stock.col-md-6
+.row
   #last_error.col-md-6
 
 :javascript
@@ -21,7 +22,7 @@
 
   $(document).ready(function() {
     update_partial('/dashboard/log', '#log', 5000);
-    update_partial('/dashboard/stock', '#stock', 60000);
-    update_partial('/dashboard/trades', '#trades', 60000);
-    update_partial('/dashboard/last_error', '#last_error', 30000);
+    update_partial('/dashboard/stock', '#stock', 30000);
+    update_partial('/dashboard/trades', '#trades', 30000);
+    update_partial('/dashboard/last_error', '#last_error', 15000);
   });

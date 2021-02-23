@@ -1,0 +1,5 @@
+.card
+  .card-body
+    %h5.card-title="Last error: #{@last_error.timestamp}"
+    %p.card-text=@last_error.error_msg
+  %img.card-img-bottom{src: @last_error.img_path, width: '100%'}

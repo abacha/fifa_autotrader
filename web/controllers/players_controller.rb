@@ -23,3 +23,9 @@ get '/players/status' do
   player.update!(status: params['status'].to_i)
   redirect '/players'
 end
+
+post '/players/refresh_cache' do
+  player = Player.find(params['id'])
+  Cache.delete(player.cache_key)
+  player.futbin_market_data
+end
