@@ -17,6 +17,8 @@ class LoginPage < BasePage
     sleep 10
 
     if has_css?('.origin-ux-textbox-status-message')
+      RobotLogger.msg('Asking for a new security code in one minute')
+      sleep 65
       click_on 'Resend my security code'
     end
   end

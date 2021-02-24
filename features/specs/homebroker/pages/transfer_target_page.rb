@@ -25,7 +25,10 @@ class TransferTargetPage < BasePage
           line.click
           auction = Auction.build(line)
           player = Player.find_by(name: auction.player_name)
-          next unless player
+          unless player
+            RobotLogger.msg("Player not found: #{auction.player_name}")
+            next
+          end
 
           action =
             if auction[:current_bid] < player.max_bid
@@ -85,18 +88,14 @@ class TransferTargetPage < BasePage
     auctions = all('.has-auction-data.won').count
     RobotLogger.log(:info, { action: 'clear_bought', amount: auctions })
 
-    0.upto(auctions - 1) do |i|
-      line = all('.has-auction-data.won')[i]
-      next unless line
-
+    while has_css?('.has-auction-data.won')
+      line = first('.has-auction-data.won')
+      line.click
       auction = Auction.build(line)
-
       player = Player.find_by(name: auction.player_name)
       next unless player
-
       RobotLogger.msg(
         "Player bought: #{auction.player_name} ($#{auction.current_bid})")
-
       list_on_market(line, player)
       Trade.create!(auction.to_trade('B'))
     end
@@ -105,15 +104,25 @@ class TransferTargetPage < BasePage
   private
 
   def list_on_market(line, player)
-    line.click
-    sleep 2
     click_on 'List on Transfer Market'
-    panel_path = '.panelActions.open .panelActionRow'
-    all(panel_path)[1].find('input').click
-    all(panel_path)[1].find('input').set player.sell_value
-    all(panel_path)[2].find('input').click
-    all(panel_path)[2].find('input').set player.sell_value + 100
+
+    set_input(0, player.sell_value)
+    set_input(1, player.sell_value + 100)
+
     click_on 'List for Transfer'
     RobotLogger.msg("Player listed to market: #{player.name} ($#{player.sell_value})")
+  end
+
+  def set_input(i, value)
+    panel_path = '.panelActions.open .panelActionRow'
+    input = all("#{panel_path} input")[i]
+    input.click
+    input.set value
+    first(panel_path).click
+    sleep 1
+
+    if n(input.value) != value
+      raise StandardError.new("MIXED VALUE: #{n(input.value)} != #{value}")
+    end
   end
 end
