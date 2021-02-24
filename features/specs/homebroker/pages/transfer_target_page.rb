@@ -15,43 +15,48 @@ class TransferTargetPage < BasePage
   end
 
   def renew_bids
-    market.refresh
-    enter_page
-    RobotLogger.msg('Renewing bids')
+      market.refresh
+      enter_page
+      RobotLogger.msg('Renewing bids')
 
-    while has_css?('.has-auction-data.outbid')
-      line = first('.has-auction-data.outbid')
-      line.click
-      auction = Auction.build(line)
-      player = Player.find_by(name: auction.player_name)
+      while has_css?('.has-auction-data.outbid')
+        line = first('.has-auction-data.outbid')
+        begin
+          line.click
+          auction = Auction.build(line)
+          player = Player.find_by(name: auction.player_name)
+          next unless player
 
-      next unless player
+          action =
+            if auction[:current_bid] < player.max_bid
+              click_on 'Make Bid'
+              'bid'
+            else
+              click_on 'Unwatch'
+              'unwatch'
+            end
 
-      action =
-        if auction[:current_bid] < player.max_bid
-          click_on 'Make Bid'
-          'bid'
-        else
-          click_on 'Unwatch'
-          'unwatch'
-        end
+          RobotLogger.log(:info, { action: action,
+                                   name: player.name,
+                                   current_bid: auction.current_bid,
+                                   max_bid: player.max_bid  })
 
-      RobotLogger.log(:info, { action: action,
-                               name: player.name,
-                               current_bid: auction.current_bid,
-                               max_bid: player.max_bid  })
-
-      if has_css?('.Notification.negative')
-        msg = find('.Notification.negative').text
-        RobotLogger.log(:warn, { msg: msg })
-
-        if msg.match(/Bid status changed, auction data will be updated/)
-          market.refresh
-          break
+          handle_bid_status_changed if has_css?('.Notification.negative')
+          sleep 3
+        rescue Selenium::WebDriver::Error::StaleElementReferenceError => e
+          next
         end
       end
+  end
 
-      sleep 6
+  def handle_bid_status_changed
+    msg = find('.Notification.negative').text
+    RobotLogger.log(:warn, { msg: msg })
+
+    if msg.match(/Bid status changed, auction data will be updated/)
+      click_on 'Compare Price'
+      item = 'div.paginated-item-list.ut-pinned-list ul li.outbid'
+      find(item).click if has_css?(item, wait: 50)
     end
   end
 

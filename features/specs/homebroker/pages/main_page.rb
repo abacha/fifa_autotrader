@@ -19,6 +19,10 @@ class MainPage < BasePage
 
   def process(i)
     do_process do
+      transfer_list.clear_sold
+      transfer_list.relist_players
+      transfer_list.update_stock
+
       bids = transfer_target.list_bids
 
       if bids.detect { |bid| bid.status == 'expired' }
@@ -45,10 +49,6 @@ class MainPage < BasePage
         min_time = (outbid && outbid.timeleft) ? outbid.timeleft : 1_000
         break if min_time > 120
       end
-
-      transfer_list.clear_sold
-      transfer_list.relist_players
-      transfer_list.update_stock
     end
   end
 

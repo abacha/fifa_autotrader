@@ -7,8 +7,16 @@ class Stock
     File.open(STOCK_FILE, 'w') { |file| file.write(auctions.to_yaml) }
   end
 
+  def self.data
+    file_data = all.map do |auction|
+      auction.to_h.slice(:start_price, :current_bid, :buy_now, :timeleft, :player_name)
+    end
+  end
+
   def self.all
-    YAML.load(File.read(STOCK_FILE))
+    Cache.fetch('stock', expires_in: 60) do
+      YAML.load(File.read(STOCK_FILE))
+    end
   end
 
   def self.count

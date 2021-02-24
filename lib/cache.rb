@@ -16,8 +16,8 @@ class Cache
     store.write(key, value)
   end
 
-  def self.fetch(key, &block)
-    store.fetch(key) { yield }
+  def self.fetch(*params, &block)
+    store.send(:fetch, *params) { block.call }
   end
 
   def self.delete(key)
