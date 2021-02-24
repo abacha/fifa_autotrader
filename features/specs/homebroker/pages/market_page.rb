@@ -17,9 +17,14 @@ class MarketPage < BasePage
 
   def buy_players
     Player.actives.each do |player|
-      player.futbin_market_data
-      buy_player player if player.stock < MAX_STOCK
-      sleep 4
+      cache_time = (Cache.read("MARKET_REFRESH_#{player.name}") || 2.hour.ago) - MAX_TIME_LEFT
+      if player.stock < MAX_STOCK && (cache_time && cache_time <= Time.now)
+        buy_player player
+        sleep 4
+      else
+        timeleft = ChronicDuration.output((cache_time - Time.now).round)
+        RobotLogger.msg("Skipping player #{player.name} for #{timeleft}")
+      end
     end
   end
 
@@ -64,6 +69,9 @@ class MarketPage < BasePage
 
       if timeleft > MAX_TIME_LEFT
         RobotLogger.msg("Skipping player, min. time left: #{text}")
+        Cache.write("MARKET_REFRESH_#{player.name}",
+                    Time.now + [timeleft, 1.hour].min,
+                    expires_in: 1.hour)
         break
       end
 

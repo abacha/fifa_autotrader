@@ -12,8 +12,8 @@ class Cache
     store.read key
   end
 
-  def self.write(key, value)
-    store.write(key, value)
+  def self.write(*params)
+    store.send(:write, *params)
   end
 
   def self.fetch(*params, &block)
