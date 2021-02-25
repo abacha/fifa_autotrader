@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TransferTargetPage < BasePage
+  class MixedValueError < StandardError; end
+
   def page_menu_link
     '.ut-tile-transfer-targets'
   end
@@ -87,17 +89,27 @@ class TransferTargetPage < BasePage
 
     auctions = all('.has-auction-data.won').count
     RobotLogger.log(:info, { action: 'clear_bought', amount: auctions })
+      while has_css?('.has-auction-data.won')
+        begin
+          line = first('.has-auction-data.won')
+          line.click
+          auction = Auction.build(line)
+          player = Player.find_by(name: auction.player_name)
+          next unless player
 
-    while has_css?('.has-auction-data.won')
-      line = first('.has-auction-data.won')
-      line.click
-      auction = Auction.build(line)
-      player = Player.find_by(name: auction.player_name)
-      next unless player
-      RobotLogger.msg(
-        "Player bought: #{auction.player_name} ($#{auction.current_bid})")
-      list_on_market(line, player)
-      Trade.create!(auction.to_trade('B'))
+          RobotLogger.msg(
+            "Player bought: #{auction.player_name} ($#{auction.current_bid})")
+          begin
+            list_on_market(line, player)
+          rescue MixedValueError => e
+            RobotLogger.log(:error, e.message)
+            next
+          end
+
+          Trade.create!(auction.to_trade('B'))
+      rescue Selenium::WebDriver::Error::StaleElementReferenceError => e
+        next
+      end
     end
   end
 
@@ -107,22 +119,28 @@ class TransferTargetPage < BasePage
     click_on 'List on Transfer Market'
 
     set_input(0, player.sell_value)
-    set_input(1, player.sell_value + 100)
+    gap = player.sell_value > 10_000 ? 250 : 100
+    set_input(1, player.sell_value + gap)
 
     click_on 'List for Transfer'
-    RobotLogger.msg("Player listed to market: #{player.name} ($#{player.sell_value})")
+    sleep 5
+    RobotLogger.msg(
+      "Player listed to market: #{player.name} ($#{player.sell_value})")
   end
 
   def set_input(i, value)
     panel_path = '.panelActions.open .panelActionRow'
     input = all("#{panel_path} input")[i]
+    sleep 1
     input.click
+    sleep 1
     input.set value
+    sleep 1
     first(panel_path).click
     sleep 1
 
     if n(input.value) != value
-      raise StandardError.new("MIXED VALUE: #{n(input.value)} != #{value}")
+      raise MixedValueError.new("MIXED VALUE: #{n(input.value)} != #{value}")
     end
   end
 end

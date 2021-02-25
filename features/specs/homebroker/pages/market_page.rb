@@ -17,8 +17,13 @@ class MarketPage < BasePage
 
   def buy_players
     Player.actives.each do |player|
-      cache_time = (Cache.read("MARKET_REFRESH_#{player.name}") || 2.hour.ago) - MAX_TIME_LEFT
-      if player.stock < MAX_STOCK && (cache_time && cache_time <= Time.now)
+      next if player.stock >= MAX_STOCK
+
+      cache_time =
+        (Cache.read("MARKET_REFRESH_#{player.name}") || 2.hour.ago) -
+        MAX_TIME_LEFT
+
+      if cache_time && cache_time <= Time.now
         buy_player player
         sleep 4
       else
