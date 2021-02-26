@@ -30,7 +30,6 @@ Auction = Struct.new(:timestamp, :player_name,
     value_data
   end
 
-
   def to_trade(kind)
     {
       timestamp: timestamp,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 before do
   @players = Player.all.order(status: :desc, name: :asc)
   params['player'] ||= {}

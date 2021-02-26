@@ -11,13 +11,11 @@ class Player < ActiveRecord::Base
   end
 
   def self.rarities
-    YAML.load(File.read(RARITY_FILE))
+    YAML.safe_load(File.read(RARITY_FILE))
   end
 
   def check_rarity
-    if rarity && !Player.rarities.include?(rarity)
-      errors.add(:rarity, :invalid)
-    end
+    errors.add(:rarity, :invalid) if rarity && !Player.rarities.include?(rarity)
   end
 
   def populate_resource_id

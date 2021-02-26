@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlayerReport
   attr_reader :player, :trades
 
@@ -12,14 +14,14 @@ class PlayerReport
 
   def report
     OpenStruct.new({
-      total: matched_trades.count,
-      stock: stock,
-      profit: profit,
-      avg_profit: avg_profit,
-      avg_duration: avg_duration,
-      avg_buy_price: avg_buy_price,
-      avg_sell_price: avg_sell_price,
-      player: player
+        total: matched_trades.count,
+        stock: stock,
+        profit: profit,
+        avg_profit: avg_profit,
+        avg_duration: avg_duration,
+        avg_buy_price: avg_buy_price,
+        avg_sell_price: avg_sell_price,
+        player: player
     })
   end
 
@@ -27,7 +29,7 @@ class PlayerReport
     trade_ids = trades.pluck(:id)
     @matched_trades ||=
       MatchedTrade.where(buy_trade_id: trade_ids).
-        or(MatchedTrade.where(sell_trade_id: trade_ids))
+      or(MatchedTrade.where(sell_trade_id: trade_ids))
   end
 
   def total(kind)
@@ -45,7 +47,7 @@ class PlayerReport
 
   def avg_profit
     profit / amount('S')
-  rescue
+  rescue ZeroDivisionError
     0
   end
 
@@ -56,7 +58,7 @@ class PlayerReport
 
     ((matched_trades.sum(:duration) + buy_trades.sum) /
       (amount('S') + buy_trades.size)).to_i
-  rescue
+  rescue ZeroDivisionError
     0
   end
 
@@ -66,13 +68,13 @@ class PlayerReport
 
   def avg_buy_price
     total('B') / amount('B')
-  rescue
+  rescue ZeroDivisionError
     0
   end
 
   def avg_sell_price
     total('S') / amount('S')
-  rescue
+  rescue ZeroDivisionError
     0
   end
 end

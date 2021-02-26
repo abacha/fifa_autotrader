@@ -22,7 +22,6 @@ class RobotLogger
         log = Logger.new(LOG_FILE, 'daily')
         log.formatter = proc do |severity, datetime, progname, msg|
           date_format = datetime.strftime("%Y-%m-%d %H:%M:%S")
-          #if severity == "INFO" or severity == "WARN"
           "[#{date_format}] #{severity[0]}: #{msg}\n"
         end
         log
@@ -34,7 +33,7 @@ class RobotLogger
     logger.send(severity, msg)
   end
 
-  def self.tail(n = 100)
-    `tail -n#{n} #{LOG_FILE}`
+  def self.tail(lines = 100)
+    `tail -n#{lines} #{LOG_FILE}`
   end
 end

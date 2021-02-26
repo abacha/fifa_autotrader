@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module ScreenshotSetup
   include Capybara::DSL
@@ -14,7 +14,7 @@ module ScreenshotSetup
   # rubocop:enable Lint/Debugger
 
   def self.last_error
-    image = Dir['public/screenshots/*.png'].sort.last
+    image = Dir['public/screenshots/*.png'].max
 
     if image
       hash = image.match(/\/(\d{3}_.*?)\./)[1]

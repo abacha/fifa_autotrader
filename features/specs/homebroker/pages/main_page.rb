@@ -46,28 +46,26 @@ class MainPage < BasePage
         transfer_target.renew_bids
         bids = transfer_target.list_bids
         outbid = bids.detect { |bid| bid.status == 'outbid' }
-        min_time = (outbid && outbid.timeleft) ? outbid.timeleft : 1_000
+        min_time = (outbid&.timeleft) ? outbid.timeleft : 1_000
         break if min_time > 120
       end
     end
   end
 
   def do_process(&block)
-    begin
-      block.call
-    rescue Selenium::WebDriver::Error::WebDriverError,
-      Capybara::CapybaraError => e
+    block.call
+  rescue Selenium::WebDriver::Error::WebDriverError,
+         Capybara::CapybaraError => e
 
-      error_msg = e.message
-      dialog = '.Dialog'
+    error_msg = e.message
+    dialog = '.Dialog'
 
-      if has_css?(dialog)
-        error_msg = find(dialog).text
-      end
-
-      ErrorHandler.bot_verification
-      ErrorHandler.handle(error_msg)
+    if has_css?(dialog)
+      error_msg = find(dialog).text
     end
+
+    ErrorHandler.bot_verification
+    ErrorHandler.handle(error_msg)
   end
 
   private

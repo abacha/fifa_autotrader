@@ -7,13 +7,7 @@ class LoginPage < BasePage
     sleep 10
     click_on 'Login'
     sleep 5
-    fill_in 'email', with: Setting.get('ORIGIN_EMAIL')
-    fill_in 'password', with: Setting.get('ORIGIN_PASSWORD')
-    click_on 'Log In'
-    click_on 'Send Security Code'
-    fill_in('oneTimeCode', with: security_code)
-    click_on 'Log In'
-
+    fill_form
     sleep 10
 
     if has_css?('.origin-ux-textbox-status-message')
@@ -24,6 +18,15 @@ class LoginPage < BasePage
   end
 
   private
+
+  def fill_form
+    fill_in 'email', with: Setting.get('ORIGIN_EMAIL')
+    fill_in 'password', with: Setting.get('ORIGIN_PASSWORD')
+    click_on 'Log In'
+    click_on 'Send Security Code'
+    fill_in('oneTimeCode', with: security_code)
+    click_on 'Log In'
+  end
 
   def security_code
     while (security_code = MailService.security_code).nil?

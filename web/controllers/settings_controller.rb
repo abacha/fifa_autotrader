@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 before do
   @settings = Setting.all
   params['setting'] ||= {}

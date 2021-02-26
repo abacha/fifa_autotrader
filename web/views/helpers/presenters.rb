@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 helpers do
   def total(list, method)
     list.sum do |item|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'google/apis/gmail_v1'
 require 'googleauth'
 require 'googleauth/stores/file_token_store'
@@ -7,9 +9,9 @@ class MailService
   OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
   APPLICATION_NAME = 'fifa_autotrader'.freeze
   CREDENTIALS_PATH = './config/client_secrets.json'.freeze
-  TOKEN_PATH = ENV['GMAIL_TOKEN_PATH'].freeze
+  TOKEN_PATH = ENV['GMAIL_TOKEN_PATH']
   SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_MODIFY
-  USER_ID = 'me'
+  USER_ID = 'me'.freeze
 
   def authorize
     client_id = Google::Auth::ClientId.from_file CREDENTIALS_PATH
@@ -46,13 +48,13 @@ class MailService
       USER_ID, q:"from:'ea@e.ea.com' subject:'código de segurança' label:unread"
     ).messages
 
-    if messages
-      message_id = messages.first.id
-      message_detail = gmail_service.get_user_message(USER_ID, message_id)
-      delete_message(message_id)
-      security_code = message_detail.snippet.
-        match(/código de segurança da EA: (\d{6})/)[1]
-    end
+    return unless messages
+
+    message_id = messages.first.id
+    message_detail = gmail_service.get_user_message(USER_ID, message_id)
+    delete_message(message_id)
+    security_code = message_detail.snippet.
+      match(%r{código de segurança da EA: (\d{6})})[1]
   end
 
   def self.security_code

@@ -17,6 +17,7 @@ class BasePage
 
   def enter_page
     raise NotImplementedError unless respond_to?(:page_menu_link)
+
     click_on 'Transfers'
     find(page_menu_link).click
   end
@@ -26,6 +27,7 @@ class BasePage
   end
 
   private
+
   def market
     @market ||= MarketPage.new
   end

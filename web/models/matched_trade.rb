@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchedTrade < ActiveRecord::Base
   EA_TAX = Setting.get('EA_TAX').to_f
 
@@ -14,14 +16,12 @@ class MatchedTrade < ActiveRecord::Base
   after_save :mark_matched_trades
 
   def trade_players
-    if buy_trade.player_name != sell_trade.player_name
-      errors.add(:sell_trade_id, 'trade players are different')
-    end
+    errors.add(:sell_trade_id, 'trade players are different') if buy_trade.player_name != sell_trade.player_name
   end
 
   def calculate_profit
     self.profit =
-      -buy_trade.sold_for + (sell_trade.sold_for * (1-EA_TAX))
+      -buy_trade.sold_for + (sell_trade.sold_for * (1 - EA_TAX))
   end
 
   def calculate_duration

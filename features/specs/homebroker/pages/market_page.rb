@@ -33,23 +33,15 @@ class MarketPage < BasePage
     end
   end
 
-  def snipe(player)
-    search(player)
-    auctions = all('.has-auction-data').count
-  end
-
   def search(player)
     click_on 'Transfers'
     find(PAGE_MENU_LINK).click
-
     fill_input('.ut-player-search-control input', player.fullname)
     click_on player.fullname
-
     if player.rarity
       find('span', text: 'RARITY').click
       find('li', text: player.rarity).click
     end
-
     all('.search-prices .price-filter input')[1].click
     all('.search-prices .price-filter input')[1].set player.max_bid
     click_on 'Search'

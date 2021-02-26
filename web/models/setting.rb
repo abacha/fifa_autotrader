@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/cache'
 
 class Setting < ActiveRecord::Base
