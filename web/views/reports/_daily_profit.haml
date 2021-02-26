@@ -1,6 +1,6 @@
-.col-md-12
+.col-md-10
   #profit
-.col-md-12
+.col-md-10
   #trades
 :javascript
   dates = #{@dates}
@@ -36,17 +36,23 @@
     data[key].push({x: Date.parse(trades[i][0]), y: trades[i][2]})
   }
 
-  Highcharts.chart('profit', {
+  Highcharts.stockChart('profit', {
     credits: false,
     chart: { zoomType: 'x' },
-    plotOptions: {
-      series: { pointPadding: 0, groupPadding: 0.3 }
-    },
     title: { text: 'Daily Profit' },
+    rangeSelector: {
+      buttons: [
+        { type: 'week', count: 1, text: '1w' },
+        { type: 'month', count: 1, text: '1m' },
+        { type: 'month', count: 6, text: '6m' },
+        { type: 'all', text: 'All' }
+      ],
+      selected: 1
+    },
     xAxis: [ { type: 'datetime', crosshair: true } ],
     yAxis: [
-      { title: { text: '' } },
-      { title: { text: '' }, opposite: true },
+      { title: { text: 'Profit' } },
+      { title: { text: 'Avg. Profit' }, opposite: false },
     ],
     tooltip: { shared: true },
     series: [
@@ -67,20 +73,25 @@
     ]
   });
 
-  Highcharts.chart('trades', {
+  Highcharts.stockChart('trades', {
     credits: false,
     chart: { zoomType: 'x' },
     title: { text: 'Trades' },
+    rangeSelector: {
+      buttons: [
+        { type: 'week', count: 1, text: '1w' },
+        { type: 'month', count: 1, text: '1m' },
+        { type: 'month', count: 6, text: '6m' },
+        { type: 'all', text: 'All' }
+      ],
+      selected: 1
+    },
     plotOptions: {
       column: { grouping: true },
       series: { pointPadding: 0, groupPadding: 0.2 }
     },
-    xAxis: [
-      { type: 'datetime', crosshair: true }
-    ],
-    yAxis: [
-      { title: { text: '' } },
-    ],
+    xAxis: [ { type: 'datetime', crosshair: true } ],
+    yAxis: [ { title: { text: 'Trades' } }, ],
     tooltip: { shared: true },
     series: [
       {
