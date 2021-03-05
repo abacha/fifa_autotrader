@@ -70,9 +70,18 @@ class MainPage < BasePage
 
   private
 
+  def restart?
+    if File.exists?('restart')
+      FileUtils.rm_f('restart')
+      RobotLogger.msg('Restarting application')
+      exit 1
+    end
+  end
+
   def pause?
     if File.exists?('pause')
       FileUtils.rm_f('pause')
+      RobotLogger.msg('Pausing application')
       binding.pry
     end
   end

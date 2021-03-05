@@ -8,6 +8,8 @@ class ErrorHandler < BasePage
   def handle(error_msg)
     if error_msg.match(/LOGIN UNAVAILABLE/)
       exit 1
+    elsif error_msg.match(/EA ACCOUNT SERVERS UNAVAILABLE/)
+      click_on 'Retry'
     elsif error_msg.match(/Your Transfer Targets list is full/)
       transfer_target.clear_expired
       RobotLogger.log(:warn, 'Transfer targets list full')
