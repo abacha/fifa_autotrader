@@ -20,6 +20,7 @@ gem 'sinatra-activerecord'
 gem 'haml'
 gem 'sqlite3'
 gem 'will_paginate'
+gem 'ransack'
 
 gem 'activesupport'
 gem 'actionview'
