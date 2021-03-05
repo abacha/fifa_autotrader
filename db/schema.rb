@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_12_144316) do
+ActiveRecord::Schema.define(version: 2021_02_12_161848) do
 
   create_table "matched_trades", force: :cascade do |t|
     t.string "buy_trade_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_02_12_144316) do
   create_table "settings", force: :cascade do |t|
     t.string "key"
     t.text "value"
+    t.integer "secure", default: 0, null: false
   end
 
   create_table "trades", force: :cascade do |t|

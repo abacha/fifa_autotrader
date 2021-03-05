@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 before do
-  @settings = Setting.all
+  @settings = Setting.masked_all
   params['setting'] ||= {}
 end
 
 get '/settings' do
-  @setting = Setting.find_or_initialize_by(id: params['id'])
+  @setting = Setting.find_or_initialize_by(id: params['id']).mask
   haml :'settings/index'
 end
 
