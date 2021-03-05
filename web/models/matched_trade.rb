@@ -14,6 +14,12 @@ class MatchedTrade < ActiveRecord::Base
   before_save :set_timestamp
   before_save :set_player_name
   after_save :mark_matched_trades
+  after_destroy :unmatch_trades
+
+  def unmatch_trades
+    buy_trade&.update(matched: 0)
+    sell_trade&.update(matched: 0)
+  end
 
   def trade_players
     errors.add(:sell_trade_id, 'trade players are different') if buy_trade.player_name != sell_trade.player_name
