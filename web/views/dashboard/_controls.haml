@@ -1,0 +1,23 @@
+.row
+  .col-md-12
+    .btn-group
+      %button.btn.command.btn-primary{data: { command: 'PAUSE', queued: "#{Command.queued?('PAUSE')}"} } Pause
+      %button.btn.command.btn-primary{data: { command: 'RESTART', queued: "#{Command.queued?('RESTART')}"} } Restart
+
+:javascript
+  $(document).ready(function() {
+    $('.command').each(function() {
+      if ($(this).data('queued')) {
+        $(this).attr('disabled', true);
+        $(this).removeClass('btn-primary');
+        $(this).addClass('btn-secondary');
+      }
+    });
+
+    $('.command').bind('click', function() {
+      if (window.confirm("Confirm command: " + $(this).data('command'))) {
+        $.post('/dashboard/command', { 'command': $(this).data('command') },
+          function(data) { location.reload(); });
+      }
+    });
+  });

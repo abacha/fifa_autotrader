@@ -25,3 +25,7 @@ get '/dashboard/last_error' do
   @last_error = last_error
   haml :'dashboard/_last_error', layout: false
 end
+
+post '/dashboard/command' do
+  Command.queue(params[:command])
+end
