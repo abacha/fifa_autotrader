@@ -11,10 +11,10 @@ class Trade < ActiveRecord::Base
   end
 
   def destroy_matched_trade
-    matched_trade.destroy
+    matched_trade&.destroy
   end
 
   def matched_trade
-    MatchedTrade.where('buy_trade_id = ? OR sell_trade_id = ?', id, id)
+    MatchedTrade.where('buy_trade_id = ? OR sell_trade_id = ?', id, id).first
   end
 end

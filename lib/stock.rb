@@ -44,6 +44,6 @@ class Stock
           current_bid: stocks[i].current_bid
         )
       end
-    end.flatten.sort_by { |line| line.buy_timestamp }
+    end.flatten.sort_by { |line| line.buy_timestamp || Time.now }
   end
 end
