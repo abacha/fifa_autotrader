@@ -101,6 +101,7 @@ GEM
     haml (5.2.1)
       temple (>= 0.8.0)
       tilt
+    hkdf (0.3.0)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -222,6 +223,9 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    webpush (0.3.1)
+      hkdf (~> 0.2)
+      jwt
     will_paginate (3.3.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -251,6 +255,7 @@ DEPENDENCIES
   sinatra-activerecord
   sinatra-reloader
   sqlite3
+  webpush (= 0.3.1)
   will_paginate
 
 BUNDLED WITH

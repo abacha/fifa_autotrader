@@ -13,7 +13,7 @@ class Setting < ActiveRecord::Base
 
   def self.get(key)
     Cache.fetch("SETTINGS_#{key}") do
-      find_by(key: key).try(:value)
+      find_by(key: key)&.value
     end
   end
 

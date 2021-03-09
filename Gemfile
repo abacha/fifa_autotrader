@@ -21,6 +21,7 @@ gem 'haml'
 gem 'sqlite3'
 gem 'will_paginate'
 gem 'ransack'
+gem 'webpush', '= 0.3.1'
 
 gem 'activesupport'
 gem 'actionview'

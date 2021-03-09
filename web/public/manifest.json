@@ -1,0 +1,13 @@
+{
+  "name": "FIFA Autotrader",
+  "short_name": "FIFA Autotrader",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "images/FA_logo.png",
+      "sizes": "400x400",
+      "type": "image/png"
+    }
+  ]
+}
