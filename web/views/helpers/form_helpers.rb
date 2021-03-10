@@ -2,7 +2,7 @@
 
 helpers do
   def players_list
-    Player.all.map { |player| player.name }
+    Player.all.map(&:name)
   end
 
   def kinds_list

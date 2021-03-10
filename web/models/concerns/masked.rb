@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 module Concerns
   module Masked
     def masked_all
-      all.each do |item|
-        item.mask
-      end
+      all.each(&:mask)
     end
   end
 end

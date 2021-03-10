@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Command
-  LIST = %w[PAUSE RESTART]
+  LIST = %w[PAUSE RESTART].freeze
 
   def self.check_all
     LIST.each { |cmd| check(cmd) }
@@ -21,11 +21,11 @@ class Command
   def self.check(cmd)
     return false unless LIST.include?(cmd)
 
-    if queued?(cmd)
-      FileUtils.rm_f(cmd)
-      RobotLogger.msg("Executing command: #{cmd}")
-      commands[cmd].call
-    end
+    return unless queued?(cmd)
+
+    FileUtils.rm_f(cmd)
+    RobotLogger.msg("Executing command: #{cmd}")
+    commands[cmd].call
   end
 
   def self.commands

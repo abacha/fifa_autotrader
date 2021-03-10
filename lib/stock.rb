@@ -8,14 +8,14 @@ class Stock
   end
 
   def self.data
-    file_data = all.map do |auction|
+    all.map do |auction|
       auction.to_h.slice(:start_price, :current_bid, :buy_now, :timeleft, :player_name)
     end
   end
 
   def self.all
     Cache.fetch('stock', expires_in: 60) do
-      YAML.load(File.read(STOCK_FILE))
+      YAML.safe_load(File.read(STOCK_FILE))
     end
   end
 
@@ -30,7 +30,6 @@ class Stock
 
   def self.full_stock
     grouped = Stock.all.group_by(&:player_name)
-    data = []
 
     grouped.map do |player_name, stocks|
       trades = Trade.where(matched: 0, kind: 'B', player_name: player_name)
