@@ -14,7 +14,7 @@ class SettingsController < ApplicationController
   post '/' do
     @setting = Setting.find_or_initialize_by(id: params['setting']['id'])
 
-    if @setting.update_attributes(params['setting'])
+    if @setting.update(params['setting'])
       redirect '/settings'
     else
       haml :'settings/index'

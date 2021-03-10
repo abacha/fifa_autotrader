@@ -14,7 +14,7 @@ class PlayersController < ApplicationController
   post '/' do
     @player = Player.find_or_initialize_by(id: params['player']['id'])
 
-    if @player.update_attributes(params['player'])
+    if @player.update(params['player'])
       redirect '/players'
     else
       haml :'players/index'
