@@ -47,7 +47,7 @@ class ErrorHandler < BasePage
     elsif find('body').text == ''
       page.refresh
     else
-      HooksConfig.record_error(error_msg)
+      ErrorCapturer.record_error(error_msg)
       RobotLogger.log(:error, error_msg)
     end
   end

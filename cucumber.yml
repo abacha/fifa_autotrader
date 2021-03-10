@@ -2,8 +2,5 @@
   default: -p headless
   debug: -p chrome
 
-  pretty: --format pretty
-  json: --format json --out=log/report.json
-
   chrome: BROWSER=chrome
   headless: BROWSER=chrome_headless
