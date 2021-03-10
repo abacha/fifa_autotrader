@@ -17,21 +17,3 @@ include ActionView::Helpers::FormOptionsHelper
 
 Dir['./web/views/helpers/*'].sort.each { |klass| require klass }
 Dir['./web/controllers/*'].sort.each { |klass| require klass }
-
-def last_error
-  image = Dir['web/public/screenshots/*.png'].max
-
-  if image
-    hash = image.match(%r{screenshots/(.*?)\.})[1]
-    img_path = image.gsub('web/public', '')
-    timestamp = image.match(/\d{8}_\d{6}/)[0]
-    error_msg = File.read("#{ENV['TMP_FOLDER']}/errors/#{hash}.log")
-
-    OpenStruct.new(
-      img_path: img_path, error_msg: error_msg,
-      timestamp: DateTime.parse(timestamp).strftime('%Y-%m-%d %H:%M:%S')
-    )
-  else
-    OpenStruct.new
-  end
-end

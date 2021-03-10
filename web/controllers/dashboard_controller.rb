@@ -22,7 +22,7 @@ get '/dashboard/stock' do
 end
 
 get '/dashboard/last_error' do
-  @last_error = last_error
+  @last_error = ErrorCapturer.last_error
   haml :'dashboard/_last_error', layout: false
 end
 
