@@ -6,12 +6,12 @@ require 'googleauth/stores/file_token_store'
 require 'fileutils'
 
 class MailService
-  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
-  APPLICATION_NAME = 'fifa_autotrader'.freeze
-  CREDENTIALS_PATH = './config/client_secrets.json'.freeze
+  OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
+  APPLICATION_NAME = 'fifa_autotrader'
+  CREDENTIALS_PATH = './config/client_secrets.json'
   TOKEN_PATH = ENV['GMAIL_TOKEN_PATH']
   SCOPE = Google::Apis::GmailV1::AUTH_GMAIL_MODIFY
-  USER_ID = 'me'.freeze
+  USER_ID = 'me'
 
   def authorize
     client_id = Google::Auth::ClientId.from_file CREDENTIALS_PATH
@@ -19,7 +19,7 @@ class MailService
     authorizer = Google::Auth::UserAuthorizer.new client_id, SCOPE, token_store
     user_id = 'default'
     credentials = authorizer.get_credentials user_id
-    credentials = get_credentials unless credentials
+    credentials ||= get_credentials
     credentials
   end
 
@@ -45,7 +45,7 @@ class MailService
 
   def security_code
     messages = gmail_service.list_user_messages(
-      USER_ID, q:"from:'ea@e.ea.com' subject:'código de segurança' label:unread"
+      USER_ID, q: "from:'ea@e.ea.com' subject:'código de segurança' label:unread"
     ).messages
 
     return unless messages
@@ -54,7 +54,7 @@ class MailService
     message_detail = gmail_service.get_user_message(USER_ID, message_id)
     delete_message(message_id)
     security_code = message_detail.snippet.
-      match(%r{código de segurança da EA: (\d{6})})[1]
+                    match(/código de segurança da EA: (\d{6})/)[1]
   end
 
   def self.security_code
@@ -65,7 +65,8 @@ class MailService
 
   def delete_message(message_id)
     mtr = Google::Apis::GmailV1::ModifyThreadRequest.new(
-      remove_label_ids: ['UNREAD'])
+      remove_label_ids: ['UNREAD']
+    )
     gmail_service.modify_message(USER_ID, message_id, mtr)
     gmail_service.trash_user_message(USER_ID, message_id)
   end

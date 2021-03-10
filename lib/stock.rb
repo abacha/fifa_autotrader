@@ -20,7 +20,7 @@ class Stock
   end
 
   def self.count
-    all.inject(Hash.new(0)) { |h, e| h[e.player_name] += 1; h }
+    all.each_with_object(Hash.new(0)) { |e, h| h[e.player_name] += 1; }
   end
 
   def self.by_player(player_name)

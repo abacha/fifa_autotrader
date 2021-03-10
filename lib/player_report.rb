@@ -14,15 +14,15 @@ class PlayerReport
 
   def report
     OpenStruct.new({
-        total: matched_trades.count,
-        stock: stock,
-        profit: profit,
-        avg_profit: avg_profit,
-        avg_duration: avg_duration,
-        avg_buy_price: avg_buy_price,
-        avg_sell_price: avg_sell_price,
-        player: player
-    })
+                     total: matched_trades.count,
+                     stock: stock,
+                     profit: profit,
+                     avg_profit: avg_profit,
+                     avg_duration: avg_duration,
+                     avg_buy_price: avg_buy_price,
+                     avg_sell_price: avg_sell_price,
+                     player: player
+                   })
   end
 
   def matched_trades

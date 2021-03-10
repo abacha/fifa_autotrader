@@ -18,7 +18,7 @@ class Setting < ActiveRecord::Base
   end
 
   def mask
-    self.value = "*" * 16 if self.secure == 1
+    self.value = '*' * 16 if secure == 1
     self
   end
 end

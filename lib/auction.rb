@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 Auction = Struct.new(:timestamp, :player_name,
-                 :timeleft, :status, :start_price,
-                 :current_bid, :buy_now, keyword_init: true) do
-
+                     :timeleft, :status, :start_price,
+                     :current_bid, :buy_now, keyword_init: true) do
   def self.build(line)
     statuses = %w[outbid won highest-bid expired]
     status = if line[:class]
@@ -23,7 +22,7 @@ Auction = Struct.new(:timestamp, :player_name,
 
   def self.auction_data(line)
     value_data = {}
-    [:start_price, :current_bid, :buy_now].each_with_index do |item, i|
+    %i[start_price current_bid buy_now].each_with_index do |item, i|
       value = line.all('.auctionValue')[i].find('.value').text.gsub(',', '')
       value_data[item] = value.to_i
     end

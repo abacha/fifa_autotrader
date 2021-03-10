@@ -136,8 +136,6 @@ class TransferTargetPage < BasePage
     first(panel_path).click
     sleep 1
 
-    if n(input.value) != value
-      raise MixedValueError.new("MIXED VALUE: #{n(input.value)} != #{value}")
-    end
+    raise MixedValueError, "MIXED VALUE: #{n(input.value)} != #{value}" if n(input.value) != value
   end
 end

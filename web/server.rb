@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './config/start.rb'
+require './config/start'
 
 require 'sinatra'
 require 'sinatra/reloader'
@@ -22,7 +22,7 @@ def last_error
   image = Dir['web/public/screenshots/*.png'].max
 
   if image
-    hash = image.match(%r{screenshots\/(.*?)\.})[1]
+    hash = image.match(%r{screenshots/(.*?)\.})[1]
     img_path = image.gsub('web/public', '')
     timestamp = image.match(/\d{8}_\d{6}/)[0]
     error_msg = File.read("#{ENV['TMP_FOLDER']}/errors/#{hash}.log")

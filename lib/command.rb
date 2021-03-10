@@ -9,12 +9,13 @@ class Command
 
   def self.queue(cmd)
     return false unless LIST.include?(cmd)
+
     File.write(cmd, '')
     RobotLogger.msg("Queueing command: #{cmd}")
   end
 
   def self.queued?(cmd)
-    File.exists?(cmd)
+    File.exist?(cmd)
   end
 
   def self.check(cmd)
@@ -26,8 +27,6 @@ class Command
       commands[cmd].call
     end
   end
-
-  private
 
   def self.commands
     {

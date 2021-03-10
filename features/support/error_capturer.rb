@@ -4,7 +4,6 @@ module ErrorCapturer
   include Capybara::DSL
   ERRORS_FOLDER = "#{ENV['TMP_FOLDER']}/errors"
 
-  # rubocop:disable Lint/Debugger
   def record_error(message)
     id = rand(1000)
     datetime = Time.now.strftime('%Y%m%d_%H%M%S_%L')
@@ -13,24 +12,21 @@ module ErrorCapturer
     save_screenshot("#{basename}.png")
     save_page("#{basename}.html")
   end
-  # rubocop:enable Lint/Debugger
 
   def self.last_error
     image = Dir['public/errors/*.png'].max
 
-    if image
-      hash = image.match(/\/(\d{3}_.*?)\./)[1]
-      img_path = image.gsub('public', '')
-      timestamp = image.match(/\d{8}_\d{6}/)[0]
-      error_msg = File.read("#{ERRORS_FOLDER}/#{hash}.log")
+    return OpenStruct.new unless image
 
-      OpenStruct.new(
-        img_path: img_path,
-        error_msg: error_msg,
-        timestamp: DateTime.parse(timestamp).strftime('%Y-%m-%d %H:%M:%S')
-      )
-    else
-      OpenStruct.new
-    end
+    hash = image.match(%r{/(\d{3}_.*?)\.})[1]
+    img_path = image.gsub('public', '')
+    timestamp = image.match(/\d{8}_\d{6}/)[0]
+    error_msg = File.read("#{ERRORS_FOLDER}/#{hash}.log")
+
+    OpenStruct.new(
+      img_path: img_path,
+      error_msg: error_msg,
+      timestamp: DateTime.parse(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    )
   end
 end

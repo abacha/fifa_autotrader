@@ -72,12 +72,13 @@ class MarketPage < BasePage
         break
       end
 
-      if bid_value <= player.max_bid
-        RobotLogger.msg(
-          "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})")
-        click_on 'Make Bid'
-        sleep 3
-      end
+      next unless bid_value <= player.max_bid
+
+      RobotLogger.msg(
+        "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})"
+      )
+      click_on 'Make Bid'
+      sleep 3
     end
   end
 end

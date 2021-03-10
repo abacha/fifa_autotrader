@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 Capybara.configure do |config|
   case ENV['BROWSER']
   when 'chrome'
@@ -27,4 +26,3 @@ Capybara.configure do |config|
   config.app_host = 'https://www.ea.com/fifa/ultimate-team/web-app'
   config.default_max_wait_time = ENV.fetch('MAX_WAIT_TIME', 30).to_i
 end
-# rubocop:enable Metrics/BlockLength

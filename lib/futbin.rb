@@ -31,8 +31,6 @@ class Futbin
     fetch_json(url)
   end
 
-  private_class_method
-
   def self.fetch_json(url)
     data = RestClient.get(url)
     JSON.parse(data)

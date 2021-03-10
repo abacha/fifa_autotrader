@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './config/start.rb'
+require './config/start'
 
 class BasePage
   include Capybara::DSL

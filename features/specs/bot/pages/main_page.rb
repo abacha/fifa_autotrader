@@ -17,7 +17,7 @@ class MainPage < BasePage
     end
   end
 
-  def process(i)
+  def process(_i)
     do_process do
       transfer_list.clear_sold
       transfer_list.relist_players
@@ -25,19 +25,16 @@ class MainPage < BasePage
 
       bids = transfer_target.list_bids
 
-      if bids.detect { |bid| bid.status == 'expired' }
-        transfer_target.clear_expired
-      end
+      transfer_target.clear_expired if bids.detect { |bid| bid.status == 'expired' }
 
-      if bids.detect { |bid| bid.status == 'won' }
-        transfer_target.clear_bought
-      end
+      transfer_target.clear_bought if bids.detect { |bid| bid.status == 'won' }
 
       time_diff = (Time.now - @last_market).to_i
       if time_diff >= (MarketPage::MAX_TIME_LEFT - 90)
         time_output = ChronicDuration.output(time_diff, format: :short)
         RobotLogger.msg(
-          "Last market time was #{time_output} ago, going to market!")
+          "Last market time was #{time_output} ago, going to market!"
+        )
         market.buy_players
         @last_market = Time.now
       end
@@ -46,7 +43,7 @@ class MainPage < BasePage
         transfer_target.renew_bids
         bids = transfer_target.list_bids
         outbid = bids.detect { |bid| bid.status == 'outbid' }
-        min_time = (outbid&.timeleft) ? outbid.timeleft : 1_000
+        min_time = outbid&.timeleft ? outbid.timeleft : 1_000
         break if min_time > 120
       end
     end
@@ -60,9 +57,7 @@ class MainPage < BasePage
     error_msg = e.message
     dialog = '.Dialog'
 
-    if has_css?(dialog)
-      error_msg = find(dialog).text
-    end
+    error_msg = find(dialog).text if has_css?(dialog)
 
     ErrorHandler.bot_verification
     ErrorHandler.handle(error_msg)
