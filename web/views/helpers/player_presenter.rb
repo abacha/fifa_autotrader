@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-helpers do
+module PlayerPresenter
   def sell_price_ratio(player)
     futbin_market_data = player.futbin_market_data
     if futbin_market_data['avg_sell_price'].positive?

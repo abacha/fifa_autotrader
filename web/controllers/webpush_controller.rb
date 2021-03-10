@@ -3,7 +3,7 @@
 require 'webpush'
 
 class WebpushController < ApplicationController
-  get '/webpush' do
+  get '/' do
     unless Setting.get('vapid_private_key')
       vapid_key = Webpush.generate_key
       %w[public_key private_key].each do |item|
@@ -19,7 +19,7 @@ class WebpushController < ApplicationController
     haml :'dashboard/webpush'
   end
 
-  post '/webpush' do
+  post '/' do
     Webpush.payload_send(
       message: params['message_json'],
       endpoint: params['endpoint'],

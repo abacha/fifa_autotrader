@@ -6,12 +6,12 @@ class PlayersController < ApplicationController
     params['player'] ||= {}
   end
 
-  get '/players' do
+  get '/' do
     @player = Player.find_or_initialize_by(id: params['id'])
     haml :'players/index'
   end
 
-  post '/players' do
+  post '/' do
     @player = Player.find_or_initialize_by(id: params['player']['id'])
 
     if @player.update_attributes(params['player'])
@@ -21,13 +21,13 @@ class PlayersController < ApplicationController
     end
   end
 
-  get '/players/status' do
+  get '/status' do
     player = Player.find_by(name: params['name'])
     player.update!(status: params['status'].to_i)
     redirect '/players'
   end
 
-  post '/players/refresh_cache' do
+  post '/refresh_cache' do
     player = Player.find(params['id'])
     Cache.delete(player.cache_key)
     player.futbin_market_data

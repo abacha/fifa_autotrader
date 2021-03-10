@@ -6,12 +6,12 @@ class SettingsController < ApplicationController
     params['setting'] ||= {}
   end
 
-  get '/settings' do
+  get '/' do
     @setting = Setting.find_or_initialize_by(id: params['id']).mask
     haml :'settings/index'
   end
 
-  post '/settings' do
+  post '/' do
     @setting = Setting.find_or_initialize_by(id: params['setting']['id'])
 
     if @setting.update_attributes(params['setting'])

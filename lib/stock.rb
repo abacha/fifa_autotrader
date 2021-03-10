@@ -15,7 +15,7 @@ class Stock
 
   def self.all
     Cache.fetch('stock', expires_in: 60) do
-      YAML.safe_load(File.read(STOCK_FILE))
+      YAML.load(File.read(STOCK_FILE))
     end
   end
 

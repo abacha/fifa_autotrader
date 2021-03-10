@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-helpers do
+module FormHelpers
   def players_list
     Player.all.map(&:name)
   end

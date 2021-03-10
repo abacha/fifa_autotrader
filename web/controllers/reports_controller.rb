@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReportsController < ApplicationController
-  get '/reports/charts' do
+  get '/charts' do
     matched_trades = MatchedTrade.all.group(:date)
     @dates = matched_trades.pluck(:date).map(&:to_s)
 
@@ -18,7 +18,7 @@ class ReportsController < ApplicationController
     haml :'/reports/charts'
   end
 
-  get '/reports/players' do
+  get '/players' do
     @reports = PlayerReport.all
     haml :'/reports/players'
   end

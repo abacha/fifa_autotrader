@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-helpers do
+module ApplicationPresenter
   def total(list, method)
     list.sum do |item|
       item.send(method)

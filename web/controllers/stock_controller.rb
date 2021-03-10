@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StockController < ApplicationController
-  get '/stock' do
+  get '/' do
     @stock = Stock.full_stock
     haml :'stock/index'
   end
