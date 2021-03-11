@@ -1,21 +1,15 @@
 if (typeof window !== "undefined") {
-  var btn = document.getElementById("btn-register");
-  btn.addEventListener('click', function() {
   console.log('Registering');
-    var publicKey = btn.getAttribute("data-public-key");
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistration().then( function(r) {
-        navigator.serviceWorker.register("/serviceworker.js", { scope: "/" })
-          .then( subscribe(publicKey) )
-          .catch( function(error) {
-            console.log(error);
-          }
-        );
-      });
-    } else {
-      console.log('Service workers are not supported.');
-    }
-  });
+  var publicKey = $("#public_key").text();
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistration().then( function(r) {
+      navigator.serviceWorker.register("/serviceworker.js", { scope: "/" })
+        .then(subscribe(publicKey))
+        .catch(function(error) { console.log(error); });
+    });
+  } else {
+    console.log('Service workers are not supported.');
+  }
 } else {
   self.addEventListener("push", function(event) {
     var json = event.data.json();

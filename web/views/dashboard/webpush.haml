@@ -1,31 +1,55 @@
 .form
-  %input#endpoint{name: 'endpoint', type: 'hidden', readonly: true}
-  %input#auth{name: 'auth', type: 'hidden', readonly: true}
-  %input#p256dh{name: 'p256dh', type: 'hidden', readonly: true}
-
   .form-row
-    .form-group.col-md-2
-      %label Title
-      %input#title.form-control{type: 'text'}
-    .form-group.col-md-2
-      %label Description
-      %input#description.form-control{type: 'text'}
-  %button.btn.btn-info#btn-register{"data-public-key" => "#{@vapid[:public_key]}"} Register
-  %button.btn.btn-secondary#unsubscribe Unsubscribe
-  %button#submit.btn.btn-primary{type: "submit", value: 'push'} Submit
+    .col-md-1
+      %label
+        %b public-key
+    .col-md-10
+      %span#public_key{name: 'endpoint', type: 'text', readonly: true} #{@vapid[:public_key]}
+  .form-row
+    .col-md-1
+      %label
+        %b endpoint:
+    .col-md-10
+      %span#endpoint{name: 'endpoint', type: 'text', readonly: true}
+  .form-row
+    .col-md-1
+      %label
+        %b auth:
+    .col-md-10
+      %span#auth{name: 'auth', type: 'text', readonly: true}
+  .form-row
+    .col-md-1
+      %label
+        %b p256dh:
+    .col-md-10
+      %span#p256dh{name: 'p256dh', type: 'text', readonly: true}
+
+  %button#subscribe.btn.btn-primary Subscribe
+  %button#unsubscribe.btn.btn-secondary Unsubscribe
 %script{src: '/serviceworker.js'}
 :javascript
   $(document).ready(function() {
-    $("#unsubscribe").click(function() { removeWorkers(); unsubscribe(); } );
-    $("#submit").on("click", function() {
-      $.post("/webpush", {
-        endpoint: $("#endpoint").text(),
+    $("#unsubscribe").click(function() {
+      removeWorkers();
+      unsubscribe();
+      $.post("/webpush/unsubscribe", {
         auth: $("#auth").text(),
-        p256dh: $("#p256dh").text(),
-        message_json: JSON.stringify({ title: $("#title").val(), description: $("#description").val() })
       }, function(data) {
         console.log(data);
-      })
+      });
+
+      return false;
+    });
+
+    $("#subscribe").on("click", function() {
+      $.post("/webpush/subscribe", {
+        endpoint: $("#endpoint").text(),
+        auth: $("#auth").text(),
+        p256dh: $("#p256dh").text()
+      }, function(data) {
+        console.log(data);
+      });
+
       return false;
     });
   });

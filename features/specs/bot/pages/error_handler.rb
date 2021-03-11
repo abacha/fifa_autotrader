@@ -15,6 +15,7 @@ class ErrorHandler < BasePage
     elsif error_msg.match(/Your Transfer Targets list is full/)
       transfer_target.clear_expired
       RobotLogger.log(:warn, 'Transfer targets list full')
+      Notification.send_all('Transfer targets list full', 'Your Transfer Targets list is full')
     elsif error_msg.match(/You cannot unwatch an item you are bidding on/)
       click_on 'Ok'
     elsif error_msg.match(/You are already the highest bidder/)
@@ -27,7 +28,7 @@ class ErrorHandler < BasePage
     elsif error_msg.match(/VERIFICATION REQUIRED/)
       page.refresh
     elsif has_css?('.ut-logged-on-console')
-      RobotLogger.log(:warn, 'Logged on another device')
+      RobotLogger.msg 'Logged on another device'
       sleep 300
       page.refresh
     elsif error_msg.match(/CONNECTION LOST/)
@@ -60,6 +61,7 @@ class ErrorHandler < BasePage
 
   def bot_verification
     return unless has_css?('div', text: 'VERIFICATION REQUIRED')
+    Notification.send_all('Bot Verification', 'Verification Required')
 
     while has_css?('div', text: 'VERIFICATION REQUIRED')
       RobotLogger.log(:warn, 'Bot Verification')

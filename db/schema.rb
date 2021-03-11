@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_12_161848) do
+ActiveRecord::Schema.define(version: 2021_03_11_002302) do
 
   create_table "matched_trades", force: :cascade do |t|
     t.string "buy_trade_id"
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(version: 2021_02_12_161848) do
     t.integer "timestamp"
     t.string "player_name"
     t.date "date"
+  end
+
+  create_table "notification_subscribers", force: :cascade do |t|
+    t.string "endpoint"
+    t.string "p256dh"
+    t.string "auth"
   end
 
   create_table "players", force: :cascade do |t|
