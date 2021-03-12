@@ -36,6 +36,7 @@ class MarketPage < BasePage
   def search(player, mode)
     click_on 'Transfers'
     find(PAGE_MENU_LINK).click
+    click_on 'Reset'
     fill_input('.ut-player-search-control input', player.fullname)
     click_on player.fullname
     if player.rarity

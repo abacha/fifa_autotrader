@@ -6,7 +6,7 @@
       = select_tag 'q[kind_eq]', options_for_select(kinds_list, params.dig(:q, :kind_eq)), include_blank: true, class: 'form-control'
     .col-auto
       %button.btn.btn-primary Search
-      %a.btn.btn-secondary{href: request.path_info} Reset
+      %a.btn.btn-secondary{href: request.path} Reset
 
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead

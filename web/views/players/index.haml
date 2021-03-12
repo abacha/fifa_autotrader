@@ -52,19 +52,21 @@
 
   $(document).ready(function() {
     $("tbody tr").each(function() {
-      sell_value_ratio = $(this).find('#sell_value_ratio').val()
-      max_bid_ratio = $(this).find('#max_bid_ratio').val()
+      if ($($(this).find('a.update-player')[4]).data('player').status == '0') {
+        sell_value_ratio = $(this).find('#sell_value_ratio').val()
+        max_bid_ratio = $(this).find('#max_bid_ratio').val()
 
-      if (sell_value_ratio > 110) {
-        $(this).find("td:nth-child(6)").addClass('text-danger')
-      } else if (sell_value_ratio < 85) {
-        $(this).find("td:nth-child(6)").addClass('text-warning')
-      }
+        if (sell_value_ratio > 110) {
+          $(this).find("td:nth-child(6)").addClass('text-danger')
+        } else if (sell_value_ratio < 85) {
+          $(this).find("td:nth-child(6)").addClass('text-warning')
+        }
 
-      if (max_bid_ratio > 75) {
-        $(this).find("td:nth-child(5)").addClass('text-danger')
-      } else if (max_bid_ratio < 50) {
-        $(this).find("td:nth-child(5)").addClass('text-warning')
+        if (max_bid_ratio > 75) {
+          $(this).find("td:nth-child(5)").addClass('text-danger')
+        } else if (max_bid_ratio < 50) {
+          $(this).find("td:nth-child(5)").addClass('text-warning')
+        }
       }
     });
   });

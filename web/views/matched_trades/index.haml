@@ -4,7 +4,7 @@
       = select_tag 'q[player_name_eq]', options_for_select(players_list, params.dig(:q, :player_name_eq)), include_blank: true, class: 'form-control'
     .col-auto
       %button.btn.btn-primary Search
-      %a.btn.btn-secondary{href: request.path_info} Reset
+      %a.btn.btn-secondary{href: request.path} Reset
 
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead

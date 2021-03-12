@@ -4,12 +4,12 @@ class PlayerReport
   attr_reader :player, :trades
 
   def self.all
-    Player.all.map { |player| new(player).report }
+    Player.all.map { |player| new(player.name).report }
   end
 
-  def initialize(player, filter = {})
-    @player = player
-    @trades = Trade.where(filter.merge(player_name: player.name))
+  def initialize(player_name, filter = {})
+    @player = Player.find_by(name: player_name)
+    @trades = Trade.where(filter.merge(player_name: player_name))
   end
 
   def report
