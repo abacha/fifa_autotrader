@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Command
-  LIST = %w[PAUSE RESTART].freeze
+  LIST = %w[PAUSE RESTART SLEEP].freeze
 
   def self.check_all
     LIST.each { |cmd| check(cmd) }
@@ -30,7 +30,8 @@ class Command
 
   def self.commands
     {
-      'PAUSE' => -> { sleep 180 },
+      'PAUSE' => -> { binding.pry },
+      'SLEEP' => -> { sleep 180 },
       'RESTART' => -> { exit 1 }
     }
   end

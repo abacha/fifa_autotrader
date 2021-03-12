@@ -1,8 +1,8 @@
 .row
   .col-md-12
     .btn-group
-      %button.btn.command.btn-primary{data: { command: 'PAUSE', queued: "#{Command.queued?('PAUSE')}"} } Pause
-      %button.btn.command.btn-primary{data: { command: 'RESTART', queued: "#{Command.queued?('RESTART')}"} } Restart
+      - Command::LIST.each do |command|
+        %button.btn.command.btn-primary{data: { command: command, queued: "#{Command.queued?(command)}"} } #{command.capitalize}
 
 :javascript
   $(document).ready(function() {

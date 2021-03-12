@@ -34,14 +34,14 @@ class DashboardController < ApplicationController
   private
 
   def last_error
-    image = Dir['public/errors/*.png'].max
-
+    image = Dir.glob('./web/public/errors/*.png').max
     return OpenStruct.new unless image
 
-    hash = image.match(%r{/(\d{3}_.*?)\.})[1]
-    img_path = image.gsub('public', '')
-    timestamp = image.match(/\d{8}_\d{6}/)[0]
-    error_msg = File.read("#{ERRORS_FOLDER}/#{hash}.log")
+    basename = File.basename(image, '.*')
+
+    img_path = image.gsub('./web/public', '')
+    timestamp = basename.match(/\d{8}_\d{6}/)[0]
+    error_msg = File.read("#{ENV['TMP_FOLDER']}/errors/#{basename}.log")
 
     OpenStruct.new(
       img_path: img_path,
