@@ -8,7 +8,9 @@ tmp/**/*
 token.yml
 stock.yml
 
-pause
+PAUSE
+RESTART
+SLEEP
 
 capybara-*.png
 capybara-*.html

@@ -8,8 +8,8 @@ class MainPage < BasePage
     i = 1
     while true
       start_time = Time.now.to_i
-      process(i)
       Command.check_all
+      process(i)
       sleep 10
       elapsed_time = ChronicDuration.output(Time.now.to_i - start_time)
       RobotLogger.msg("Run: #{i} (ET: #{elapsed_time})")
@@ -36,6 +36,7 @@ class MainPage < BasePage
           "Last market time was #{time_output} ago, going to market!"
         )
         market.buy_players
+        market.snipe_players
         @last_market = Time.now
       end
 
