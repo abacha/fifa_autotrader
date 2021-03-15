@@ -1,7 +1,5 @@
-.col-md-10
+.col-md-12
   #profit
-.col-md-10
-  #trades
 :javascript
   dates = #{@dates}
   trades = #{@trades}
@@ -52,46 +50,8 @@
     xAxis: [ { type: 'datetime', crosshair: true } ],
     yAxis: [
       { title: { text: 'Profit' } },
-      { title: { text: 'Avg. Profit' }, opposite: false },
+      { title: { text: 'Trades' }, opposite: false },
     ],
-    tooltip: { shared: true },
-    series: [
-      {
-        name: 'Daily Profit',
-        type: 'column',
-        data: data['daily_profit'],
-        tooltip: { valuePrefix: '$' }
-      },
-      {
-        name: 'Avg. Profit',
-        type: 'spline',
-        data: data['avg_profit'],
-        dashStyle: 'shortdot',
-        yAxis: 1,
-        tooltip: { valuePrefix: '$' }
-      }
-    ]
-  });
-
-  Highcharts.stockChart('trades', {
-    credits: false,
-    chart: { zoomType: 'x' },
-    title: { text: 'Trades' },
-    rangeSelector: {
-      buttons: [
-        { type: 'week', count: 1, text: '1w' },
-        { type: 'month', count: 1, text: '1m' },
-        { type: 'month', count: 6, text: '6m' },
-        { type: 'all', text: 'All' }
-      ],
-      selected: 1
-    },
-    plotOptions: {
-      column: { grouping: true },
-      series: { pointPadding: 0, groupPadding: 0.2 }
-    },
-    xAxis: [ { type: 'datetime', crosshair: true } ],
-    yAxis: [ { title: { text: 'Trades' } }, ],
     tooltip: { shared: true },
     series: [
       {
@@ -99,7 +59,7 @@
         type: 'column',
         stack: 'trades',
         color: '#DC3545',
-        yAxis: 0,
+        yAxis: 1,
         data: data['buy_trades']
       },
       {
@@ -107,8 +67,25 @@
         type: 'column',
         stack: 'trades',
         color: '#28A745',
-        yAxis: 0,
+        yAxis: 1,
         data: data['sell_trades']
       },
-    ]
+      {
+        name: 'Daily Profit',
+        type: 'spline',
+        data: data['daily_profit'],
+        tooltip: { valuePrefix: '$' },
+        yAxis: 0,
+        marker: {
+          enabled: true,
+          lineWidth: 3,
+          lineColor: 'orange',
+          fillColor: 'white'
+        }
+      },
+    ],
+    plotOptions: {
+      column: { grouping: true },
+      series: { pointPadding: 0, groupPadding: 0.2 }
+    }
   });

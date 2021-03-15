@@ -1,0 +1,59 @@
+.col-md-10
+  #trades
+:javascript
+  trades = #{@trades}
+
+  data = {
+    buy_trades: [],
+    sell_trades: []
+  };
+
+  for (var i = 0; i < trades.length; i++) {
+    var key;
+    if (trades[i][1] == 'B') {
+      key = 'buy_trades'
+    } else {
+      key = 'sell_trades'
+    }
+    data[key].push({x: Date.parse(trades[i][0]), y: trades[i][2]})
+  }
+
+  Highcharts.stockChart('trades', {
+    credits: false,
+    chart: { zoomType: 'x' },
+    title: { text: 'Trades' },
+    rangeSelector: {
+      buttons: [
+        { type: 'week', count: 1, text: '1w' },
+        { type: 'month', count: 1, text: '1m' },
+        { type: 'month', count: 6, text: '6m' },
+        { type: 'all', text: 'All' }
+      ],
+      selected: 1
+    },
+    plotOptions: {
+      column: { grouping: true },
+      series: { pointPadding: 0, groupPadding: 0.2 }
+    },
+    xAxis: [ { type: 'datetime', crosshair: true } ],
+    yAxis: [ { title: { text: 'Trades' } }, ],
+    tooltip: { shared: true },
+    series: [
+      {
+        name: 'Buy Trades',
+        type: 'column',
+        stack: 'trades',
+        color: '#DC3545',
+        yAxis: 0,
+        data: data['buy_trades']
+      },
+      {
+        name: 'Sell Trades',
+        type: 'column',
+        stack: 'trades',
+        color: '#28A745',
+        yAxis: 0,
+        data: data['sell_trades']
+      },
+    ]
+  });

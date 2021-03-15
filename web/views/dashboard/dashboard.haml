@@ -9,6 +9,7 @@
 .row
   #last_error.col-md-6
 
+#cache
 :javascript
 
   function update_partial(url, target, interval) {
@@ -22,6 +23,7 @@
   }
 
   $(document).ready(function() {
+    update_partial('/players/refresh_cache', '#cache', 10000);
     update_partial('/dashboard/log', '#log', 5000);
     update_partial('/dashboard/stock', '#stock', 30000);
     update_partial('/dashboard/trades', '#trades', 30000);

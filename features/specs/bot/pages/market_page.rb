@@ -85,10 +85,10 @@ class MarketPage < BasePage
           line.click
           sleep 2
           click_on 'Buy Now'
-          sleep 3
-          click_on 'Ok'
           confirm = find('.Dialog .dialog-body').text.match(/for (\d+) coins/)
           break if confirm[1].to_i > player.max_bid
+          sleep 3
+          click_on 'Ok'
           RobotLogger.msg("Player sniped! #{player.name} for #{auction.buy_now}")
         end
       end

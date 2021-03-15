@@ -3,17 +3,17 @@
     %thead
       %tr.d-flex
         %th.col-md-2.text-center Player Name
-        %th.col-md-2.text-center Buy Price
+        %th.col-md-2.d-none.d-md-block.text-center Buy Price
         %th.col-md-2.text-center Sell Price
         %th.col-md-2.text-center Stock Duration
-        %th.col-md-2.text-center Current Bid
-        %th.col-md-2.text-center Timeleft
+        %th.col-md-2.d-none.d-md-block.text-center Current Bid
+        %th.col-md-2.d-none.d-md-block.text-center Timeleft
     %tbody
       - @stock.each do |line|
         %tr.d-flex
           %td.col-md-2.text=line.player_name
-          %td.col-md-2.text-right=money line.buy_price
+          %td.col-md-2.d-none.d-md-block.text-right=money line.buy_price
           %td.col-md-2.text-right=money line.sell_price
           %td.col-md-2.text-right=time((Time.now - line.buy_timestamp - 3.hours).round) if line.buy_timestamp
-          %td.col-md-2.text-right=money line.current_bid
-          %td.col-md-2.text-center=time line.timeleft
+          %td.col-md-2.d-none.d-md-block.text-right=money line.current_bid
+          %td.col-md-2.d-none.d-md-block.text-center=time line.timeleft

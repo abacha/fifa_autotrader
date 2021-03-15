@@ -27,9 +27,11 @@ class PlayersController < ApplicationController
     redirect '/players'
   end
 
-  post '/refresh_cache' do
-    player = Player.find(params['id'])
-    Cache.delete(player.cache_key)
-    player.futbin_market_data
+  get '/refresh_cache' do
+    cache = Player.all.map.each do |player|
+      player.futbin_market_data
+    end
+
+    json cache
   end
 end

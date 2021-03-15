@@ -21,7 +21,8 @@ class PlayerReport
                      avg_duration: avg_duration,
                      avg_buy_price: avg_buy_price,
                      avg_sell_price: avg_sell_price,
-                     player: player
+                     player: player,
+                     last_trade: matched_trades.last
                    })
   end
 
