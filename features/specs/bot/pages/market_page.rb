@@ -5,7 +5,6 @@ class MarketPage < BasePage
 
   MAX_STOCK = Setting.get('MAX_STOCK').to_i
   MAX_TIME_LEFT = Setting.get('MAX_TIME_LEFT').to_i
-  MAX_PLAYER_BIDS = Setting.get('MAX_PLAYER_BIDS').to_i
 
   def refresh
     RobotLogger.msg('Refreshing market')
@@ -24,7 +23,7 @@ class MarketPage < BasePage
         MAX_TIME_LEFT
 
       if cache_time && cache_time <= Time.now
-        buy player
+        search_results.buy player
         sleep 4
       else
         timeleft = ChronicDuration.output((cache_time - Time.now).round)
@@ -39,7 +38,7 @@ class MarketPage < BasePage
     click_on 'Reset'
     fill_input('.ut-player-search-control input', player.fullname)
     player_text = player.fullname
-    player_ text += "\n#{player.rating}" if player.rating
+    player_text += "\n#{player.rating}" if player.rating
     find('button', text: player_text).click
 
     if player.quality
@@ -61,74 +60,7 @@ class MarketPage < BasePage
 
   def snipe_players
     PlayerSnipe.where(bought: 0).each do |player|
-      snipe player
-    end
-  end
-
-  def snipe(player)
-    return if player.bought == 1
-
-    auctions_count = search(player, :bin)
-    RobotLogger.msg("Market snipe: #{player.name} with max. bin: #{player.max_bid} (hits: #{auctions_count})")
-    return if auctions_count == 0
-
-    auctions = 0.upto(auctions_count - 1).map do |i|
-      line = all('.has-auction-data')[i]
-      Auction.build(line)
-    end
-
-    min_price = auctions.min { |a1, a2| a1.buy_now <=> a2.buy_now }.buy_now
-
-    0.upto(auctions_count - 1).map do |i|
-      line = all('.has-auction-data')[i]
-      auction = Auction.build(line)
-
-      if auction.buy_now <= min_price
-        ActiveRecord::Base.transaction do
-          player.update(bought: 1)
-          line.click
-          sleep 2
-          click_on 'Buy Now'
-          confirm = find('.Dialog .dialog-body').text.match(/for (\d+) coins/)
-          break if confirm[1].to_i > player.max_bid
-          sleep 3
-          click_on 'Ok'
-          RobotLogger.msg("Player sniped! #{player.name} for #{auction.buy_now}")
-        end
-      end
-    end
-  end
-
-  def buy(player)
-    auctions_count = search(player, :bid)
-    RobotLogger.msg("Market search: #{player.name} with max. bid: #{player.max_bid} (hits: #{auctions_count})")
-    0.upto([auctions_count, MAX_PLAYER_BIDS].min - 1) do |i|
-      line = all('.has-auction-data')[i]
-
-      next if line[:class].include? 'highest-bid'
-
-      line.click
-      sleep 2
-
-      bid_value = n(find('.bidOptions input').value)
-      text = all('.auctionInfo .subContent')[0].text
-      timeleft = ChronicDuration.parse(text)
-
-      if timeleft > MAX_TIME_LEFT
-        RobotLogger.msg("Skipping player, min. time left: #{text}")
-        Cache.write("MARKET_REFRESH_#{player.name}",
-                    Time.now + [timeleft, 1.hour].min,
-                    expires_in: 1.hour)
-        break
-      end
-
-      next unless bid_value <= player.max_bid
-
-      RobotLogger.msg(
-        "Bidding on #{player.name} for $#{bid_value} (ETA: #{ChronicDuration.output(timeleft)})"
-      )
-      click_on 'Make Bid'
-      sleep 3
+      search_results.snipe player
     end
   end
 
@@ -140,5 +72,9 @@ class MarketPage < BasePage
     elsif i == :bin
       3
     end
+  end
+
+  def search_results
+    SearchResultsPage.new
   end
 end
