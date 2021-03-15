@@ -38,16 +38,20 @@ class MarketPage < BasePage
     find(PAGE_MENU_LINK).click
     click_on 'Reset'
     fill_input('.ut-player-search-control input', player.fullname)
-    click_on player.fullname
-    if player.rarity
-      find('span', text: 'RARITY').click
-      find('li', text: player.rarity, exact_text: true).click
-    end
+    player_text = player.fullname
+    player_ text += "\n#{player.rating}" if player.rating
+    find('button', text: player_text).click
 
     if player.quality
       find('span', text: 'QUALITY').click
       find('li', text: player.quality, exact_text: true).click
     end
+
+    if player.rarity
+      find('span', text: 'RARITY').click
+      find('li', text: player.rarity, exact_text: true).click
+    end
+
     i = index_for(mode)
     all('.search-prices .price-filter input')[i].click
     all('.search-prices .price-filter input')[i].set player.max_bid
