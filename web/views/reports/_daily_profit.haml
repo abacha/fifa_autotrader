@@ -7,7 +7,6 @@
   data = {
     daily_profit: [],
     matched_trades: [],
-    avg_profit: [],
     buy_trades: [],
     sell_trades: []
   };
@@ -16,11 +15,6 @@
     data['daily_profit'].push({
       x: Date.parse(#{@daily_profit}[i][0]),
       y: #{@daily_profit}[i][1]
-    });
-
-    data['avg_profit'].push({
-      x: Date.parse(#{@avg_profit}[i][0]),
-      y: Math.round(#{@avg_profit}[i][1])
     });
   }
 

@@ -1,0 +1,75 @@
+- if @player_report.is_a? Array
+  %table.table.table-hover.table-striped.table-bordered.table-sm#report
+    %thead
+      %tr
+        %th.text-center Player Name
+        %th.text-center Profit
+        %th.text-center Total
+        %th.text-center Stock
+        %th.text-center Avg Buy
+        %th.text-center Avg Sell
+        %th.text-center Avg Profit
+        %th.text-center Avg Duration
+    %tbody
+      - @player_report.each do |line|
+        %tr
+          %td
+            %a{target: '_blank', href:"https://www.futbin.com/21/sales/#{line.player.futbin_id}"}=line.player.name
+          %td.text-right=money line.profit
+          %td.text-center=line.total
+          %td.text-center=line.stock
+          %td.text-right=money line.avg_buy_price
+          %td.text-right=money line.avg_sell_price
+          %td.text-right=money line.avg_profit
+          %td.text-right{'data-order': line.avg_duration}=time line.avg_duration
+    %tfoot
+      %tr
+        %th TOTAL
+        %th.text-right=money total(@player_report, :profit)
+        %th.text-center=total(@player_report, :total)
+        %th.text-center=total(@player_report, :stock)
+        %th
+        %th
+        %th
+        %th
+  :javascript
+    $.extend( true, $.fn.dataTable.defaults, {
+      "searching": false,
+    });
+
+    $(document).ready( function () {
+      $('#report').DataTable({
+        "paging": false,
+        "info": false
+      });
+    })
+
+- else
+  %table.table.table-hover.table-striped.table-bordered.table-sm
+    %thead
+      %tr
+        %th.text-center
+        %th.text-center Buy
+        %th.text-center Sell
+        %th.text-center Profit
+        %th.text-center Duration
+    %tbody
+      %tr
+        %td Average
+        %td#avg_buy_price.text-right=money @player_report.avg_buy_price
+        %td#avg_sell_price.text-right=money @player_report.avg_sell_price
+        %td#avg_profit.text-right=money @player_report.avg_profit
+        %td#avg_duration.text-right=time @player_report.avg_duration
+      %tr
+        - last_trade = @player_report.last_trade
+        %td Last
+        %td#last_buy_price.text-right=money last_trade.buy_trade.sold_for
+        %td#last_sell_price.text-right=money last_trade.sell_trade.sold_for
+        %td#last_profit.text-right=money last_trade.profit
+        %td#last_duration.text-right=time last_trade.duration
+      %tr
+        %td Total
+        %td#total.text-center=@player_report.total
+        %td#stock.text-center=@player_report.stock
+        %td#total_profit.text-right=money @player_report.profit
+        %td
