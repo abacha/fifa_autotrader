@@ -2,7 +2,7 @@
 
 module FormHelpers
   def players_list
-    Player.all.map(&:name)
+    PlayerTrade.all.map(&:name)
   end
 
   def kinds_list

@@ -4,7 +4,7 @@ class PlayerReport
   attr_reader :player, :trades
 
   def self.all
-    Player.all.map { |player| new(player.name).report }
+    PlayerTrade.all.map { |player| new(player.name).report }
   end
 
   def initialize(player_name, filter = {})

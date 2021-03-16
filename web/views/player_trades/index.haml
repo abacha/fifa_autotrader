@@ -37,16 +37,16 @@
           - else
             %a.btn.btn-outline-secondary.btn-sm.update-player{'data-player': '{"id": '+"#{player.id}"+', "status":"1"}'}
               %i.bi.bi-dash-circle
-          %a.btn.btn-outline-secondary.btn-sm{href: "/players?id=#{player.id}"}
+          %a.btn.btn-outline-secondary.btn-sm{href: "/player_trades?id=#{player.id}"}
             %i.bi.bi-pencil-square
         %td.col-sm-1.text-right=money futbin_market_data['avg_sell_price']
         %td.col-sm-1.text-center="#{futbin_market_data['sell_rate']}%"
 
-= haml :'players/_form'
+= haml :'player_trades/_form'
 
 :javascript
   $('.update-player').click(function() {
-    $.post('/players', $(this).data());
+    $.post('/player_trades', $(this).data());
     location.reload();
   });
 

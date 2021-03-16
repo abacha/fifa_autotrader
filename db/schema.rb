@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_15_142406) do
+ActiveRecord::Schema.define(version: 2021_03_15_144511) do
 
   create_table "matched_trades", force: :cascade do |t|
     t.string "buy_trade_id"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_142406) do
     t.integer "rating"
   end
 
-  create_table "players", force: :cascade do |t|
+  create_table "player_trades", force: :cascade do |t|
     t.string "name"
     t.string "fullname"
     t.integer "max_bid"

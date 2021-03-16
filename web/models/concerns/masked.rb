@@ -3,7 +3,7 @@
 module Concerns
   module Masked
     def masked_all
-      all.each(&:mask)
+      all.order(:key).each(&:mask)
     end
   end
 end

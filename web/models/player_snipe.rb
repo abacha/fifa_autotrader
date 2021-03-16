@@ -6,11 +6,11 @@ class PlayerSnipe < ActiveRecord::Base
   validates :name, :fullname, :max_bid, :quality, presence: true
   validate :check_rarity
 
-  def self.rarities
+  def rarities
     YAML.safe_load(File.read(RARITY_FILE))
   end
 
   def check_rarity
-    errors.add(:rarity, :invalid) if rarity && !Player.rarities.include?(rarity)
+    errors.add(:rarity, :invalid) if rarity && !rarities.include?(rarity)
   end
 end

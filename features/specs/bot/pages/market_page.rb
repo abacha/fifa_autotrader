@@ -15,7 +15,7 @@ class MarketPage < BasePage
   end
 
   def buy_players
-    Player.actives.each do |player|
+    PlayerTrade.actives.each do |player|
       next if player.stock >= MAX_STOCK
 
       cache_time =

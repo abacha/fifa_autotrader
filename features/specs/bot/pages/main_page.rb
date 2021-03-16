@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class MainPage < BasePage
+  MARKET_INTERVAL = Setting.get('MARKET_INTERVAL').to_i
+
   def execute
     login.execute
 
@@ -30,7 +32,7 @@ class MainPage < BasePage
       transfer_target.clear_bought if bids.detect { |bid| bid.status == 'won' }
 
       time_diff = (Time.now - @last_market).to_i
-      if time_diff >= (MarketPage::MAX_TIME_LEFT - 90)
+      if time_diff >= MARKET_INTERVAL
         time_output = ChronicDuration.output(time_diff, format: :short)
         RobotLogger.msg(
           "Last market time was #{time_output} ago, going to market!"
