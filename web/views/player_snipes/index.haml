@@ -1,18 +1,20 @@
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead
     %tr.d-flex
-      %th.col-sm-4.text-center Name
-      %th.col-sm-2.text-center Quality
-      %th.col-sm-2.text-center Rarity
+      %th.col-sm-3.text-center Name
+      %th.col-md-2.d-none.d-md-block.text-center Quality
+      %th.col-md-2.d-none.d-md-block.text-center Rarity
+      %th.col-md-1.d-none.d-md-block.text-center Rating
       %th.col-sm-2.text-center Max BIN
       %th.col-sm-1.text-center Bought?
       %th.col-sm-1.text-center
   %tbody
     - @players.each do |player|
       %tr.d-flex
-        %td.col-sm-4{'data-toggle': 'tooltip', title: "#{player.fullname}"}=player.name
-        %td.col-sm-2.text-center=player.quality
-        %td.col-sm-2.text-center=player.rarity
+        %td.col-sm-3{'data-toggle': 'tooltip', title: "#{player.fullname}"}=player.name
+        %td.col-md-2.d-none.d-md-block.text-center=player.quality
+        %td.col-md-2.d-none.d-md-block.text-center=player.rarity
+        %td.col-md-1.d-none.d-md-block.text-center=player.rating
         %td.col-sm-2.text-right=money player.max_bid
         %td.col-sm-1.text-center
           - if player.bought == 1
@@ -20,7 +22,7 @@
           - else
             %i.bi.bi-dash-circle
         %td.col-sm-1.text-center
-          %a.btn.btn-outline-secondary.btn-sm{href: "/player_trades?id=#{player.id}"}
+          %a.btn.btn-outline-secondary.btn-sm{href: "/player_snipes?id=#{player.id}"}
             %i.bi.bi-pencil-square
 
 = haml :'player_snipes/_form'

@@ -3,10 +3,12 @@
 Auction = Struct.new(:timestamp, :player_name,
                      :timeleft, :status, :start_price,
                      :current_bid, :buy_now, keyword_init: true) do
+
+  STATUSES = %w[outbid won highest-bid expired]
+
   def self.build(line)
-    statuses = %w[outbid won highest-bid expired]
     status = if line[:class]
-               line[:class].split.detect { |klass| statuses.include? klass }
+               line[:class].split.detect { |klass| STATUSES.include? klass }
              else
                'undetected'
              end

@@ -8,9 +8,7 @@ class ErrorHandler < BasePage
   end
 
   def handle(error_msg)
-    if error_msg.match(/LOGIN UNAVAILABLE/)
-      exit 1
-    elsif error_msg.match(/EA ACCOUNT SERVERS UNAVAILABLE/)
+    if error_msg.match(/EA ACCOUNT SERVERS UNAVAILABLE/)
       click_on 'Retry'
     elsif error_msg.match(/Your Transfer Targets list is full/)
       transfer_target.clear_expired
@@ -22,24 +20,12 @@ class ErrorHandler < BasePage
       click_on 'CANCEL'
     elsif error_msg.match(/BID TOO LOW/)
       click_on 'Ok'
-    elsif error_msg.match(/Unable to authenticate with the FUT servers/)
-      RobotLogger.log(:error, 'Unable to authenticate with the FUT servers')
-      exit 1
     elsif error_msg.match(/VERIFICATION REQUIRED/)
       page.refresh
     elsif has_css?('.ut-logged-on-console')
       RobotLogger.msg 'Logged on another device'
       sleep 300
       page.refresh
-    elsif error_msg.match(/CONNECTION LOST/)
-      RobotLogger.log(:error, 'Connection Lost')
-      exit 1
-    elsif error_msg.match(/NO INTERNET CONNECTION/)
-      RobotLogger.log(:error, 'No internet connection')
-      exit 1
-    elsif error_msg.match(/Sorry, an error has occurred/)
-      RobotLogger.log(:error, error_msg)
-      exit 1
     elsif has_css?('.loaderIcon')
       sleep 30
       RobotLogger.log(:error, 'Eternal loading')
@@ -49,6 +35,14 @@ class ErrorHandler < BasePage
       exit 1
     elsif find('body').text == ''
       page.refresh
+    elsif error_msg.match(/Unable to authenticate with the FUT servers/) ||
+      error_msg.match(/CONNECTION LOST/) ||
+      error_msg.match(/NO INTERNET CONNECTION/) ||
+      error_msg.match(/Sorry, an error has occurred/) ||
+      error_msg.match(/LOGIN UNAVAILABLE/)
+
+      RobotLogger.log(:error, error_msg)
+      exit 1
     else
       ErrorCapturer.record_error(error_msg)
       RobotLogger.log(:error, error_msg)

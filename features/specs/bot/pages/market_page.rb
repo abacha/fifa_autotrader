@@ -36,7 +36,7 @@ class MarketPage < BasePage
     click_on 'Transfers'
     find(PAGE_MENU_LINK).click
     click_on 'Reset'
-    fill_input('.ut-player-search-control input', player.fullname)
+    fill_input(find('.ut-player-search-control input'), player.fullname)
     player_text = player.fullname
     player_text += "\n#{player.rating}" if player.rating
     find('button', text: player_text).click
