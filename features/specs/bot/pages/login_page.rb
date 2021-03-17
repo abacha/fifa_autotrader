@@ -37,19 +37,4 @@ class LoginPage < BasePage
 
     security_code
   end
-
-  def load_cookies
-    browser = Capybara.current_session.driver.browser.manage
-    cookies = CSV.read('cookies.csv')
-    cookies.each do |cookie|
-      browser.add_cookie(
-        name: cookie[0],
-        value: cookie[1],
-        path: cookie[2],
-        domain: cookie[3],
-        expires: DateTime.parse(cookie[4]),
-        secure: cookie[5] == 'true'
-      )
-    end
-  end
 end

@@ -68,16 +68,15 @@ class TransferTargetPage < BasePage
   def list_bids
     click_on 'Transfers'
     find('.ut-tile-transfer-targets').click
-    bids = all('.has-auction-data')
     msg = {
       'won': all('.has-auction-data.won').count,
       'highest-bidder': all('.has-auction-data.highest-bid').count,
       'outbid': all('.has-auction-data.outbid').count,
       'expired': all('.has-auction-data.expired').count,
-      'total': bids.count
+      'total': all('.has-auction-data').count
     }
     RobotLogger.msg("Active bids: #{msg}")
-    bids.map { |line| Auction.build(line) }
+    build_auctions
   end
 
   def clear_bought
@@ -97,10 +96,10 @@ class TransferTargetPage < BasePage
           "Player bought: #{auction.player_name} ($#{auction.current_bid})"
         )
 
-        list_on_market(player)
+        market_lister.list(player)
 
         Trade.create!(auction.to_trade('B'))
-      rescue MixedValueError => e
+      rescue MarketListerPartial::MixedValueError => e
         RobotLogger.log(:error, e.message)
         next
       rescue Selenium::WebDriver::Error::StaleElementReferenceError => e
@@ -111,31 +110,7 @@ class TransferTargetPage < BasePage
 
   private
 
-  def list_on_market(player)
-    click_on 'List on Transfer Market'
-
-    set_input(0, player.sell_value)
-    gap = player.sell_value > 10_000 ? 250 : 100
-    set_input(1, player.sell_value + gap)
-
-    click_on 'List for Transfer'
-    sleep 5
-    RobotLogger.msg(
-      "Player listed to market: #{player.name} ($#{player.sell_value})"
-    )
-  end
-
-  def set_input(index, value)
-    panel_path = '.panelActions.open .panelActionRow'
-    input = all("#{panel_path} input")[index]
-    sleep 1
-    input.click
-    sleep 1
-    input.set value
-    sleep 1
-    first(panel_path).click
-    sleep 1
-
-    raise MixedValueError, "MIXED VALUE: #{n(input.value)} != #{value}" if n(input.value) != value
+  def market_lister
+    MarketListerPartial.new
   end
 end

@@ -44,6 +44,13 @@ class BasePage
     @login ||= LoginPage.new
   end
 
+  def build_auctions(selector = '')
+    selector = ".#{selector}" if selector
+    selector = ".has-auction-data#{selector}"
+    auctions_list = all(selector)
+    auctions_list.map { |line| Auction.build(line) }
+  end
+
   def fill_input(input, value)
     input.click
     sleep 0.5

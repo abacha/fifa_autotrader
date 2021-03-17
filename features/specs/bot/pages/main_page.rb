@@ -38,9 +38,10 @@ class MainPage < BasePage
           "Last market time was #{time_output} ago, going to market!"
         )
         market.buy_players
-        market.snipe_players
         @last_market = Time.now
       end
+
+      market.snipe_players
 
       loop do
         transfer_target.renew_bids

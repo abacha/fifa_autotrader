@@ -8,8 +8,7 @@ class MarketPage < BasePage
 
   def refresh
     RobotLogger.msg('Refreshing market')
-    click_on 'Transfers'
-    find('.ut-tile-transfer-market').click
+    enter_page
     click_on 'Search'
     sleep 2
   end
@@ -33,8 +32,7 @@ class MarketPage < BasePage
   end
 
   def search(player, mode)
-    click_on 'Transfers'
-    find(PAGE_MENU_LINK).click
+    enter_page
     click_on 'Reset'
     fill_input(find('.ut-player-search-control input'), player.fullname)
     player_text = player.fullname

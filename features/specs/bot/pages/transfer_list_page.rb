@@ -4,13 +4,16 @@ class TransferListPage < BasePage
   PAGE_MENU_LINK = '.ut-tile-transfer-list'
 
   def update_stock
-    Stock.save(auctions)
+    enter_page
+
+    stock = build_auctions
+    RobotLogger.log(:info, { action: 'auctions', amount: stock.count })
+    Stock.save(stock)
     RobotLogger.msg("Stock updated: #{Stock.count}")
   end
 
   def relist_players
-    click_on 'Transfers'
-    find(PAGE_MENU_LINK).click
+    enter_page
 
     if has_button?('Re-list All')
       RobotLogger.msg('Relisting expired auctions')
@@ -19,18 +22,8 @@ class TransferListPage < BasePage
     end
   end
 
-  def auctions
-    click_on 'Transfers'
-    find(PAGE_MENU_LINK).click
-
-    auctions_list = all('.has-auction-data')
-    RobotLogger.log(:info, { action: 'auctions', amount: auctions_list.count })
-    auctions_list.map { |line| Auction.build(line) }
-  end
-
   def clear_sold
-    click_on 'Transfers'
-    find('.ut-tile-transfer-list').click
+    enter_page
 
     auctions = all('.has-auction-data.won')
 
