@@ -15,7 +15,7 @@ class ReportsController < ApplicationController
     end
 
     if params[:q]
-      @player_report = PlayerReport.new(params[:q][:player_name_eq]).report
+      @player_report = PlayerReport.new(params[:q][:player_name_eq])
     else
       @player_report = PlayerReport.all
     end

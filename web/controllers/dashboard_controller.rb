@@ -4,7 +4,7 @@ require 'sinatra/json'
 
 class DashboardController < ApplicationController
   get '/' do
-    haml :'dashboard/dashboard'
+    haml :'dashboard/index'
   end
 
   get '/log' do

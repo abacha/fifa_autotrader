@@ -69,7 +69,7 @@
         %td#last_duration.text-right=time last_trade.duration
       %tr
         %td Total
-        %td#total.text-center=@player_report.total
-        %td#stock.text-center=@player_report.stock
+        %td#total_buy.text-center=@player_report.amount('B')
+        %td#total_sell.text-right=@player_report.amount('S')
         %td#total_profit.text-right=money @player_report.profit
         %td
