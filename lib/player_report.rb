@@ -22,8 +22,12 @@ class PlayerReport
                      avg_buy_price: avg_buy_price,
                      avg_sell_price: avg_sell_price,
                      player: player,
-                     last_trade: matched_trades.last
+                     last_trade: last_trade
                    })
+  end
+
+  def last_trade
+    matched_trades.last
   end
 
   def matched_trades

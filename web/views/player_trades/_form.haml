@@ -19,10 +19,10 @@
       %input#fullname.form-control{name: 'player[resource_id]', type: :text, value: @player.resource_id}
     .form-group.col-md-2
       %label Max Bid
-      %input#max_bid.form-control{name: 'player[max_bid]', type: :number, value: @player.max_bid, step: 50}
+      %input#max_bid.form-control{name: 'player[max_bid]', type: :number, value: @player.max_bid, step: 100}
     .form-group.col-md-2
       %label Sell Value
-      %input#sell_value.form-control{name: 'player[sell_value]', type: :number, value: @player.sell_value, step: 50}
+      %input#sell_value.form-control{name: 'player[sell_value]', type: :number, value: @player.sell_value, step: 100}
   %button.btn.btn-primary.mb-2{type: :submit} Save
 
 :javascript

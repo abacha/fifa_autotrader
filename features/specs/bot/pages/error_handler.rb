@@ -17,7 +17,7 @@ class ErrorHandler < BasePage
     elsif error_msg.match(/You cannot unwatch an item you are bidding on/)
       click_on 'Ok'
     elsif error_msg.match(/You are already the highest bidder/)
-      click_on 'CANCEL'
+      click_on 'Cancel'
     elsif error_msg.match(/BID TOO LOW/)
       click_on 'Ok'
     elsif error_msg.match(/VERIFICATION REQUIRED/)
@@ -39,6 +39,7 @@ class ErrorHandler < BasePage
       error_msg.match(/CONNECTION LOST/) ||
       error_msg.match(/NO INTERNET CONNECTION/) ||
       error_msg.match(/Sorry, an error has occurred/) ||
+      error_msg.match(/SERVER UNAVAILABLE/) ||
       error_msg.match(/LOGIN UNAVAILABLE/)
 
       RobotLogger.log(:error, error_msg)

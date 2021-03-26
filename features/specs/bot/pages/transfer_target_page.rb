@@ -35,16 +35,13 @@ class TransferTargetPage < BasePage
         action =
           if auction[:current_bid] < player.max_bid
             click_on 'Make Bid'
-            'bid'
+            'Bidding'
           else
             click_on 'Unwatch'
-            'unwatch'
+            'Unwatching'
           end
 
-        RobotLogger.log(:info, { action: action,
-                                 name: player.name,
-                                 current_bid: auction.current_bid,
-                                 max_bid: player.max_bid })
+        RobotLogger.msg "#{action}: #{player.name} (bid: #{auction.current_bid}, max: #{player.max_bid})"
 
         handle_bid_status_changed if has_css?('.Notification.negative')
         sleep 3
@@ -83,7 +80,7 @@ class TransferTargetPage < BasePage
     enter_page
 
     auctions = all('.has-auction-data.won').count
-    RobotLogger.log(:info, { action: 'clear_bought', amount: auctions })
+    RobotLogger.msg "Players bought: #{auctions}"
     while has_css?('.has-auction-data.won')
       begin
         line = first('.has-auction-data.won')

@@ -6,7 +6,7 @@ class BasePage
   include Capybara::DSL
 
   def go
-    raise NotImplementedError unless respond_to?(:execute)
+    raise NotImplementedError unless defined?(execute)
 
     begin
       send(:execute)
@@ -16,13 +16,13 @@ class BasePage
   end
 
   def enter_page
-    raise NotImplementedError unless respond_to?(:page_menu_link)
+    raise NotImplementedError unless defined?(page_menu_link)
 
     click_on 'Transfers'
     find(page_menu_link).click
   end
 
-  def n(number)
+  def text_to_number(number)
     number.gsub(',', '').to_i
   end
 
@@ -45,7 +45,7 @@ class BasePage
   end
 
   def build_auctions(selector = '')
-    selector = ".#{selector}" if selector
+    selector = ".#{selector}" unless selector.blank?
     selector = ".has-auction-data#{selector}"
     auctions_list = all(selector)
     auctions_list.map { |line| Auction.build(line) }
@@ -54,6 +54,6 @@ class BasePage
   def fill_input(input, value)
     input.click
     sleep 0.5
-    find(input).set value
+    input.set value
   end
 end

@@ -28,8 +28,12 @@ class SearchResultsPage < BasePage
           line.click
           sleep 2
           click_on 'Buy Now'
-          confirm = find('.Dialog .dialog-body').text.match(/for (\d+) coins/)
-          break if confirm[1].to_i > player.max_bid
+          sleep 3
+          dialog_text = find('.Dialog .dialog-body').text
+          confirm = dialog_text.match(/for (.*?) coins/)
+          RobotLogger.msg "Confirming snipe: #{dialog_text}"
+          bin_value = text_to_number(confirm[1])
+          break if bin_value > player.max_bid
           sleep 3
           click_on 'Ok'
           RobotLogger.msg("Player sniped! #{player.name} for #{auction.buy_now}")
@@ -49,7 +53,7 @@ class SearchResultsPage < BasePage
       line.click
       sleep 2
 
-      bid_value = n(find('.bidOptions input').value)
+      bid_value = text_to_number(find('.bidOptions input').value)
       text = all('.auctionInfo .subContent')[0].text
       timeleft = ChronicDuration.parse(text)
 

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class MarketPage < BasePage
-  PAGE_MENU_LINK = '.ut-tile-transfer-market'
-
   MAX_STOCK = Setting.get('MAX_STOCK').to_i
   MAX_TIME_LEFT = Setting.get('MAX_TIME_LEFT').to_i
 
@@ -74,5 +72,9 @@ class MarketPage < BasePage
 
   def search_results
     SearchResultsPage.new
+  end
+
+  def page_menu_link
+    '.ut-tile-transfer-market'
   end
 end

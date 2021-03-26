@@ -24,6 +24,6 @@ class MarketListerPartial < BasePage
     first(panel_path).click
     sleep 1
 
-    raise MixedValueError, "MIXED VALUE: #{n(input.value)} != #{value}" if text_to_number(input.value) != value
+    raise MixedValueError, "MIXED VALUE: #{text_to_number(input.value)} != #{value}" if text_to_number(input.value) != value
   end
 end

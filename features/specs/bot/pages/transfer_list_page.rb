@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class TransferListPage < BasePage
-  PAGE_MENU_LINK = '.ut-tile-transfer-list'
-
   def update_stock
     enter_page
 
@@ -49,5 +47,11 @@ class TransferListPage < BasePage
 
     TradeMatcher.match_trades
     RobotLogger.msg("Cleared #{trades.count} sold players")
+  end
+
+  private
+
+  def page_menu_link
+    '.ut-tile-transfer-list'
   end
 end
