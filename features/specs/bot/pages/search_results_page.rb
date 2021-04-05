@@ -31,12 +31,15 @@ class SearchResultsPage < BasePage
           sleep 3
           dialog_text = find('.Dialog .dialog-body').text
           confirm = dialog_text.match(/for (.*?) coins/)
-          RobotLogger.msg "Confirming snipe: #{dialog_text}"
           bin_value = text_to_number(confirm[1])
-          break if bin_value > player.max_bid
+          RobotLogger.msg "Confirming snipe: $#{bin_value}"
+          next if bin_value > player.max_bid
           sleep 3
           click_on 'Ok'
-          RobotLogger.msg("Player sniped! #{player.name} for #{auction.buy_now}")
+          msg = "Player sniped! #{player.name} for $#{auction.buy_now}"
+          RobotLogger.msg(msg)
+          Notification.send_all('Player Sniped', msg)
+          break
         end
       end
     end

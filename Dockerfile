@@ -1,4 +1,4 @@
-FROM ruby:alpine
+FROM ruby:2.7-alpine
 
 RUN apk update && \
   apk add build-base \

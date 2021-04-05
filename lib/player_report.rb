@@ -3,13 +3,15 @@
 class PlayerReport
   attr_reader :player, :trades
 
-  def self.all
-    PlayerTrade.all.map { |player| new(player.name).report }
+  def self.all(filters = nil)
+    reports = PlayerTrade.all.map { |player| new(player.name, filters).report }
+    reports.select { |report| report.total > 0 }
   end
 
-  def initialize(player_name, filter = {})
+  def initialize(player_name, filters = nil)
     @player = Player.find_by(name: player_name)
-    @trades = Trade.where(filter.merge(player_name: player_name))
+    @trades = Trade.where(player_name: player_name)
+    @trades = @trades.where(filters) if filters
   end
 
   def report
@@ -46,7 +48,7 @@ class PlayerReport
   end
 
   def profit
-    matched_trades.sum(:profit) +
+    matched_trades.sum(:profit) -
       trades.where(kind: 'B', matched: 0).sum(:sold_for)
   end
 

@@ -37,15 +37,9 @@ class MarketPage < BasePage
     player_text += "\n#{player.rating}" if player.rating
     find('button', text: player_text).click
 
-    if player.quality
-      find('span', text: 'QUALITY').click
-      find('li', text: player.quality, exact_text: true).click
-    end
-
-    if player.rarity
-      find('span', text: 'RARITY').click
-      find('li', text: player.rarity, exact_text: true).click
-    end
+    fill_search_attribute(player, :quality)
+    fill_search_attribute(player, :rarity)
+    fill_search_attribute(player, :position)
 
     i = index_for(mode)
     all('.search-prices .price-filter input')[i].click
@@ -61,6 +55,14 @@ class MarketPage < BasePage
   end
 
   private
+
+  def fill_search_attribute(player, attr)
+    player_attribute = player.send(attr)
+    return unless player_attribute
+
+    find('span', text: attr.upcase).click
+    find('li', text: player_attribute, exact_text: true).click
+  end
 
   def index_for(i)
     if i == :bid

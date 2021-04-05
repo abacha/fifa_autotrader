@@ -2,42 +2,48 @@
 
 class ReportsController < ApplicationController
   get '/' do
+    haml :'/reports/index'
+  end
+
+  get '/chart_data' do
     grouped = matched_trades.group(:date)
-    @dates = grouped.pluck(:date).map(&:to_s)
-    @trades = trades.group(:date, :kind).count.map do |key, value|
+    dates = grouped.pluck(:date).map(&:to_s)
+    grouped_trades = trades.group(:date, :kind).count.map do |key, value|
       [key[0].to_s, key[1], value]
     end
+    daily_profit = grouped.sum(:profit).map { |k, v| [k.to_s, v] }
 
-    @daily_profit = grouped.sum(:profit).map { |k, v| [k.to_s, v] }
-    @keys = ((Date.today - 7)..Date.today).to_a.map(&:to_s)
-    @players = @keys.map do |date|
-      matched_trades.where(date: date).group(:player_name).count
-    end
+    json({
+      matched_trades_count: matched_trades.count,
+      params: params,
+      dates: dates,
+      daily_profit: daily_profit,
+      trades: grouped_trades
+    })
+  end
 
-    if params[:q]
-      @player_report = PlayerReport.new(params[:q][:player_name_eq])
+  get '/players' do
+    params[:q] ||= {}
+    filters = params[:q][:date_gteq] ?
+      "date > '#{params[:q][:date_gteq]}' AND date <= '#{params[:q][:date_lteq]}'" : ''
+
+    puts filters
+    @player_report = if params[:q][:player_name_eq].blank?
+      PlayerReport.all(filters)
     else
-      @player_report = PlayerReport.all
+      PlayerReport.new(params[:q][:player_name_eq], filters)
     end
 
-    haml :'/reports/index'
+    haml :'/reports/_player_report', layout: false
   end
 
   private
 
   def matched_trades
-    @matched_trades ||=
-      begin
-        @q = MatchedTrade.ransack(params[:q])
-        matched_trades = @q.result
-      end
+    MatchedTrade.ransack(params[:q]).result
   end
 
   def trades
-    @trades ||=
-      begin
-        @q = Trade.ransack(params[:q])
-        @q.result
-      end
+    Trade.ransack(params[:q]).result
   end
 end

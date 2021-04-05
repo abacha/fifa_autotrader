@@ -21,6 +21,11 @@ class PlayerSnipesController < ApplicationController
     end
   end
 
+  delete '/' do
+    @player = PlayerSnipe.find(params['id'])
+    @player.destroy
+  end
+
   get '/status' do
     player = PlayerSnipe.find_by(name: params['name'])
     player.update!(status: params['status'].to_i)

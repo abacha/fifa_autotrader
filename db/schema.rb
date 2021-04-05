@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_15_144511) do
+ActiveRecord::Schema.define(version: 2021_04_04_211752) do
 
   create_table "matched_trades", force: :cascade do |t|
     t.string "buy_trade_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_144511) do
     t.integer "max_bid"
     t.integer "bought", default: 0
     t.integer "rating"
+    t.string "position"
   end
 
   create_table "player_trades", force: :cascade do |t|
@@ -49,6 +50,7 @@ ActiveRecord::Schema.define(version: 2021_03_15_144511) do
     t.string "rarity"
     t.string "quality"
     t.integer "rating"
+    t.string "position"
   end
 
   create_table "settings", force: :cascade do |t|

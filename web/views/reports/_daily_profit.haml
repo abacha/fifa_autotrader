@@ -1,85 +1,117 @@
 .col-md-12
   #profit
 :javascript
-  dates = #{@dates}
-  trades = #{@trades}
+  $(document).ready(function() {
+    $.getJSON('/reports/chart_data', function(response_data) {
+      dates = response_data.dates
+      trades = response_data.trades
+      daily_profit = response_data.daily_profit
 
-  data = {
-    daily_profit: [],
-    matched_trades: [],
-    buy_trades: [],
-    sell_trades: []
-  };
+      data = {
+        daily_profit: [],
+        matched_trades: [],
+        buy_trades: [],
+        sell_trades: []
+      };
 
-  for (var i = 0; i < dates.length; i++) {
-    data['daily_profit'].push({
-      x: Date.parse(#{@daily_profit}[i][0]),
-      y: #{@daily_profit}[i][1]
+      for (var i = 0; i < dates.length; i++) {
+        data['daily_profit'].push({
+          x: Date.parse(daily_profit[i][0]),
+          y: daily_profit[i][1]
+        });
+      }
+
+      for (var i = 0; i < trades.length; i++) {
+        var key;
+        if (trades[i][1] == 'B') {
+          key = 'buy_trades'
+        } else {
+          key = 'sell_trades'
+        }
+        data[key].push({x: Date.parse(trades[i][0]), y: trades[i][2]})
+      }
+
+      Highcharts.stockChart('profit', {
+        credits: false,
+        chart: {
+          zoomType: 'x',
+          events: {
+            selection: function(event) {
+              period = event.xAxis[0];
+              console.log(new Date(period.min));
+              console.log(new Date(period.max));
+            }
+          }
+        },
+        title: { text: 'Daily Profit' },
+        rangeSelector: {
+          buttons: [
+            { type: 'day', count: 2, text: '3d' },
+            { type: 'day', count: 6, text: '1w' },
+            { type: 'day', count: 14, text: '15d' },
+            { type: 'month', count: 6, text: '6m' },
+            { type: 'all', text: 'All' },
+          ],
+          selected: 1
+        },
+        xAxis: {
+          minRange: 1,
+          events: {
+            setExtremes: function(e) { rangeSelected(e) },
+            type: 'datetime',
+            crosshair: true
+          }
+        },
+        yAxis: [
+          { title: { text: 'Profit' } },
+          { title: { text: 'Trades' }, opposite: false },
+        ],
+        tooltip: { shared: true },
+        series: [
+          {
+            name: 'Buy Trades',
+            type: 'column',
+            stack: 'trades',
+            color: '#DC3545',
+            yAxis: 1,
+            data: data['buy_trades']
+          },
+          {
+            name: 'Sell Trades',
+            type: 'column',
+            stack: 'trades',
+            color: '#28A745',
+            yAxis: 1,
+            data: data['sell_trades']
+          },
+          {
+            name: 'Daily Profit',
+            type: 'spline',
+            data: data['daily_profit'],
+            tooltip: { valuePrefix: '$' },
+            yAxis: 0,
+            marker: {
+              enabled: true,
+              lineWidth: 3,
+              lineColor: 'orange',
+              fillColor: 'white'
+            }
+          },
+        ],
+        plotOptions: {
+          column: { grouping: true },
+          series: { pointPadding: 0, groupPadding: 0.2 }
+        }
+      });
+    });
+  });
+
+  function rangeSelected(range) {
+    start_date = new Date(range.min).toISOString().split('T')[0]
+    end_date = new Date(range.max).toISOString().split('T')[0]
+    url = "/reports/players?q[date_gteq]="+start_date+"&q[date_lteq]="+end_date;
+
+    $.get(url, function(response_data) {
+      $("#player_report").html(response_data)
     });
   }
-
-  for (var i = 0; i < trades.length; i++) {
-    var key;
-    if (trades[i][1] == 'B') {
-      key = 'buy_trades'
-    } else {
-      key = 'sell_trades'
-    }
-    data[key].push({x: Date.parse(trades[i][0]), y: trades[i][2]})
-  }
-
-  Highcharts.stockChart('profit', {
-    credits: false,
-    chart: { zoomType: 'x' },
-    title: { text: 'Daily Profit' },
-    rangeSelector: {
-      buttons: [
-        { type: 'week', count: 1, text: '1w' },
-        { type: 'month', count: 1, text: '1m' },
-        { type: 'month', count: 6, text: '6m' },
-        { type: 'all', text: 'All' }
-      ],
-      selected: 1
-    },
-    xAxis: [ { type: 'datetime', crosshair: true } ],
-    yAxis: [
-      { title: { text: 'Profit' } },
-      { title: { text: 'Trades' }, opposite: false },
-    ],
-    tooltip: { shared: true },
-    series: [
-      {
-        name: 'Buy Trades',
-        type: 'column',
-        stack: 'trades',
-        color: '#DC3545',
-        yAxis: 1,
-        data: data['buy_trades']
-      },
-      {
-        name: 'Sell Trades',
-        type: 'column',
-        stack: 'trades',
-        color: '#28A745',
-        yAxis: 1,
-        data: data['sell_trades']
-      },
-      {
-        name: 'Daily Profit',
-        type: 'spline',
-        data: data['daily_profit'],
-        tooltip: { valuePrefix: '$' },
-        yAxis: 0,
-        marker: {
-          enabled: true,
-          lineWidth: 3,
-          lineColor: 'orange',
-          fillColor: 'white'
-        }
-      },
-    ],
-    plotOptions: {
-      column: { grouping: true },
-      series: { pointPadding: 0, groupPadding: 0.2 }
-    }
-  });

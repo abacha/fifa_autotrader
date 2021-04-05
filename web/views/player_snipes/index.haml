@@ -21,8 +21,27 @@
             %i.bi.bi-check-circle-fill
           - else
             %i.bi.bi-dash-circle
-        %td.col-sm-1.text-center
-          %a.btn.btn-outline-secondary.btn-sm{href: "/player_snipes?id=#{player.id}"}
+        %td.col-sm-1.text-center#actions
+          %a.btn.btn-outline-secondary.btn-xs{data: {id: "#{player.id}", action: :edit}}
             %i.bi.bi-pencil-square
+          %a.btn.btn-outline-secondary.btn-xs{data: {id: "#{player.id}", action: :delete}}
+            %i.bi.bi-x-circle
 
 = haml :'player_snipes/_form'
+
+:javascript
+    $(document).ready(function() {
+      $("#actions a[data-action='edit']").bind('click', function() {
+        window.location.search = "?id="+$(this).data('id');
+      });
+
+      $("#actions a[data-action='delete']").bind('click', function() {
+        if (window.confirm("Delete?")) {
+          $.ajax({
+            url: "/player_snipes?id="+$(this).data('id'),
+            type: 'delete',
+            success: function() { window.location.reload() }
+          });
+        }
+      });
+    });

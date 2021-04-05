@@ -26,6 +26,7 @@ class Notification
   def self.send(params, message)
     Webpush.payload_send(
       message: message,
+      ttl: 300,
       endpoint: params['endpoint'],
       p256dh: params['p256dh'],
       auth: params['auth'],

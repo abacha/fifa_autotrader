@@ -5,7 +5,7 @@
   %input{type: :hidden, name: 'player[id]', value: @player.id}
   %input{type: :hidden, name: 'player[bought]', value: @player.bought}
   .form-row
-    .form-group.col-md-3
+    .form-group.col-md-2
       %label Name
       %input#name.form-control{name: 'player[name]', type: :text, value: @player.name}
     .form-group.col-md-3
@@ -17,6 +17,9 @@
     .form-group.col-md-2
       %label Rarity
       %input#name.form-control{name: 'player[rarity]', type: :text, value: @player.rarity}
+    .form-group.col-md-1
+      %label Rating
+      %input#name.form-control{name: 'player[rating]', type: :text, value: @player.rating}
     .form-group.col-md-2
       %label Max BIN
       %input#max_bid.form-control{name: 'player[max_bid]', type: :number, value: @player.max_bid}
