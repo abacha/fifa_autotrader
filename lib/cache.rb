@@ -7,7 +7,7 @@ class Cache
   attr_accessor :store
 
   def self.store
-    instance.store ||= ActiveSupport::Cache::MemoryStore.new(expires_in: 7200)
+    instance.store ||= ActiveSupport::Cache::MemoryStore.new(expires_in: 1800)
   end
 
   def self.read(key)

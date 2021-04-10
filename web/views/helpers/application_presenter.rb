@@ -18,4 +18,8 @@ module ApplicationPresenter
   def datetime(value)
     value.strftime('%Y-%m-%d %H:%M:%S')
   end
+
+  def futbin_sales_url(player)
+    "#{Futbin::URL_BASE}/21/sales/#{player.futbin_id}"
+  end
 end
