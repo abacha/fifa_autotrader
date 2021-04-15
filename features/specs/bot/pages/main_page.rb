@@ -2,6 +2,7 @@
 
 class MainPage < BasePage
   MARKET_INTERVAL = Setting.get('MARKET_INTERVAL').to_i
+  AUTO_OPTIMIZE_VALUES = Setting.get('AUTO_OPTIMIZE_VALUES').to_i
 
   def execute
     login.execute
@@ -21,15 +22,18 @@ class MainPage < BasePage
 
   def process(_i)
     do_process do
+      Stock.diff
+
+      if AUTO_OPTIMIZE_VALUES == 1
+        RobotLogger.msg 'Optimizing player values'
+        PlayerTrade.actives.each(&:optimize_value)
+        RobotLogger.msg 'Player values optimized!'
+      end
       transfer_list.clear_sold
       transfer_list.relist_players
       transfer_list.update_stock
 
-      bids = transfer_target.list_bids
-
-      transfer_target.clear_expired if bids.detect { |bid| bid.status == 'expired' }
-
-      transfer_target.clear_bought if bids.detect { |bid| bid.status == 'won' }
+      transfer_target.clear_bids
 
       time_diff = (Time.now - @last_market).to_i
       if time_diff >= MARKET_INTERVAL

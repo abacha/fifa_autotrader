@@ -36,10 +36,8 @@
         chart: {
           zoomType: 'x',
           events: {
-            selection: function(event) {
-              period = event.xAxis[0];
-              console.log(new Date(period.min));
-              console.log(new Date(period.max));
+            load: function() {
+              Highcharts.charts[0].rangeSelector.clickButton(1);
             }
           }
         },
@@ -104,6 +102,7 @@
         }
       });
     });
+
   });
 
   function rangeSelected(range) {

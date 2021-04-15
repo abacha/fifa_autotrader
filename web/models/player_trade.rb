@@ -2,6 +2,8 @@
 
 class PlayerTrade < ActiveRecord::Base
   RARITY_FILE = ENV['RARITY_FILE']
+  MIN_BID = Setting.get('MIN_BID').to_i
+  MIN_SELL = Setting.get('MIN_SELL').to_i
 
   validates :name, :fullname, :futbin_id, :sell_value, :max_bid, presence: true
   validate :check_rarity
@@ -21,6 +23,13 @@ class PlayerTrade < ActiveRecord::Base
   def populate_resource_id
     data = Futbin.get_player_info(futbin_id)
     update(resource_id: data['resource'])
+  end
+
+  def optimize_value
+    futbin_value = futbin_market_data['avg_sell_price']
+    max_bid = [(futbin_value * 0.7 / 100).to_i * 100, MIN_BID].max
+    sell_value = [(futbin_value * 1.2 / 100).to_i * 100, MIN_SELL].max
+    update(max_bid: max_bid, sell_value: sell_value)
   end
 
   def stock

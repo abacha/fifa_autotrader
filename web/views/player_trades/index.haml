@@ -12,9 +12,6 @@
       - futbin_market_data = player.futbin_market_data
       %tr.d-flex
         %td.d-none
-          %input#max_bid{type: :hidden, value: player.max_bid}
-          %input#sell_value{type: :hidden, value: player.sell_value}
-          %input#futbin_value{type: :hidden, value: futbin_market_data['avg_sell_price']}
           %input#sell_value_ratio{type: :hidden, value: sell_price_ratio(player)}
           %input#max_bid_ratio{type: :hidden, value: max_bid_ratio(player)}
 
@@ -44,8 +41,6 @@
               %i.bi.bi-dash-circle
           %a.btn.btn-outline-secondary.btn-sm{href: "/player_trades?id=#{player.id}"}
             %i.bi.bi-pencil-square
-          %a.btn.btn-outline-secondary.btn-sm.optimize-values
-            %i.bi.bi-lightning-fill
         %td.col-sm-1.text-right=money futbin_market_data['avg_sell_price']
         %td.col-sm-1.text-center="#{futbin_market_data['sell_rate']}%"
 
@@ -55,16 +50,6 @@
   $(".update-player").click(function() {
     $.post('/player_trades', $(this).data());
     location.reload();
-  });
-
-  $(".optimize-values").click(function() {
-    tr = $(this).parents('tr');
-    sell_value = $(tr).find('#sell_value').val();
-    max_bid = $(tr).find('#max_bid').val();
-
-    data = {'sell_value': sell_value, 'max_bid': max_bid};
-    console.log(data);
-    $.post('/player_trades', data);
   });
 
   $(document).ready(function() {

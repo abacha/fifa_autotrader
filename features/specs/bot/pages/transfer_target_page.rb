@@ -7,6 +7,12 @@ class TransferTargetPage < BasePage
     '.ut-tile-transfer-targets'
   end
 
+  def clear_bids
+    bids = list_bids
+    clear_expired if bids.detect { |bid| bid.status == 'expired' }
+    clear_bought if bids.detect { |bid| bid.status == 'won' }
+  end
+
   def clear_expired
     enter_page
 

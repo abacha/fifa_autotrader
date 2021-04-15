@@ -13,17 +13,35 @@
     %tr.d-flex
       %th.col-md-2.text-center Datetime
       %th.col-md-1.text-center Kind
-      %th.col-md-3.text-center Player
+      %th.col-md-2.text-center Player
       %th.col-md-2.d-none.d-md-block.text-center Start
       %th.col-md-2.text-center Final
       %th.col-md-2.d-none.d-md-block.text-center BIN
+      %th.col-md-1
   %tbody
     - @trades.each do |trade|
       %tr.d-flex
         %td.col-md-2.text-center.small=datetime trade.timestamp
         %td.col-md-1.text-center=trade.kind
-        %td.col-md-3=trade.player_name
+        %td.col-md-2=trade.player_name
         %td.col-md-2.text-right.d-none.d-md-block=money trade.start_price
         %td.col-md-2.text-right=money trade.sold_for
         %td.col-md-2.text-right.d-none.d-md-block=money trade.buy_now
+        %td.col-md-1.text-center
+          %a.btn.btn-outline-secondary.btn-xs{data: {id: "#{trade.id}", action: :delete}}
+            %i.bi.bi-x-circle-fill
+
 = will_paginate @trades
+
+:javascript
+    $(document).ready(function() {
+      $("#actions a[data-action='delete']").bind('click', function() {
+        if (window.confirm("Delete?")) {
+          $.ajax({
+            url: "/player_snipes?id="+$(this).data('id'),
+            type: 'delete',
+            success: function() { window.location.reload() }
+          });
+        }
+      });
+    });

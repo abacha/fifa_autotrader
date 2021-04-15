@@ -34,4 +34,9 @@ class PlayerTradesController < ApplicationController
 
     json cache
   end
+
+  get '/optimize_values' do
+    players = PlayerTrade.where(status: 1).map(&:optimize_value)
+    json players
+  end
 end

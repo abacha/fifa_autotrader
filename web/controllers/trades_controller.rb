@@ -6,4 +6,9 @@ class TradesController < ApplicationController
     @trades = @q.result.order(timestamp: :desc).paginate(page: params[:page])
     haml :'trades/index'
   end
+
+  delete '/' do
+    trade = Trade.find(params['id'])
+    trade.destroy
+  end
 end

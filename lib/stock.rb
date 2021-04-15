@@ -45,4 +45,15 @@ class Stock
       end
     end.flatten.sort_by { |line| line.buy_timestamp || Time.now }
   end
+
+  def self.diff
+    stock_count = Stock.count.select do |player_name, _|
+      PlayerTrade.find_by(name: player_name)
+    end.to_a
+
+    trades_count = Trade.where(matched: 0, kind: 'B').group(:player_name).count.to_a
+
+    RobotLogger.msg "Trades existentes sem estoque: #{trades_count - stock_count}"
+    RobotLogger.msg "Stock existente sem trade: #{stock_count - trades_count}"
+  end
 end
