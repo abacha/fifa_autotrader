@@ -2,6 +2,7 @@
 
 class SettingsController < ApplicationController
   before do
+    @groups = Setting.groups
     @settings = Setting.masked_all
     params['setting'] ||= {}
   end

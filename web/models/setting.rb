@@ -11,6 +11,10 @@ class Setting < ActiveRecord::Base
     Cache.store.delete("SETTINGS_#{key}")
   end
 
+  def self.groups
+    Setting.pluck(:group).uniq
+  end
+
   def self.get(key)
     Cache.fetch("SETTINGS_#{key}") do
       find_by(key: key)&.value

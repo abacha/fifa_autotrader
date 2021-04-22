@@ -7,7 +7,7 @@ class Notification
     unless Setting.get('vapid_private_key')
       vapid_key = Webpush.generate_key
       %w[public_key private_key].each do |item|
-        Setting.create!(key: "vapid_#{item}", value: vapid_key.send(item), secure: 1)
+        Setting.create!(key: "vapid_#{item}", value: vapid_key.send(item), secure: 1, group: 'Notifications')
       end
     end
 

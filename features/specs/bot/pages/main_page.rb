@@ -20,11 +20,11 @@ class MainPage < BasePage
     end
   end
 
-  def process(_i)
+  def process(i)
     do_process do
       Stock.diff
 
-      if AUTO_OPTIMIZE_VALUES == 1
+      if AUTO_OPTIMIZE_VALUES == 1 && i % 10 == 0
         RobotLogger.msg 'Optimizing player values'
         PlayerTrade.actives.each(&:optimize_value)
         RobotLogger.msg 'Player values optimized!'

@@ -1,3 +1,8 @@
+%ul#groups.nav.nav-tabs
+  - @groups.each do |group|
+    %li.nav-item.active
+      %a.nav-link{href: '#', 'data-group': "#{group}"}
+        = group
 %table.table.table-hover.table-striped.table-bordered.table-sm
   %thead
     %tr.d-flex
@@ -6,7 +11,7 @@
       %th.col-md-1.text-center
   %tbody
     - @settings.each do |setting|
-      %tr.d-flex
+      %tr.d-flex{'data-group': "#{setting.group}"}
         %td.col-md-3=setting.key
         %td.col-md-8=setting.value
         %td.col-md-1.text-center
@@ -14,3 +19,16 @@
             %i.bi.bi-pencil-square
 
 = haml :'settings/_form'
+:javascript
+  $(document).ready(function() {
+    $('#groups .nav-link').click(function() {
+      $('#groups .nav-link').removeClass('active');
+      $(this).addClass('active');
+      $("tbody tr").hide();
+      $("tbody tr").removeClass('d-flex');
+      $("tbody tr[data-group='"+$(this).data('group')+"']").show()
+      $("tbody tr[data-group='"+$(this).data('group')+"']").addClass('d-flex')
+    });
+
+    $('#groups li:nth-child(1) a').click();
+  });

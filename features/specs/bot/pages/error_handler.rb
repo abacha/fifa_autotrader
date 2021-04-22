@@ -35,6 +35,8 @@ class ErrorHandler < BasePage
       exit 1
     elsif find('body').text == ''
       page.refresh
+    elsif error_msg.match(/Unable to find link or button "Transfers"/)
+      page.refresh unless has_button?('Transfers')
     elsif error_msg.match(/Unable to authenticate with the FUT servers/) ||
       error_msg.match(/CONNECTION LOST/) ||
       error_msg.match(/NO INTERNET CONNECTION/) ||
