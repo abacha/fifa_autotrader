@@ -3,17 +3,17 @@
     %li.nav-item.active
       %a.nav-link{href: '#', 'data-group': "#{group}"}
         = group
-%table.table.table-hover.table-striped.table-bordered.table-sm
+%table.table.table-hover.table-striped.table-bordered.table-sm.col-md-7
   %thead
     %tr.d-flex
-      %th.col-md-3.text-center Key
-      %th.col-md-8.text-center Value
+      %th.col-md-5.text-center Key
+      %th.col-md-6.text-center Value
       %th.col-md-1.text-center
   %tbody
     - @settings.each do |setting|
       %tr.d-flex{'data-group': "#{setting.group}"}
-        %td.col-md-3=setting.key
-        %td.col-md-8=setting.value
+        %td.col-md-5=setting.key
+        %td.col-md-6=setting.value
         %td.col-md-1.text-center
           %a.btn.btn-outline-secondary.btn-sm{href: "/settings?id=#{setting.id}"}
             %i.bi.bi-pencil-square

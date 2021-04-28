@@ -11,7 +11,7 @@
     .form-group.col-md-3
       %label Fullname
       %input#fullname.form-control{name: 'player[fullname]', type: :text, value: @player.fullname}
-    .form-group.col-md-2
+    .form-group.col-md-1
       %label Quality
       %input#name.form-control{name: 'player[quality]', type: :text, value: @player.quality}
     .form-group.col-md-2
@@ -23,4 +23,7 @@
     .form-group.col-md-2
       %label Max BIN
       %input#max_bid.form-control{name: 'player[max_bid]', type: :number, value: @player.max_bid}
+    .form-group.col-md-1
+      %label Bought
+      %input#name.form-control{name: 'player[bought]', type: :text, value: @player.bought}
   %button.btn.btn-primary.mb-2{type: :submit} Save

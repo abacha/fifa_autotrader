@@ -38,6 +38,7 @@ class SearchResultsPage < BasePage
           click_on 'Ok'
           msg = "Player sniped! #{player.name} for $#{auction.buy_now}"
           RobotLogger.msg(msg)
+          save_screenshot
           Notification.send_all('Player Sniped', msg)
           break
         end

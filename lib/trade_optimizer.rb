@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 class TradeOptimizer
-  def self.optimize_value(futbin_value)
-    max_bid = [(futbin_value * get('BID_RATIO').to_f / 100).to_i * 100, get('MIN_BID').to_i].max
-    sell_value = [(futbin_value * get('SELL_RATIO').to_f / 100).to_i * 100, get('MIN_SELL').to_i].max
+  BID_RATIO = Setting.get('BID_RATIO').to_f
+  SELL_RATIO = Setting.get('SELL_RATIO').to_f
+  MIN_SELL = Setting.get('MIN_SELL').to_i
+  MIN_BID = Setting.get('MIN_BID').to_i
+
+  def self.values(futbin_value)
+    max_bid = [(futbin_value * BID_RATIO / 100).to_i * 100, MIN_BID].max
+    sell_value = [(futbin_value * SELL_RATIO / 100).to_i * 100, MIN_SELL].max
 
     { max_bid: max_bid, sell_value: fix_value(sell_value) }
   end

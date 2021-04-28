@@ -7,10 +7,10 @@
     .form-group.col-md-3
       %label Key
       %input.form-control{name: 'setting[key]', type: :text, value: @setting.key}
-    .form-group.col-md-6
+    .form-group.col-md-3
       %label Value
       %input.form-control{name: 'setting[value]', type: :text, value: @setting.value}
     .form-group.col-md-2
       %label Group
-      %input.form-control{name: 'setting[value]', type: :text, value: @setting.group}
+      %input.form-control{name: 'setting[group]', type: :text, value: @setting.group}
   %button.btn.btn-primary.mb-2{type: :submit} Save

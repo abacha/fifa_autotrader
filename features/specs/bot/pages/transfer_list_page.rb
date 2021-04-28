@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TransferListPage < BasePage
+  class InvalidListError < StandardError; end
+
   def update_stock
     enter_page
 
@@ -41,6 +43,7 @@ class TransferListPage < BasePage
         RobotLogger.msg(
           "Player sold: #{trade.player_name} ($#{trade.sold_for})"
         )
+        raise InvalidListError, 'Invalid list' if all('.has-auction-data.won').count != auctions.size
         click_on 'Clear Sold'
       end
     end
